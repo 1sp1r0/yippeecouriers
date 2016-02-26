@@ -4,7 +4,8 @@
   "description": "A service to jet your pet around the world!",
   "main": "index.js",
   "dependencies": {
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "httpdispatcher": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {
