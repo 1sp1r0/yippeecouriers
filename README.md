@@ -1,6 +1,20 @@
 # yippeecouriers
 A service to jet your pet around the world!
 
+Dev Setup
+---------
+
+You'll need node, npm, gulp installed. 
+
+Checkout the code:
+git clone https://github.com/YippeeAir/yippeecouriers
+
+NPM Install:
+npm install
+
+Start the app w/ Gulp:
+gulp develop
+
 
 Server Setup
 ------------
