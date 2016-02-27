@@ -4,6 +4,7 @@
   "description": "A service to jet your pet around the world!",
   "main": "index.js",
   "dependencies": {
+    "async": "^1.5.2",
     "body-parser": "^1.15.0",
     "bootstrap": "^3.3.6",
     "express": "^4.13.4",
@@ -13,7 +14,8 @@
     "jade": "^1.11.0",
     "lodash": "^4.5.1",
     "mongod": "^1.3.0",
-    "mongoose": "^4.4.5"
+    "mongoose": "^4.4.5",
+    "request": "^2.69.0"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
@@ -25,7 +27,6 @@
     "test": "\"echo \\\"Error: no test specified\\\" && exit 1\"",
     "start": "node server.js"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ericboromisa/yippeecouriers.git"
