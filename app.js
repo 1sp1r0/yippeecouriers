@@ -30,5 +30,5 @@ app.get('/', HomesController.index);
 
 //Server Launch
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+    console.log('Yippee App listening on port 3000!');
 });
