@@ -13,7 +13,8 @@
     "jade": "^1.11.0",
     "lodash": "^4.5.1",
     "mongod": "^1.3.0",
-    "mongoose": "^4.4.5"
+    "mongoose": "^4.4.5",
+    "request": "^2.69.0"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
@@ -25,7 +26,6 @@
     "test": "\"echo \\\"Error: no test specified\\\" && exit 1\"",
     "start": "node server.js"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ericboromisa/yippeecouriers.git"

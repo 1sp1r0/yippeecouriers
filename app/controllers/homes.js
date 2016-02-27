@@ -1,5 +1,5 @@
-// HTTP
-var http = require('http');
+// Request
+var request = require('request');
 
 // mongoose
 var mongoose = require('mongoose');
@@ -61,6 +61,8 @@ exports.createEstimate = function (req, res){
                                     console.log(error);
                                 }else{
                                     res.redirect('/');
+                                    var slackMessage = `New estimate request from ${foundTrip.sender_name} for their pet ${savedPet.name}!`
+                                    request.post('https://hooks.slack.com/services/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', {json:{"text":slackMessage}});
                                 }
                             });
                         }
