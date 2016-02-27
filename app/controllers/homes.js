@@ -4,6 +4,9 @@ var request = require('request');
 // mongoose
 var mongoose = require('mongoose');
 
+// yippee utils
+var yippeeUtils = require('yippee-utils');
+
 // Models
 var Trip = require('../models/trip');
 var Pet = require('../models/pet');
@@ -55,7 +58,6 @@ exports.couriers = function (req, res){
     });
 }
 
-
 // post | create an estimate
 exports.createEstimate = function (req, res){
 
@@ -63,7 +65,7 @@ exports.createEstimate = function (req, res){
 
     var estimate = new Estimate({
         trip_name: "Fly Fluffy! Fly!",
-        trip_date: '2016-12-16',
+        trip_date: null,
         flight: {
             cost_range: {
                 low: 209,
@@ -96,11 +98,11 @@ exports.createEstimate = function (req, res){
     });
 
     estimate.save(function(error, savedEstimate) {
-        if(savedEstimate){
-            console.log(savedEstimate);
-        }else if(error){
-            console.log("error: " + error);
+        if (error) {
+            console.log("Error Saving Estimate: " + error);
         }
+
+        res.json(yippeeUtils.createJsonResponse(error, savedEstimate));
     });
 }
 
