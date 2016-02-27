@@ -3,8 +3,8 @@ var Schema = mongoose.Schema;
 
 // create a schema for Pet
 var petSchema = new Schema({
-    name: { type: String, required: true, unique: false }, //sender or receiver
-    weight: { type: Number, required: true, unique: false },
+    name: { type: String, required: false, unique: false }, //sender or receiver
+    weight: { type: Number, required: false, unique: false },
     _trip: {type: mongoose.Schema.Types.ObjectId, ref:'Trip', required: false },
     created_at: Date,
     updated_at: Date

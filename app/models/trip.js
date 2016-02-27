@@ -3,11 +3,13 @@ var Schema = mongoose.Schema;
 
 // create a schema for Trip
 var tripSchema = new Schema({
-    main_contact: { type: String, required: true, unique: false }, //sender or receiver
-    sender_email: { type: String, required: true, unique: false },
-    sender_phone: { type: String, required: true, unique: false },
-    receiver_email: { type: String, required: true, unique: false },
-    receiver_phone: { type: String, required: true, unique: false },
+    main_contact: { type: String, required: false, unique: false }, //sender or receiver
+    sender_name: { type: String, required: false, unique: false },
+    sender_email: { type: String, required: false, unique: false },
+    sender_phone: { type: String, required: false, unique: false },
+    receiver_name: { type: String, required: false, unique: false },
+    receiver_email: { type: String, required: false, unique: false },
+    receiver_phone: { type: String, required: false, unique: false },
     _pets: [{type: mongoose.Schema.Types.ObjectId, ref:'Pet', required: false }],
     created_at: Date,
     updated_at: Date
