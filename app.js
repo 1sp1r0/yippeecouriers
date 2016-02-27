@@ -28,6 +28,8 @@ var EstimatorController = require('./app/controllers/estimator');
 
 //Routes
 app.get('/', HomesController.index);
+app.get('/couriers', HomesController.couriers);
+app.get('/scrapbook/:trip_id', HomesController.scrapbook);
 app.post('/request-estimate', HomesController.createEstimate);
 app.get('/test', EstimatorController.createEstimate);
 

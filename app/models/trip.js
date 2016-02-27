@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 // create a schema for Trip
 var tripSchema = new Schema({
+    trip_name: { type: String, required: false, unique: false }, //sender or receiver
     main_contact: { type: String, required: false, unique: false }, //sender or receiver
     sender_name: { type: String, required: false, unique: false },
     sender_email: { type: String, required: false, unique: false },
