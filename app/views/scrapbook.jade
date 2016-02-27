@@ -1,0 +1,8 @@
+extends layout 
+
+block content
+    section
+        .container
+            h1 #{trip_name}
+            each message in messages
+                h3 #{message.text}
