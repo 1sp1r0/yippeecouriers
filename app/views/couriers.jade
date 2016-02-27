@@ -1,0 +1,10 @@
+extends layout 
+
+block content
+    section
+        .container
+            h1 Yippe Couriers Admin
+            each trip in trips
+                h3 #{trip.sender_name}
+                each pet in trip._pets
+                    p #{pet.name}

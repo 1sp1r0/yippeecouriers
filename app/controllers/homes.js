@@ -8,11 +8,28 @@ var mongoose = require('mongoose');
 var Trip = require('../models/trip');
 var Pet = require('../models/pet');
 
-// get | show a list of datasets
+// get | show app
 exports.index = function (req, res){
-	res.render('index',{
-		title: 'Yippee Air Courier'
-	});
+    res.render('index',{
+        title: 'Yippee Air Courier'
+    });
+}
+
+// get | show admin panel for couriers
+exports.couriers = function (req, res){
+    Trip
+    .find()
+    .populate('_pets')
+    .exec(function(error, trips){
+        if(trips){
+            res.render('couriers',{
+                title: 'Yippee Courier Admin',
+                trips: trips
+            });
+        }else if(error){
+            console.log("error: " + error.stack);
+        }
+    });
 }
 
 // post | create a dataset
