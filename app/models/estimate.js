@@ -3,8 +3,7 @@ var Schema = mongoose.Schema;
 
 // create a schema for Pet
 var estimateSchema = new Schema({
-    departure_date: { type: Date, required: true },
-    return_date:  { type: Date, required: true },   
+    trip_date: { type: Date, required: true },
     flight: { 
         cost_range: {
             low: { type: Number, required: true },

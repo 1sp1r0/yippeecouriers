@@ -63,8 +63,7 @@ exports.createEstimate = function (req, res){
 
     var estimate = new Estimate({
         trip_name: "Fly Fluffy! Fly!",
-        departure_date: req.body.departure_date,
-        return_date:  req.body.return_date,   
+        trip_date: '2016-12-16',
         flight: {
             cost_range: {
                 low: 209,
@@ -100,7 +99,7 @@ exports.createEstimate = function (req, res){
         if(savedEstimate){
             console.log(savedEstimate);
         }else if(error){
-            console.log("error: " + error.stack);
+            console.log("error: " + error);
         }
     });
 }
@@ -142,11 +141,11 @@ exports.createTrip = function (req, res){
                         }
                     })
                 }else if(error){
-                    console.log("error: " + error.stack);
+                    console.log("error: " + error);
                 }
             })
         }else if(error){
-            console.log("error: " + error.stack);
+            console.log("error: " + error);
         }
     });
 }
