@@ -65,7 +65,7 @@ exports.createEstimate = function (req, res){
 
     var estimate = new Estimate({
         trip_name: "Fly Fluffy! Fly!",
-        trip_date: null,
+        trip_date: '2016-12-23',
         flight: {
             cost_range: {
                 low: 209,
