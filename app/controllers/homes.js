@@ -136,7 +136,7 @@ exports.createTrip = function (req, res){
                                     console.log(error);
                                 }else{
                                     res.redirect('/');
-                                    var slackMessage = `New estimate request from ${foundTrip.sender_name} for their pet ${savedPet.name}!`
+                                    var slackMessage = `New estimate request from *${foundTrip.sender_name}* for their pet *${savedPet.name}*!`
                                     request.post('https://hooks.slack.com/services/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', {json:{"text":slackMessage}});
                                 }
                             });
