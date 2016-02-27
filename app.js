@@ -23,12 +23,10 @@ app.use(bodyParser.urlencoded( {
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Controllers
-
+var HomesController = require('./app/controllers/homes');
 
 //Routes
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
+app.get('/', HomesController.index);
 
 //Server Launch
 app.listen(3000, function () {
