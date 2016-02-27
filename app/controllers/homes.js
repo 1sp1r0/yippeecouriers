@@ -15,6 +15,28 @@ exports.index = function (req, res){
     });
 }
 
+// get | show scrapbook
+exports.scrapbook = function (req, res){
+    var tripId = req.params.trip_id
+    var conditions = {'_id' : tripId}
+    Trip.findOne(conditions, function(error, trip){
+        if(trip){
+            request('https://slack.com/api/channels.history?token=xoxp-23332966421-23343337041-23368666917-2414cef4be&channel=C0PAUA2AH&pretty=1', function(error, response, body){
+                var messages = JSON.parse(body).messages;
+                console.log('request body: ', JSON.parse(body).messages);
+                res.render('scrapbook',{
+                    title: 'Yippee Scrapbook',
+                    trip_name: trip.trip_name,
+                    trip: trip,
+                    messages: messages
+                });
+            });
+        }else if(error){
+            console.log("error: " + error.stack);
+        }
+    });
+}
+
 // get | show admin panel for couriers
 exports.couriers = function (req, res){
     Trip
@@ -35,7 +57,8 @@ exports.couriers = function (req, res){
 // post | create a dataset
 exports.createEstimate = function (req, res){
     var trip = new Trip({
-        sender_name: req.body.name,
+        trip_name: req.body.trip_name,
+        sender_name: req.body.contact_name,
         sender_email: req.body.email,
         sender_phone: req.body.phone
     });

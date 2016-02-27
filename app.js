@@ -28,6 +28,7 @@ var HomesController = require('./app/controllers/homes');
 //Routes
 app.get('/', HomesController.index);
 app.get('/couriers', HomesController.couriers);
+app.get('/scrapbook/:trip_id', HomesController.scrapbook);
 app.post('/request-estimate', HomesController.createEstimate);
 
 //Server Launch
