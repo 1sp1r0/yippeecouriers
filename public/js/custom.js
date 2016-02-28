@@ -12,22 +12,27 @@ function transferFormEntries(){
     $('input[name=dropoff_postcode]').val($('input[name=estimate_dropoff_postcode]').val());
 }
 
+function modalSwap(){
+    $('#estimateModal').modal('hide');
+    setTimeout(function(){
+        $('#tripModal').modal('show');
+    }, 450);
+}
+
 function requestEstimate(){
     transferFormEntries();
     // get the form data
     // there are many ways to get this data using jQuery (you can use the class or id also)
     var formData = {
         'trip_date'              : $('input[name=estimate_trip_date]').val(),
-        'dropoff_postcode'          : $('input[name=estimate_dropoff_postcode]').val(),
-        'pickup_postcode'           : $('input[name=estimate_pickup_postcode]').val()
+        'dropoff_postcode'       : $('input[name=estimate_dropoff_postcode]').val(),
+        'pickup_postcode'        : $('input[name=estimate_pickup_postcode]').val()
     };
-
-    console.log('formData: ', formData);
 
     // process the form
     $.ajax({
         type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
-        url         : '/create-estimate', // the url where we want to POST
+        url         : '/create-estimateTEMPBREAK', // the url where we want to POST
         data        : formData, // our data object
         dataType    : 'json', // what type of data do we expect back from the server
         encode      : true
