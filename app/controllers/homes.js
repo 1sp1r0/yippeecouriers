@@ -1,6 +1,12 @@
 // Request
 var request = require('request');
 
+// async
+var async = require('async');
+
+// Cheerio Scraper
+var cheerio = require('cheerio');
+
 // mongoose
 var mongoose = require('mongoose');
 
@@ -8,6 +14,9 @@ var mongoose = require('mongoose');
 var Trip = require('../models/trip');
 var Pet = require('../models/pet');
 var Estimate = require('../models/estimate');
+
+//config
+var slackToken = 'xoxp-23332966421-23343337041-23368666917-2414cef4be';
 
 // get | show app
 exports.index = function (req, res){
@@ -22,15 +31,85 @@ exports.scrapbook = function (req, res){
     var conditions = {'_id' : tripId}
     Trip.findOne(conditions, function(error, trip){
         if(trip){
-            request('https://slack.com/api/channels.history?token=xoxp-23332966421-23343337041-23368666917-2414cef4be&channel=C0PAUA2AH&pretty=1', function(error, response, body){
-                var messages = JSON.parse(body).messages;
-                console.log('request body: ', JSON.parse(body).messages);
-                res.render('scrapbook',{
-                    title: 'Yippee Scrapbook',
-                    trip_name: trip.trip_name,
-                    trip: trip,
-                    messages: messages
-                });
+            request('https://slack.com/api/channels.history?token=' + slackToken + '&channel=C0PAUA2AH&pretty=1', function(error, response, body){
+                var originalMessages = JSON.parse(body).messages;
+                var processedMessages = [];
+
+                var messageParser = function(message, callback){
+                    if(message.file){
+                        var file = message.file;
+                        var processFile = function(){
+                            request(file.permalink_public, function(error, response, body){
+                                var $ = cheerio.load(body);
+                                var imageUrl = $('.image_body').attr("href");
+                                processedMessages.push({'file' : imageUrl, 'title' : file.title, 'timestamp' : Date(file.timestamp)});
+                                callback();
+                            });
+                        }
+                        if(message.file.public_url_shared){
+                            request('https://slack.com/api/files.info?token=' + slackToken + '&file=' + file.id + '&pretty=1', function(error, response, body){
+                                processFile();
+                            });
+                        }else{
+                            request('https://slack.com/api/files.sharedPublicURL?token=' + slackToken + '&file=' + file.id + '&pretty=1', function(error, response, body){
+                                processFile();
+                            });
+                        }
+                    }else{
+                        processedMessages.push({'text' : message.text, 'timestamp' : Date(message.ts)});
+                        callback();
+                    }
+                }
+
+                var messageErrorCallback = function(err){
+                    if(err){
+                        console.log("error: ", err);
+                    }
+
+                    console.log(processedMessages);
+
+                    res.render('scrapbook',{
+                        title: 'Yippee Scrapbook',
+                        trip_name: trip.trip_name,
+                        trip: trip,
+                        messages: processedMessages
+                    });
+                }
+
+                async.eachSeries(originalMessages, messageParser, messageErrorCallback);
+
+
+                // for (var message of originalMessages) {
+                //     if(message.file){
+                //         var fileId = message.file.id;
+                //         if(message.file.public_url_shared){
+                //             request('https://slack.com/api/files.info?token=' + slackToken + '&file=' + fileId + '&pretty=1', function(error, response, body){
+                //                 request(JSON.parse(body).file.permalink_public, function(error, response, body){
+                //                     var $ = cheerio.load(body);
+                //                     var imageUrl = $('.image_body').attr("href");
+                //                     // console.log('Public URL: ', $('.image_body').attr("href"));
+                //                     processedMessages.push({'file' : imageUrl});
+                //                     console.log('push: ', {'file' : imageUrl});
+                //                 });
+                //             });
+                //         }else{
+                //             request('https://slack.com/api/files.sharedPublicURL?token=' + slackToken + '&file=' + fileId + '&pretty=1', function(error, response, body){
+                //                 request(JSON.parse(body).file.permalink_public, function(error, response, body){
+                //                     var imageUrl = $('.image_body').attr("href");
+                //                     // console.log('Public URL: ', $('.image_body').attr("href"));
+                //                     processedMessages.push({'file' : imageUrl});
+                //                 });
+                //             });
+                //         }
+                //     }else{
+                //         // console.log(message.text);
+                //         processedMessages.push({'text' : message.text});
+                //     }
+                // }
+                // console.log('originalMessages: ', originalMessages);
+                // console.log('processedMessages: ', processedMessages);
+
+                // console.log('file id: ', JSON.parse(body).messages);
             });
         }else if(error){
             console.log("error: " + error.stack);
