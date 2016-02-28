@@ -10,6 +10,9 @@ var cheerio = require('cheerio');
 // mongoose
 var mongoose = require('mongoose');
 
+// validate
+var validate = require("validate.js");
+
 // yippee utils
 var yippeeUtils = require('../helpers/utils');
 var yippeeConstants = require('../helpers/constants');
