@@ -181,96 +181,81 @@ exports.createTrip = function (req, res){
         req.body.pet_medical_notes = 'dead';
         req.body.pet_has_carrier = true;
 
-    // save the pet first; this makes it easier to attach to the trip later.
-    var pet = new Pet({
-        name: req.body.pet_name,
-        species: req.body.pet_species,
-        weight: req.body.pet_weight,
-        age: req.body.pet_age,
-        medical_notes: req.body.pet_medical_notes,
-        has_carrier: req.body.pet_has_carrier
-    });
+        // now we save the trip
+        var trip = new Trip({
+            trip_name: req.body.sender_name + ' to ' + req.body.receiver_name,
+            status: yippeeConstants.TRIP_STATUS_REQUESTED,
+            main_contact: req.body.main_contact,
+            sender_name: req.body.sender_name,
+            sender_email: req.body.sender_email,
+            sender_phone: req.body.sender_phone,
+            receiver_name: req.body.receiver_name,
+            receiver_email: req.body.receiver_email,
+            receiver_phone: req.body.receiver_phone,
+            pickup_date: req.body.pickup_date,
+            pickup_address: {
+                address1: req.body.pickup_address1,
+                address2: req.body.pickup_address2,
+                city: req.body.pickup_city,
+                state: req.body.pickup_state,
+                postcode: req.body.pickup_postcode
+            },
+            dropoff_date: req.body.dropoff_date,
+            dropoff_address: {
+                address1: req.body.dropoff_address1,
+                address2: req.body.dropoff_address2,
+                city: req.body.dropoff_city,
+                state: req.body.dropoff_state,
+                postcode: req.body.dropoff_postcode
+            },
+            trip_notes: req.body.trip_notes,
+            _pets: null,                                // assign the pet ids later, after saving the pets
+            _estimate_id: req.body.estimateId          // assign the estimate ID that was passed
+        });
 
-    // TODO: Our model supports multiple pets, but right now we save only one.
-    var petIds = [];
+        trip.save(function (error, savedTrip){
+            if (error) {
+                console.log("Error Saving Trip: " + error);
+                res.json(yippeeUtils.createJsonResponse(error));
+                return;            
+            } else {
 
-    pet.save(function (error, savedPet){
-        if (error) {
-            console.log("Error Saving Pet: " + error);
-            res.json(yippeeUtils.createJsonResponse(error));
-            return;
-        } else {
-            // success; push the pet ID onto the array
-            petIds.push(savedPet._id);
-        }
-    });
+                // now, save the pet
+                var pet = new Pet({
+                    name: req.body.pet_name,
+                    species: req.body.pet_species,
+                    weight: req.body.pet_weight,
+                    age: req.body.pet_age,
+                    medical_notes: req.body.pet_medical_notes,
+                    has_carrier: req.body.pet_has_carrier
+                });
 
-    var trip = new Trip({
-        trip_name: req.body.sender_name + ' to ' + req.body.receiver_name,
-        status: yippeeConstants.TRIP_STATUS_REQUESTED,
-        main_contact: req.body.main_contact,
-        sender_name: req.body.sender_name,
-        sender_email: req.body.sender_email,
-        sender_phone: req.body.sender_phone,
-        receiver_name: req.body.receiver_name,
-        receiver_email: req.body.receiver_email,
-        receiver_phone: req.body.receiver_phone,
-        pickup_date: req.body.pickup_date,
-        pickup_address: {
-            address1: req.body.pickup_address1,
-            address2: req.body.pickup_address2,
-            city: req.body.pickup_city,
-            state: req.body.pickup_state,
-            postcode: req.body.pickup_postcode
-        },
-        dropoff_date: req.body.dropoff_date,
-        dropoff_address: {
-            address1: req.body.dropoff_address1,
-            address2: req.body.dropoff_address2,
-            city: req.body.dropoff_city,
-            state: req.body.dropoff_state,
-            postcode: req.body.dropoff_postcode
-        },
-        trip_notes: req.body.trip_notes,
-        _pets: petIds,                              // assign the pet ids that were generated
-        _estimate_id: req.body.estimateId          // assign the estimate ID that was passed
-    });
+                pet.save(function (error, savedPet){
+                    if (error) {
+                        console.log("Error Saving Pet: " + error);
+                        res.json(yippeeUtils.createJsonResponse(error));
+                        return;
+                    } else {
 
-    trip.save(function (error, savedTrip){
-        if (error) {
-            console.log("Error Saving Trip: " + error);
-            res.json(yippeeUtils.createJsonResponse(error));
-            return;            
-        } else {
-            // success! Send data to slack and return an API result
-            res.json(yippeeUtils.createJsonResponse(error, savedTrip));
+                        // attach the petId to the trip. At some point we'll need to be able to
+                        // save multiple pets, but we'll forgo that for now.
+                        savedTrip._pets = [savedPet._id];
 
-        }
-    });
+                        savedTrip.save(function (error, savedTrip){
+                            if (error) {
+                                console.log("Error Saving Trip: " + error);
+                                res.json(yippeeUtils.createJsonResponse(error));
+                                return;            
+                            }
+                        });
 
-    // all systems go! Grab the data from the database and populate to slack
-/*
-                if(savedPet){
-                    var petId = savedPet._id;
-                    Trip.findOne({_id: tripId}, function (error, foundTrip){
-                        if(error){
-                            console.log(error);
-                        }else if(foundTrip){
-                            foundTrip._pets.push(petId);
-                            foundTrip.save(function(error){
-                                if(error){
-                                    console.log(error);
-                                }else{
-                                    res.redirect('/');
-                                    var slackMessage = `New estimate request from *${foundTrip.sender_name}* for their pet *${savedPet.name}*!`
-                                    request.post('https://hooks.slack.com/services/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', {json:{"text":slackMessage}});
-                                }
-                            });
-                        }
-                    })
-                }else if(error){
-                    console.log("error: " + error);
-                }
-            })*/
-    
+                        // All systems go! Now talk to slack, and then send an API response
+                        var slackMessage = `New estimate request from *${savedTrip.sender_name}* for their pet *${savedPet.name}*!`
+                        request.post('https://hooks.slack.com/services/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', {json:{"text":slackMessage}});
+
+                        res.json(yippeeUtils.createJsonResponse(error, savedTrip));
+                    }
+                });
+            }
+        });
 }
