@@ -8,9 +8,9 @@ var petSchema = new Schema({
     species: { type: String, required: true },
     weight: { type: Number, required: true },
     age: {type: Number, required: true },
-    medical_notes: {type: Number, required: true },
+    medical_notes: {type: String, required: false },
+    pet_notes: {type: String, required: false },
     has_carrier: {type: Boolean, required: true },
-    _trip: {type: mongoose.Schema.Types.ObjectId, ref:'Trip', required: false },
     created_at: Date,
     updated_at: Date
 });

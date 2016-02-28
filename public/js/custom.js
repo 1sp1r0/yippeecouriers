@@ -2,7 +2,7 @@ function submitEstimate(){
     // get the form data
     // there are many ways to get this data using jQuery (you can use the class or id also)
     var formData = {
-        'pickup_date'              : $('input[name=pickup_date]').val(),
+        'trip_date'              : $('input[name=trip_date]').val(),
         'pickup_address1'          : $('input[name=pickup_address1]').val(),
         'pickup_address2'          : $('input[name=pickup_address2]').val()
     };
