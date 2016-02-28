@@ -86,7 +86,7 @@ exports.scrapbook = function (req, res){
                         trip_name: trip.trip_name,
                         trip: trip,
                         date_formatted: dateFormat(trip.trip_date, "dddd, mmmm dS, yyyy"),
-                        messages: processedMessages
+                        messages: processedMessages.reverse()
                     });
                 }
 
