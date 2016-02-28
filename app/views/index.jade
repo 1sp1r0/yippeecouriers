@@ -565,28 +565,33 @@ block content
           .row
             .col-lg-8.col-lg-offset-2
               .modal-body
-                h2 Estimate
-                h4
-                    span Your Estimated Pet Travel Cost is 
-                    span#estimate-range $850-1100
-                .row
-                    .col-md-4
-                        p.estimate-details
-                            span Flight: 
+                h2 Yippee Estimate
+                table.table
+                    tr
+                        td.lead Flight
+                        td.lead Hotel
+                        td.lead Fees
+                    tr
+                        td 
+                            span Ticket
                             span#flight-cost $200-300
-                        p.estimate-details
-                            span Airline Pet Fee: 
-                            span#pet-fee $150
-                    .col-md-4
-                        p.estimate-details Hotel: 
-                            span#hotel-cost $100-150
-                    .col-md-4
-                        p.estimate-details
-                            span Yippee Fee: 
+                        td 
+                            span Hotel
+                            span#hotel-cost $50
+                        td 
+                            span Yippee
                             span#yipee-fee $300
-                        p.estimate-details
-                            span Other Fee: 
-                            span#other-fee $100
+                    tr
+                        td 
+                            span Pet Charge 
+                            span#pet-fee $150
+                        td
+                        td 
+                            span Other 
+                            span#other-fee $50
+                h4
+                    span Your Total Estimated Pet Travel Cost is 
+                    span#estimate-range $850-1100
                 .row
                     .col-lg-12.text-center
 

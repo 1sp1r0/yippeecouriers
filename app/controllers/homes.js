@@ -98,21 +98,21 @@ exports.scrapbooktemp = function (req,res){
     });
 }
 
-//post | fake create estimate
-// exports.createEstimate = function(req, res){
-//     console.log('fake createEstimate');
-//     res.json({
-//         'estimate_range': '$100-200',
-//         'flight_cost': '$10',
-//         'pet_fee': '$20',
-//         'hotel_cost': '$30',
-//         'yipee_fee': '$40',
-//         'other_fee': '$50'
-//     });
-// }
+// post | fake create estimate
+exports.createEstimate = function(req, res){
+    console.log('fake createEstimate');
+    res.json({
+        'estimate_range': '$100-200',
+        'flight_cost': '$10',
+        'pet_fee': '$20',
+        'hotel_cost': '$30',
+        'yipee_fee': '$40',
+        'other_fee': '$50'
+    });
+}
 
 // post | create an estimate
-exports.createEstimate = function (req, res){
+exports.createEstimate2 = function (req, res){
     var estimate = new Estimate({
         trip_name: "Fly Fluffy! Fly!",
         trip_date: '2016-12-16',
