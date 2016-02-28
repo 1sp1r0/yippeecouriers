@@ -2,4 +2,31 @@ extends simple-layout
 
 block content
     .container
-        h1 Trip #{trip.trip_name}
+        h1 #{trip.trip_name}
+        p Trip Name: #{trip.trip_name}
+        p Status: #{trip.status}
+        p Main Contact: #{trip.main_contact}
+        p Sender Name: #{trip.sender_name}
+        p Sender Email: #{trip.sender_email}
+        p Sender Phone: #{trip.sender_phone}
+        p Receiver Name: #{trip.receiver_name}
+        p Receiver Phone: #{trip.receiver_phone}
+        p Trip Date: #{trip.trip_date}
+        p Origin Airport: #{trip.origin_airport_code}
+        p Destination Airport: #{trip.destination_airport_code}
+        p Pickup Address 1: #{trip.pickup_address.address1}
+        p Pickup Address 2: #{trip.pickup_address.address2}
+        p Pickup City: #{trip.pickup_address.city}
+        p Pickup State: #{trip.pickup_address.state}        
+        p Pickup Postcode: #{trip.pickup_address.postcode}
+        p Dropoff Address 1: #{trip.dropoff_address.address1}
+        p Dropoff Address 2: #{trip.dropoff_address.address2}
+        p Dropoff City: #{trip.dropoff_address.city}
+        p Dropoff State: #{trip.dropoff_address.state}        
+        p Dropoff Postcode: #{trip.dropoff_address.postcode}
+        p Trip Notes: #{trip.trip_notes}
+        // pet stuff here
+        // estimate stuff here 
+
+        p Created At: #{trip.created_at}
+        p Updated At: #{trip.updated_at}

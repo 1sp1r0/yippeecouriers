@@ -23,16 +23,16 @@ app.use(bodyParser.urlencoded( {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Controllers
-var HomeController = require('./app/controllers/homes');
+var HomesController = require('./app/controllers/homes');
 var AdminController = require('./app/controllers/admin');
 var EstimatorController = require('./app/controllers/estimator');
 
 // Routes - Home
-app.get('/', HomeController.index);
-app.get('/scrapbook/:trip_id', HomeController.scrapbook);
+app.get('/', HomesController.index);
+app.get('/scrapbook/:trip_id', HomesController.scrapbook);
 app.get('/scrapbooktemp', HomesController.scrapbooktemp);
-app.post('/create-estimate', HomeController.createEstimate);
-app.post('/create-trip', HomeController.createTrip);
+app.post('/create-estimate', HomesController.createEstimate);
+app.post('/create-trip', HomesController.createTrip);
 
 // Routes - Estimators
 app.get('/test', EstimatorController.createEstimate);
