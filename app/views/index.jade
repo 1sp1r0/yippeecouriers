@@ -188,47 +188,47 @@ block content
                     h2.section-heading Pet Travel Cost Estimator
                     h3.section-subheading.text-muted Lorem ipsum dolor sit amet consectetur.
             .row
-                form(role='form', action="/request-estimate", method="post", id="estimate-form")
+                form(role='form', id="estimate-form")
                     .col-md-12
                         .form-group
-                            input.form-control(type='text', name="pickup_date", placeholder='Drop Off Date')
+                            input.form-control(type='text', name="estimate_pickup_date", placeholder='Drop Off Date')
                     .col-md-6
                         h4.estimate-label Pickup Address
                         .form-group
-                            input.form-control(type='text', name="pickup_address1", placeholder='Address 1')
+                            input.form-control(type='text', name="estimate_pickup_address1", placeholder='Address 1')
                         .form-group
-                            input.form-control(type='text', name="pickup_address2", placeholder='Address 2')
+                            input.form-control(type='text', name="estimate_pickup_address2", placeholder='Address 2')
                         .form-group
-                            input.form-control(type='text', name="pickup_city", placeholder='City')
+                            input.form-control(type='text', name="estimate_pickup_city", placeholder='City')
                         .row
                             .col-md-6
                                 .form-group
-                                    input.form-control(type='text', name="pickup_state", placeholder='State')
+                                    input.form-control(type='text', name="estimate_pickup_state", placeholder='State')
                             .col-md-6
                                 .form-group
-                                    input.form-control(type='text', name="pickup_postcode", placeholder='Postal Code')
+                                    input.form-control(type='text', name="estimate_pickup_postcode", placeholder='Postal Code')
                     .col-md-6
                         h4.estimate-label Dropoff Address
                         .form-group
-                            input.form-control(type='text', name="dropoff_address1", placeholder='Address 1')
+                            input.form-control(type='text', name="estimate_dropoff_address1", placeholder='Address 1')
                         .form-group
-                            input.form-control(type='text', name="dropoff_address2", placeholder='Address 2')
+                            input.form-control(type='text', name="estimate_dropoff_address2", placeholder='Address 2')
                         .form-group
-                            input.form-control(type='text', name="dropoff_city", placeholder='City')
+                            input.form-control(type='text', name="estimate_dropoff_city", placeholder='City')
                         .row
                             .col-md-6
                                 .form-group
-                                    input.form-control(type='text', name="dropoff_state", placeholder='State')
+                                    input.form-control(type='text', name="estimate_dropoff_state", placeholder='State')
                             .col-md-6
                                 .form-group
-                                    input.form-control(type='text', name="dropoff_postcode", placeholder='Postal Code')
+                                    input.form-control(type='text', name="estimate_dropoff_postcode", placeholder='Postal Code')
                     .row.text-center
                         .col-lg-3.col-lg-offset-3.col-md-4.col-md-offset-2
                             a.portfolio-link(href='#estimateModal', data-toggle='modal')
                                 button.btn.btn-xl.modal-button(onClick='requestEstimate()') Request Estimate
                         .col-lg-3.col-md-4
                             a.portfolio-link(href='#tripModal', data-toggle='modal')
-                                button.btn.btn-xl.modal-button(onClick='requestTrip()') Request Trip
+                                button.btn.btn-xl.modal-button Request Trip
             .row
               .col-lg-8.col-lg-offset-2.text-center
                 p.large.text-muted

@@ -331,6 +331,7 @@ exports.createEstimate = function (req, res){
 
 // post | create a trip
 exports.createTrip = function (req, res){
+    console.log('in create trip');
 
 // trip_name: { type: String, required: false },    // friendly name; 
 //     status: {type: String, required: true},
@@ -363,49 +364,51 @@ exports.createTrip = function (req, res){
 //     created_at: Date,
 //     updated_at: Date
 
-        req.body.main_contact = 'sender';
-        req.body.sender_name = 'david';
-        req.body.sender_email = 'doo@asdsad.com';
-        req.body.sender_phone = '12321321321';
-        req.body.receiver_name = 'blah';
-        req.body.receiver_email = 'asdasdsa@asdasdsa.com';
-        req.body.receiver_phone = 'sdfsdfds';
-        req.body.trip_date = '2016-12-12';
-        req.body.pickup_address1 = '123 main street';
-        req.body.pickup_address2 = '21321321';
-        req.body.pickup_city = 'q4qwewqqw';
-        req.body.pickup_state = 'sd';
-        req.body.pickup_postcode = '2132132';
+        // req.body.main_contact = 'sender';
+        // req.body.sender_name = 'david';
+        // req.body.sender_email = 'doo@asdsad.com';
+        // req.body.sender_phone = '12321321321';
+        // req.body.receiver_name = 'blah';
+        // req.body.receiver_email = 'asdasdsa@asdasdsa.com';
+        // req.body.receiver_phone = 'sdfsdfds';
+        // req.body.trip_date = '2016-12-12';
+        // req.body.pickup_address1 = '123 main street';
+        // req.body.pickup_address2 = '21321321';
+        // req.body.pickup_city = 'q4qwewqqw';
+        // req.body.pickup_state = 'sd';
+        // req.body.pickup_postcode = '2132132';
 
-        req.body.trip_date = '2016-12-12';
-        req.body.pickup_address1 = '123 main street';
-        req.body.pickup_address2 = '21321321';
-        req.body.pickup_city = 'q4qwewqqw';
-        req.body.pickup_state = 'sd';
-        req.body.pickup_postcode = '2132132';
+        // req.body.trip_date = '2016-12-12';
+        // req.body.pickup_address1 = '123 main street';
+        // req.body.pickup_address2 = '21321321';
+        // req.body.pickup_city = 'q4qwewqqw';
+        // req.body.pickup_state = 'sd';
+        // req.body.pickup_postcode = '2132132';
 
-        req.body.origin_airport_code = 'SFO';
-        req.body.destination_airport_code = 'JFK';
+        // req.body.origin_airport_code = 'SFO';
+        // req.body.destination_airport_code = 'JFK';
 
-        req.body.dropoff_address1 = '23232 main street';
-        req.body.dropoff_address2 = '21321321';
-        req.body.dropoff_city = 'q4qwewqqw';
-        req.body.dropoff_state = 'sd';
-        req.body.dropoff_postcode = '2132132';
+        // req.body.dropoff_address1 = '23232 main street';
+        // req.body.dropoff_address2 = '21321321';
+        // req.body.dropoff_city = 'q4qwewqqw';
+        // req.body.dropoff_state = 'sd';
+        // req.body.dropoff_postcode = '2132132';
 
-        req.body.trip_notes = 'asdasdsa';
+        // req.body.trip_notes = 'asdasdsa';
 
-        // req.body.estimateId = 'MONGOTHINGHEREsawqrasdsad';
+        // // req.body.estimateId = 'MONGOTHINGHEREsawqrasdsad';
 
-        req.body.pet_name = 'fido';
-        req.body.pet_weight = '223';
-        req.body.pet_notes = 'asdasdsadsa';
-        req.body.pet_age = '3243';
-        req.body.pet_species = 'dig';
-        req.body.pet_medical_notes = 'dead';
-        req.body.pet_has_carrier = true;
-        req.body.pet_notes = 'nothing to say';
+        // req.body.pet_name = 'fido';
+        // req.body.pet_weight = '223';
+        // req.body.pet_notes = 'asdasdsadsa';
+        // req.body.pet_age = '3243';
+        // req.body.pet_species = 'dig';
+        // req.body.pet_medical_notes = 'dead';
+        // req.body.pet_has_carrier = true;
+        // req.body.pet_notes = 'nothing to say';
 
+        console.log('req.body.dropoff_postcode: ', req.body.dropoff_postcode);
+        console.log('req.body.sender_phone: ', req.body.sender_phone);
         // now we save the trip
         var trip = new Trip({
             trip_name: req.body.sender_name + ' to ' + req.body.receiver_name + ' (' + req.body.pet_name + ')',

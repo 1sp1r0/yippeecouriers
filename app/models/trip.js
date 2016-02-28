@@ -13,8 +13,8 @@ var tripSchema = new Schema({
     receiver_email: { type: String, required: true },
     receiver_phone: { type: String, required: true },
     trip_date: {type: Date, required: true},
-    origin_airport_code: { type: String, required: true },
-    destination_airport_code: { type: String, required: true },
+    origin_airport_code: { type: String, required: false },
+    destination_airport_code: { type: String, required: false },
     pickup_address: {
         address1: { type: String, required: true },
         address2: { type: String, required: false },

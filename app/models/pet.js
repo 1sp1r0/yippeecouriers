@@ -5,12 +5,12 @@ var Schema = mongoose.Schema;
 var petSchema = new Schema({
     name: { type: String, required: true },
     image_url: { type: String, required: false },
-    species: { type: String, required: true },
+    species: { type: String, required: false },
     weight: { type: Number, required: true },
     age: {type: Number, required: true },
     medical_notes: {type: String, required: false },
     pet_notes: {type: String, required: false },
-    has_carrier: {type: Boolean, required: true },
+    has_carrier: {type: Boolean, required: false },
     created_at: Date,
     updated_at: Date
 });
