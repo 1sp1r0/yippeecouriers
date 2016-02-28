@@ -27,7 +27,6 @@ var HomeController = require('./app/controllers/homes');
 var AdminController = require('./app/controllers/admin');
 var EstimatorController = require('./app/controllers/estimator');
 
-
 // Routes - Home
 app.get('/', HomeController.index);
 app.get('/scrapbook/:trip_id', HomeController.scrapbook);
@@ -38,9 +37,9 @@ app.post('/create-trip', HomeController.createTrip);
 app.get('/test', EstimatorController.createEstimate);
 
 // Routes - Admin
-app.get('/couriers', HomeController.couriers);
+app.get('/couriers', AdminController.couriers);
 
-//Server Launch
+// Server Launch
 app.listen(3000, function () {
     console.log('Yippee App listening on port 3000!');
 });

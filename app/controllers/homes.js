@@ -10,14 +10,9 @@ var cheerio = require('cheerio');
 // mongoose
 var mongoose = require('mongoose');
 
-
 // yippee utils
 var yippeeUtils = require('yippee-utils');
 var yippeeConstants = require('yippee-constants');
-
-// ASYNC
-var async = require('async');
-
 
 // Models
 var Trip = require('../models/trip');
@@ -119,23 +114,6 @@ exports.scrapbook = function (req, res){
                 // console.log('processedMessages: ', processedMessages);
 
                 // console.log('file id: ', JSON.parse(body).messages);
-            });
-        }else if(error){
-            console.log("error: " + error.stack);
-        }
-    });
-}
-
-// get | show admin panel for couriers
-exports.couriers = function (req, res){
-    Trip
-    .find()
-    .populate('_pets')
-    .exec(function(error, trips){
-        if(trips){
-            res.render('couriers',{
-                title: 'Yippee Courier Admin',
-                trips: trips
             });
         }else if(error){
             console.log("error: " + error.stack);
