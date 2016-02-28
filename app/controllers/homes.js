@@ -406,13 +406,6 @@ exports.createEstimate = function (req, res){
         
     ], function (err, result) {
         // result now equals 'done'
-        console.log(estimate);
-        estimate.save(function(error, savedEstimate) {
-            if(savedEstimate){
-                console.log(savedEstimate);
-            }else if(error){
-                console.log("error: " + error);
-            }
 
         res.json({
         'estimate_range': " $"+estimate['total_fee']['high'],
@@ -423,6 +416,15 @@ exports.createEstimate = function (req, res){
         'yipee_fee': '$200',
         'other_fee': '$25'
     });
+        console.log(estimate);
+        estimate.save(function(error, savedEstimate) {
+            if(savedEstimate){
+                console.log(savedEstimate);
+            }else if(error){
+                console.log("error: " + error);
+            }
+
+        
         });
     });
 
