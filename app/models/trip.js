@@ -20,7 +20,7 @@ var tripSchema = new Schema({
         state: { type: String, required: true },
         postcode: { type: String, required: true },
     },
-    dropoff_date: {type: Date, required: true},
+    dropoff_date: {type: Date, required: false},
     dropoff_address: {
         address1: { type: String, required: true },
         address2: { type: String, required: false },

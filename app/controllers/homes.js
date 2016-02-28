@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 
 // yippee utils
 var yippeeUtils = require('yippee-utils');
+var yippeeConstants = require('yippee-constants');
 
 // Models
 var Trip = require('../models/trip');
@@ -108,12 +109,56 @@ exports.createEstimate = function (req, res){
 
 // post | create a trip
 exports.createTrip = function (req, res){
+
+// trip_name: { type: String, required: false },    // friendly name; 
+//     status: {type: String, required: true},
+//     main_contact: { type: String, required: false }, //sender or receiver
+//     sender_name: { type: String, required: true },
+//     sender_email: { type: String, required: true },
+//     sender_phone: { type: String, required: true },
+//     receiver_name: { type: String, required: true },
+//     receiver_email: { type: String, required: true },
+//     receiver_phone: { type: String, required: true },
+//     pickup_date: {type: Date, required: true},
+//     pickup_address: {
+//         address1: { type: String, required: true },
+//         address2: { type: String, required: false },
+//         city: { type: String, required: true },
+//         state: { type: String, required: true },
+//         postcode: { type: String, required: true },
+//     },
+//     dropoff_date: {type: Date, required: false},
+//     dropoff_address: {
+//         address1: { type: String, required: true },
+//         address2: { type: String, required: false },
+//         city: { type: String, required: true },
+//         state: { type: String, required: true },
+//         postcode: { type: String, required: true },
+//     },
+//     trip_notes: {type: String, required: false},
+//     _pets: [{type: mongoose.Schema.Types.ObjectId, ref:'Pet', required: true }],
+//     _estimateID: {type: mongoose.Schema.Types.ObjectId, ref:'Estimate', required: false},
+//     created_at: Date,
+//     updated_at: Date
+
+
     var trip = new Trip({
-        trip_name: req.body.trip_name,
-        sender_name: req.body.contact_name,
-        sender_email: req.body.email,
-        sender_phone: req.body.phone
+        trip_name: req.body.sender_name + ' to ' + req.body.receiver_name,
+        status: yippeeConstants.TRIP_STATUS_REQUESTED,
+        main_contact: req.body.main_contact,
+        sender_name: req.body.sender_name,
+        sender_email: req.body.sender_email,
+        sender_phone: req.body.sender_phone,
+        receiver_name: req.body.receiver_name,
+        receiver_email: req.body.receiver_email,
+        receiver_phone: req.body.receiver_phone,
+        pickup_date: req.body.pickup_date,
+        dropoff_date: req.body.dropoff_date,
+        // TODO ADDRESS
+
+        trip_notes: req.body.dropoff_date
     });
+
 
     trip.save(function (error, savedTrip){
         if(savedTrip){
