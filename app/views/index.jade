@@ -460,7 +460,8 @@ block content
                     .row
                         .col-md-12
                             .form-group
-                                input.form-control(type='text', name="trip_date", placeholder='Pick Up Date')
+                               input.form-control#dp2(type='text', name="trip_date", value="2016-03-16", placeholder='Drop Off Date', date-format='yyyy-mm-dd')
+                                //- input.form-control(type='text', name="trip_date", placeholder='Pick Up Date')
                     .row
                         .col-md-6
                             h4 Pickup Address
@@ -602,5 +603,8 @@ block content
     script(src='/js/custom.js')
     script(type='text/javascript').
       $('#dp').datepicker({
+      format: 'yyyy-mm-dd'
+      });
+      $('#dp2').datepicker({
       format: 'yyyy-mm-dd'
       });
