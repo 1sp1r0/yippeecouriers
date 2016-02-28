@@ -24,13 +24,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Controllers
 var HomesController = require('./app/controllers/homes');
-
+var EstimatorController = require('./app/controllers/estimator');
 //Routes
 app.get('/', HomesController.index);
 app.get('/couriers', HomesController.couriers);
 app.get('/scrapbook/:trip_id', HomesController.scrapbook);
+
+
+app.get('/test', EstimatorController.createEstimate);
+
 app.post('/create-estimate', HomesController.createEstimate);
 app.post('/create-trip', HomesController.createTrip);
+
 
 //Server Launch
 app.listen(3000, function () {

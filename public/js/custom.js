@@ -4,7 +4,7 @@ function submitEstimate(){
     var formData = {
         'pickup_date'              : $('input[name=pickup_date]').val(),
         'pickup_address1'          : $('input[name=pickup_address1]').val(),
-        'pickup_address2'          : $('input[name=pickup_address2]').val(),
+        'pickup_address2'          : $('input[name=pickup_address2]').val()
     };
 
     // process the form
@@ -13,7 +13,7 @@ function submitEstimate(){
         url         : '/request-estimate', // the url where we want to POST
         data        : formData, // our data object
         dataType    : 'json', // what type of data do we expect back from the server
-                    encode          : true
+        encode          : true
     })
     // using the done promise callback
     .done(function(data) {

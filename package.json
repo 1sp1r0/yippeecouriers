@@ -4,6 +4,7 @@
   "description": "A service to jet your pet around the world!",
   "main": "index.js",
   "dependencies": {
+    "async": "^1.5.2",
     "body-parser": "^1.15.0",
     "bootstrap": "^3.3.6",
     "express": "^4.13.4",
@@ -17,9 +18,9 @@
     "request": "^2.69.0"
   },
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-nodemon": "^2.0.2",
+    "gulp": "^3.9.1",
     "gulp-livereload": "^3.8.0",
+    "gulp-nodemon": "^2.0.2",
     "gulp-plumber": "^1.0.0"
   },
   "scripts": {
