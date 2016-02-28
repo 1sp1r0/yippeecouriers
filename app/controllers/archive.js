@@ -125,6 +125,16 @@ async.waterfall([
 
 });
 }
+
+,
+    function(callback) {
+        //Zipcode to City / State / Zip
+        var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address=94024&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address=10001&sensor=true'];
+        process_data_city(url_data, callback);
+        //    curl --include -X GET -H 'Authorization: bearer <bearer_token>' \
+        // 'https://api.lyft.com/v1/cost?start_lat=37.7772&start_lng=-122.4233&end_lat=37.7972&end_lng=-122.4533'
+       
+    }
 //Hotel Estimate
 
 
