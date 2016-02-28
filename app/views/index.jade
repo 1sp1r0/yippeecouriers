@@ -201,7 +201,9 @@ block content
                                     input.form-control(type='text', name="dropoff_postcode", placeholder='Postal Code')
                     .col-lg-12.text-center
                         a.portfolio-link(href='#quoteModal', data-toggle='modal')
-                            button.btn.btn-xl(onClick='submitEstimate()') Request Estimate
+                            button.btn.btn-xl(onClick='requestEstimate()') Request Estimate
+                        a.portfolio-link(href='#quoteModal', data-toggle='modal')
+                            button.btn.btn-xl(onClick='requestTrip()') Request Estimate
             .row
               .col-lg-8.col-lg-offset-2.text-center
                 p.large.text-muted
