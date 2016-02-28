@@ -73,7 +73,7 @@ exports.scrapbook = function (req, res){
                         console.log("error: ", err);
                     }
 
-                    console.log(processedMessages);
+                    console.log(trip);
 
                     res.render('scrapbook',{
                         title: 'Yippee Scrapbook',

@@ -3,22 +3,6 @@ extends scrapbook-layout
 
 
 block content
-    section
-        .container
-            h1 #{trip_name}
-            each message in messages
-                if message.text
-                    p #{message.text}
-                    p #{message.timestamp}
-                if message.file
-                    h3 #{message.title}
-                    p #{message.timestamp}
-                    img.img-responsive(src='#{message.file}', style='max-width: 500px')
-
-block content
-    // Header
-    
-    
     
     // Timeline - How it Works
     section#main
@@ -26,31 +10,36 @@ block content
         
         .row
           .col-lg-12.text-center
-            h2.section-heading {PETS NAME}
-            h3.section-subheading.text-muted {ORIGIN} - {DESTINATION} - {DATE}
+            h2.section-heading #{trip._pets[0].name}
+            h3.section-subheading.text-muted #{trip.pickup_address.city} - #{trip.dropoff_address.city} - #{trip.trip_date}
         .row
           .col-lg-12
             ul.timeline
-              li
-                .timeline-image
-                  img.img-circle.img-responsive(src={MSG_IMG}, alt='')
-                .timeline-panel
-                  .timeline-heading
-                    h4 {MSG_NUM} {TIME_STAMP}
-                    
-                  .timeline-body
-                    p.text-muted
-                      | {MSG_TEXT} 
-              li.timeline-inverted
-                .timeline-image
-                  img.img-circle.img-responsive(src={MSG_IMG}, alt='')
-                .timeline-panel
-                  .timeline-heading
-                    h4 {MSG_NUM} {TIME_STAMP}
-                    
-                  .timeline-body
-                    p.text-muted
-                      | {MSG_TEXT}
+              each message, index in messages
+                
+                   
+                    if (index % 2 == 1)
+                        
+                        li.timeline-inverted
+                            .timeline-image
+                                img.img-circle.img-responsive(src='#{message.file}', style="width:156px; height:156px; overflow:hidden; float:center; vertical-align:bottom; margin: 0 auto;", alt='')
+                        
+                            .timeline-panel
+                                .timeline-heading
+                                    h4 #{message.title} - #{message.timestamp}
+                                .timeline-body
+                                  p.text-muted
+                                    | #{message.text}
+                    else
+                        li
+                            .timeline-image
+                                img.img-circle.img-responsive(src='#{message.file}', style="width:156px; height:156px; overflow:hidden; float:center; vertical-align:bottom; margin: 0 auto;", alt='')
+                            .timeline-panel
+                                .timeline-heading
+                                    h4 #{message.title} - #{message.timestamp}
+                                .timeline-body
+                                    p.text-muted
+                                        | #{message.text}
               
               li.timeline-inverted
                 .timeline-image
