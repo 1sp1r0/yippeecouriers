@@ -26,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 var HomesController = require('./app/controllers/homes');
 var AdminController = require('./app/controllers/admin');
 var EstimatorController = require('./app/controllers/estimator');
+var PlannerController = require('./app/controllers/trip-planner');
 
 // Routes - Home
 app.get('/', HomesController.index);
@@ -36,6 +37,8 @@ app.post('/create-trip', HomesController.createTrip);
 
 // Routes - Estimators
 app.get('/test', EstimatorController.createEstimate);
+
+app.get('/trip-plan/:trip_id', PlannerController.viewRoute);
 
 // Routes - Admin
 app.get('/trips', AdminController.trips);

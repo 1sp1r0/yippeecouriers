@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 // create a schema for Pet
 var estimateSchema = new Schema({
+    trip_id: { type: Number, required: false },
     trip_date: { type: Date, required: true },
     flight: { 
         cost_range: {
@@ -11,7 +12,9 @@ var estimateSchema = new Schema({
         },
         orig_id: { type: String, required: true },
         orig_url: { type: String, required: true },
+        orig_carrier: { type: String, required: false },
         orig_name: { type: String, required: true },
+        miles: { type: Number, required: false },
         orig_coordinates: {
             lat: { type: Number, required: true },
             lng: { type: Number, required: true },
@@ -23,6 +26,7 @@ var estimateSchema = new Schema({
         },
         dest_id: { type: String, required: true },
         dest_url: { type: String, required: true },
+        dest_carrier: { type: String, required: false },
         dest_name: { type: String, required: true },
         dest_coordinates: {
             lat: { type: Number, required: true },
@@ -36,7 +40,9 @@ var estimateSchema = new Schema({
         dest_air_code: { type: String, required: true },
     },
     hotel: {
-        id: { type: Number, required: true },
+        id: { type: String, required: true },
+        name: { type: String, required: true },
+        location: { type: String, required: true },
         url: { type: String, required: true },
         cost_range: {
             low: { type: Number, required: true },
