@@ -44,33 +44,18 @@ var postalCode = 94024;
 console.log("Test");
 
 async.waterfall([
-    //function findCity(destZipcode, arrvlZipcode, callback){
-      function(callback){
-      //Find City
-      var cities = ['http://maps.googleapis.com/maps/api/geocode/json?address=94024&sensor=true"', 'http://maps.googleapis.com/maps/api/geocode/json?address=&sensor=true']
-
-      async.map(cities, request_send_get, function (e, r) {
-          console.log(r);
-        });
+    function findCity(destZipcode, arrvlZipcode, callback){
 
           urlDestCity = "http://maps.googleapis.com/maps/api/geocode/json?address=94024&sensor=true";
-          request_send_get(urlDestCity).then(function(data){
-            console.log("Data");
-            callback(null, data);
-          });
+          request_send_get(urlDestCity).
+
           callback(null, destCityData);
-        }, 
-        function(callback){
+       
 
           urlArrvlCity = "http://maps.googleapis.com/maps/api/geocode/json?address=&sensor=true";
           arrvlCityData = request_send_get(urlArrvlCity);
           callback(null, arrvlCityData);
-        }], function (err, result) {
-     // result now equals 'done' 
-     console.log("good");
-     console.log(result);
-
-});
+       
 
       destCity = destCityData["result"]['address_components'][0]['long_name']+", "+destCityData['result']['address_components'][2]['short_name'];
 
