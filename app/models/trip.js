@@ -12,7 +12,9 @@ var tripSchema = new Schema({
     receiver_name: { type: String, required: true },
     receiver_email: { type: String, required: true },
     receiver_phone: { type: String, required: true },
-    pickup_date: {type: Date, required: true},
+    trip_date: {type: Date, required: true},
+    origin_airport_code: { type: String, required: true },
+    destination_airport_code: { type: String, required: true },
     pickup_address: {
         address1: { type: String, required: true },
         address2: { type: String, required: false },
@@ -20,7 +22,6 @@ var tripSchema = new Schema({
         state: { type: String, required: true },
         postcode: { type: String, required: true },
     },
-    dropoff_date: {type: Date, required: false},
     dropoff_address: {
         address1: { type: String, required: true },
         address2: { type: String, required: false },

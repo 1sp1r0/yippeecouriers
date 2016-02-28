@@ -119,7 +119,7 @@ exports.createTrip = function (req, res){
 //     receiver_name: { type: String, required: true },
 //     receiver_email: { type: String, required: true },
 //     receiver_phone: { type: String, required: true },
-//     pickup_date: {type: Date, required: true},
+//     trip_date: {type: Date, required: true},
 //     pickup_address: {
 //         address1: { type: String, required: true },
 //         address2: { type: String, required: false },
@@ -148,22 +148,24 @@ exports.createTrip = function (req, res){
         req.body.receiver_name = 'blah';
         req.body.receiver_email = 'asdasdsa@asdasdsa.com';
         req.body.receiver_phone = 'sdfsdfds';
-        req.body.pickup_date = '2016-12-12';
+        req.body.trip_date = '2016-12-12';
         req.body.pickup_address1 = '123 main street';
         req.body.pickup_address2 = '21321321';
         req.body.pickup_city = 'q4qwewqqw';
         req.body.pickup_state = 'sd';
         req.body.pickup_postcode = '2132132';
 
-        req.body.pickup_date = '2016-12-12';
+        req.body.trip_date = '2016-12-12';
         req.body.pickup_address1 = '123 main street';
         req.body.pickup_address2 = '21321321';
         req.body.pickup_city = 'q4qwewqqw';
         req.body.pickup_state = 'sd';
         req.body.pickup_postcode = '2132132';
 
-        req.body.dropoff_date = '2016-12-12';
-        req.body.dropoff_address1 = '123 main street';
+        req.body.origin_airport_code = 'SFO';
+        req.body.destination_airport_code = 'JFK';
+
+        req.body.dropoff_address1 = '23232 main street';
         req.body.dropoff_address2 = '21321321';
         req.body.dropoff_city = 'q4qwewqqw';
         req.body.dropoff_state = 'sd';
@@ -180,10 +182,11 @@ exports.createTrip = function (req, res){
         req.body.pet_species = 'dig';
         req.body.pet_medical_notes = 'dead';
         req.body.pet_has_carrier = true;
+        req.body.pet_notes = 'nothing to say';
 
         // now we save the trip
         var trip = new Trip({
-            trip_name: req.body.sender_name + ' to ' + req.body.receiver_name,
+            trip_name: req.body.sender_name + ' to ' + req.body.receiver_name + ' (' + req.body.pet_name + ')',
             status: yippeeConstants.TRIP_STATUS_REQUESTED,
             main_contact: req.body.main_contact,
             sender_name: req.body.sender_name,
@@ -192,7 +195,9 @@ exports.createTrip = function (req, res){
             receiver_name: req.body.receiver_name,
             receiver_email: req.body.receiver_email,
             receiver_phone: req.body.receiver_phone,
-            pickup_date: req.body.pickup_date,
+            trip_date: req.body.trip_date,
+            origin_airport_code: req.body.origin_airport_code,
+            destination_airport_code: req.body.destination_airport_code,
             pickup_address: {
                 address1: req.body.pickup_address1,
                 address2: req.body.pickup_address2,
@@ -200,7 +205,6 @@ exports.createTrip = function (req, res){
                 state: req.body.pickup_state,
                 postcode: req.body.pickup_postcode
             },
-            dropoff_date: req.body.dropoff_date,
             dropoff_address: {
                 address1: req.body.dropoff_address1,
                 address2: req.body.dropoff_address2,
@@ -224,10 +228,11 @@ exports.createTrip = function (req, res){
                 var pet = new Pet({
                     name: req.body.pet_name,
                     species: req.body.pet_species,
-                    weight: req.body.pet_weight,
                     age: req.body.pet_age,
+                    weight: req.body.pet_weight,
+                    has_carrier: req.body.pet_has_carrier,
                     medical_notes: req.body.pet_medical_notes,
-                    has_carrier: req.body.pet_has_carrier
+                    pet_notes: req.body.pet_notes,
                 });
 
                 pet.save(function (error, savedPet){
@@ -250,8 +255,24 @@ exports.createTrip = function (req, res){
                         });
 
                         // All systems go! Now talk to slack, and then send an API response
-                        var slackMessage = `New estimate request from *${savedTrip.sender_name}* for their pet *${savedPet.name}*!`
-                        request.post('https://hooks.slack.com/services/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', {json:{"text":slackMessage}});
+                        var slackMessage = `*${savedTrip.trip_name}*`;
+
+                        var pickupAddress = `${savedTrip.pickup_address.address1} ${savedTrip.pickup_address.address2}, ${savedTrip.pickup_address.city}, ${savedTrip.pickup_address.state} ${savedTrip.pickup_address.postcode} `;
+                        var dropoffAddress = `${savedTrip.dropoff_address.address1} ${savedTrip.dropoff_address.address2}, ${savedTrip.dropoff_address.city}, ${savedTrip.dropoff_address.state} ${savedTrip.dropoff_address.postcode} `;
+
+                        var slackAttachments = [{'title': 'Sender', 
+                                                 'text': `${savedTrip.sender_name}\n${savedTrip.sender_phone}\n${savedTrip.sender_email}`},
+                                                {'title': 'Receiver', 
+                                                 'text': `${savedTrip.receiver_name}\n${savedTrip.receiver_phone}\n${savedTrip.receiver_email}`},
+                                                {'title': 'Pet Details', 
+                                                 'text': `Name: ${savedPet.name}\nSpecies: ${savedPet.species}\nAge: ${savedPet.age}\nWeight: ${savedPet.weight}\nHas Carrier: ${savedPet.has_carrier}\nMedical Notes: ${savedPet.medical_notes}\nPet Notes: ${savedPet.pet_notes}`},
+                                                 {'title': 'Trip Details', 
+                                                 'text': `Requested Trip Date: ${savedTrip.trip_date}\nOrigin Airport: ${savedTrip.origin_airport_code}\nDestination Airport: ${savedTrip.destination_airport_code}\nPickup Address: ${pickupAddress}\nDropoff Address: ${dropoffAddress}`},
+                                                ];
+
+                        var slackJson = {json:{"text":slackMessage, "attachments": slackAttachments}};
+
+                        request.post('https://hooks.slack.com/services/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', slackJson );
 
                         res.json(yippeeUtils.createJsonResponse(error, savedTrip));
                     }
