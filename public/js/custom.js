@@ -1,3 +1,7 @@
+function transferFormEntries(){
+    $('input[name=dropoff_date]').val($('input[name=estimate_dropoff_date]').val());
+}
+
 function requestEstimate(){
     // get the form data
     // there are many ways to get this data using jQuery (you can use the class or id also)
