@@ -202,12 +202,12 @@ var estimate = new Estimate({
                 lng: destAirportCord[1]
             };
 
-             arrvlAirportData = results[1][0];
+            arrvlAirportData = results[1][0];
 
-             arrvlAirport = arrvlAirportData["tags"]["iata"]["airportCode"]["value"];
-             arrvlAirportCord = arrvlAirportData["position"]["coordinates"];
-             // arrvlAirportCode = arrvlAirportData[''];
-             console.log("test "+arrvlAirportCord);
+            arrvlAirport = arrvlAirportData["tags"]["iata"]["airportCode"]["value"];
+            arrvlAirportCord = arrvlAirportData["position"]["coordinates"];
+            // arrvlAirportCode = arrvlAirportData[''];
+            console.log("test "+arrvlAirportCord);
 
             estimate['flight']['dest_air_code'] = arrvlAirport;
             estimate['flight']['dest_air_coordinates'] = {
@@ -295,11 +295,10 @@ var estimate = new Estimate({
 
     }
 
-    var startDate = req.params.dropoff_date;
-    var dropoff_postcode = req.params.dropoff_postcode;
-    var pickup_postcode = req.params.pickup_postcode;
+    var startDate = req.body.trip_date;
+    var dropoff_postcode = req.body.dropoff_postcode;
+    var pickup_postcode = req.body.pickup_postcode;
 
-    console.log('I made it!', startDate);
 async.waterfall([
     function(callback) {
         //Zipcode to City / State / Zip
