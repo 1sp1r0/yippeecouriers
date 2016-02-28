@@ -466,6 +466,42 @@ block content
                 h2 Request Trip
                 form(role='form')
                     .row
+                        .col-md-12
+                            .form-group
+                                input.form-control(type='text', name="pickup_date", placeholder='Pick Up Date')
+                    .row
+                        .col-md-6
+                            h4 Pickup Address
+                            .form-group
+                                input.form-control(type='text', name="pickup_address1", placeholder='Address 1')
+                            .form-group
+                                input.form-control(type='text', name="pickup_address2", placeholder='Address 2')
+                            .form-group
+                                input.form-control(type='text', name="pickup_city", placeholder='City')
+                            .row
+                                .col-md-6
+                                    .form-group
+                                        input.form-control(type='text', name="pickup_state", placeholder='State')
+                                .col-md-6
+                                    .form-group
+                                        input.form-control(type='text', name="pickup_postcode", placeholder='Postal Code')
+                        .col-md-6
+                            h4 Dropoff Address
+                            .form-group
+                                input.form-control(type='text', name="dropoff_address1", placeholder='Address 1')
+                            .form-group
+                                input.form-control(type='text', name="dropoff_address2", placeholder='Address 2')
+                            .form-group
+                                input.form-control(type='text', name="dropoff_city", placeholder='City')
+                            .row
+                                .col-md-6
+                                    .form-group
+                                        input.form-control(type='text', name="dropoff_state", placeholder='State')
+                                .col-md-6
+                                    .form-group
+                                        input.form-control(type='text', name="dropoff_postcode", placeholder='Postal Code')
+                    .row
+                        h4 Pet Info
                         .col-md-4
                             .form-group
                                 input.form-control(type='text', name="pet_name", placeholder='Enter Pet Name')
@@ -485,6 +521,7 @@ block content
                                 input.form-control(type='text', name="trip_notes", placeholder='Enter Trip Notes')
                     .row
                         .col-md-6
+                            h4 Sender Contact
                             .form-group
                                 input.form-control(type='text', name="sender_name", placeholder='Enter Sender\'s Full Name')
                             .form-group
@@ -492,6 +529,7 @@ block content
                             .form-group
                                 input.form-control(type='text', name="sender_phone", placeholder='Enter Sender\'s Phone Number')
                         .col-md-6
+                            h4 Receiver Contact
                             .form-group
                                 input.form-control(type='text', name="receiver_name", placeholder='Enter Receiver\'s Full Name')
                             .form-group
