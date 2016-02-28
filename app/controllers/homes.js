@@ -141,6 +141,69 @@ exports.createTrip = function (req, res){
 //     created_at: Date,
 //     updated_at: Date
 
+        req.body.main_contact = 'sender';
+        req.body.sender_name = 'david';
+        req.body.sender_email = 'doo@asdsad.com';
+        req.body.sender_phone = '12321321321';
+        req.body.receiver_name = 'blah';
+        req.body.receiver_email = 'asdasdsa@asdasdsa.com';
+        req.body.receiver_phone = 'sdfsdfds';
+        req.body.pickup_date = '2016-12-12';
+        req.body.pickup_address1 = '123 main street';
+        req.body.pickup_address2 = '21321321';
+        req.body.pickup_city = 'q4qwewqqw';
+        req.body.pickup_state = 'sd';
+        req.body.pickup_postcode = '2132132';
+
+        req.body.pickup_date = '2016-12-12';
+        req.body.pickup_address1 = '123 main street';
+        req.body.pickup_address2 = '21321321';
+        req.body.pickup_city = 'q4qwewqqw';
+        req.body.pickup_state = 'sd';
+        req.body.pickup_postcode = '2132132';
+
+        req.body.dropoff_date = '2016-12-12';
+        req.body.dropoff_address1 = '123 main street';
+        req.body.dropoff_address2 = '21321321';
+        req.body.dropoff_city = 'q4qwewqqw';
+        req.body.dropoff_state = 'sd';
+        req.body.dropoff_postcode = '2132132';
+
+        req.body.trip_notes = 'asdasdsa';
+
+        // req.body.estimateId = 'MONGOTHINGHEREsawqrasdsad';
+
+        req.body.pet_name = 'fido';
+        req.body.pet_weight = '223';
+        req.body.pet_notes = 'asdasdsadsa';
+        req.body.pet_age = '3243';
+        req.body.pet_species = 'dig';
+        req.body.pet_medical_notes = 'dead';
+        req.body.pet_has_carrier = true;
+
+    // save the pet first; this makes it easier to attach to the trip later.
+    var pet = new Pet({
+        name: req.body.pet_name,
+        species: req.body.pet_species,
+        weight: req.body.pet_weight,
+        age: req.body.pet_age,
+        medical_notes: req.body.pet_medical_notes,
+        has_carrier: req.body.pet_has_carrier
+    });
+
+    // TODO: Our model supports multiple pets, but right now we save only one.
+    var petIds = [];
+
+    pet.save(function (error, savedPet){
+        if (error) {
+            console.log("Error Saving Pet: " + error);
+            res.json(yippeeUtils.createJsonResponse(error));
+            return;
+        } else {
+            // success; push the pet ID onto the array
+            petIds.push(savedPet._id);
+        }
+    });
 
     var trip = new Trip({
         trip_name: req.body.sender_name + ' to ' + req.body.receiver_name,
@@ -153,22 +216,40 @@ exports.createTrip = function (req, res){
         receiver_email: req.body.receiver_email,
         receiver_phone: req.body.receiver_phone,
         pickup_date: req.body.pickup_date,
+        pickup_address: {
+            address1: req.body.pickup_address1,
+            address2: req.body.pickup_address2,
+            city: req.body.pickup_city,
+            state: req.body.pickup_state,
+            postcode: req.body.pickup_postcode
+        },
         dropoff_date: req.body.dropoff_date,
-        // TODO ADDRESS
-
-        trip_notes: req.body.dropoff_date
+        dropoff_address: {
+            address1: req.body.dropoff_address1,
+            address2: req.body.dropoff_address2,
+            city: req.body.dropoff_city,
+            state: req.body.dropoff_state,
+            postcode: req.body.dropoff_postcode
+        },
+        trip_notes: req.body.trip_notes,
+        _pets: petIds,                              // assign the pet ids that were generated
+        _estimate_id: req.body.estimateId          // assign the estimate ID that was passed
     });
 
-
     trip.save(function (error, savedTrip){
-        if(savedTrip){
-            var tripId = savedTrip._id;
-            var pet = new Pet({
-                name: req.body.pet_name,
-                _trip: tripId
-            });
+        if (error) {
+            console.log("Error Saving Trip: " + error);
+            res.json(yippeeUtils.createJsonResponse(error));
+            return;            
+        } else {
+            // success! Send data to slack and return an API result
+            res.json(yippeeUtils.createJsonResponse(error, savedTrip));
 
-            pet.save(function (error, savedPet){
+        }
+    });
+
+    // all systems go! Grab the data from the database and populate to slack
+/*
                 if(savedPet){
                     var petId = savedPet._id;
                     Trip.findOne({_id: tripId}, function (error, foundTrip){
@@ -190,9 +271,6 @@ exports.createTrip = function (req, res){
                 }else if(error){
                     console.log("error: " + error);
                 }
-            })
-        }else if(error){
-            console.log("error: " + error);
-        }
-    });
+            })*/
+    
 }

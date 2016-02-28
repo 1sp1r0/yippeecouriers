@@ -30,7 +30,7 @@ var tripSchema = new Schema({
     },
     trip_notes: {type: String, required: false},
     _pets: [{type: mongoose.Schema.Types.ObjectId, ref:'Pet', required: true }],
-    _estimateID: {type: mongoose.Schema.Types.ObjectId, ref:'Estimate', required: false},
+    _estimate_id: {type: mongoose.Schema.Types.ObjectId, ref:'Estimate', required: false},
     created_at: Date,
     updated_at: Date
 });
