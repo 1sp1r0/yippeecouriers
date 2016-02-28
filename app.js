@@ -37,7 +37,8 @@ app.post('/create-trip', HomeController.createTrip);
 app.get('/test', EstimatorController.createEstimate);
 
 // Routes - Admin
-app.get('/couriers', AdminController.couriers);
+app.get('/trips', AdminController.trips);
+app.get('/trips/:trip_id', AdminController.tripDetail);
 
 // Server Launch
 app.listen(3000, function () {

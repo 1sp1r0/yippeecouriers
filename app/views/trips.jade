@@ -1,0 +1,11 @@
+extends simple-layout 
+
+block content
+    .container
+        h1 Yippe Couriers Admin
+        each trip in trips
+            - console.log(trip)
+            a(href="/trips/" + trip._id) #{trip.trip_name}
+            p #{trip.trip_date} - #{trip.origin_airport_code} to #{trip.destination_airport_code}
+            each pet in trip._pets
+                p #{pet.weight} lbs #{pet.species}
