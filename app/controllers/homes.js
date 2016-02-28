@@ -12,8 +12,8 @@ var mongoose = require('mongoose');
 
 
 // yippee utils
-var yippeeUtils = require('yippee-utils');
-var yippeeConstants = require('yippee-constants');
+var yippeeUtils = require('../helpers/utils');
+var yippeeConstants = require('../helpers/constants');
 
 // ASYNC
 var async = require('async');
