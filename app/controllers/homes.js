@@ -147,7 +147,7 @@ var estimate = new Estimate({
 
     function send_data_get(url, callback){
        options = {url, json: true};
-       // console.log(url);
+       console.log(url);
         request.get(options, function (error, response, body) {
           // console.log(body);
           callback(null, body);
@@ -186,11 +186,11 @@ var estimate = new Estimate({
     }
 
     function process_data_airport(url_data, callback){
-        console.log("Return on: "+url_data);
+        // console.log("Return on: "+url_data);
         async.map(url_data, send_data_get, function(err, results){
             // results is now an array of stats for each file 
             destAirportData = results[0][0];
-            console.log(destAirportData);
+            // console.log(destAirportData);
 
             destAirport = destAirportData["tags"]["iata"]["airportCode"]["value"];
             destAirportCord = destAirportData["position"]["coordinates"];
@@ -207,7 +207,7 @@ var estimate = new Estimate({
              arrvlAirport = arrvlAirportData["tags"]["iata"]["airportCode"]["value"];
              arrvlAirportCord = arrvlAirportData["position"]["coordinates"];
              // arrvlAirportCode = arrvlAirportData[''];
-             console.log("test "+arrvlAirportCord);
+             // console.log("test "+arrvlAirportCord);
 
             estimate['flight']['dest_air_code'] = arrvlAirport;
             estimate['flight']['dest_air_coordinates'] = {
@@ -222,7 +222,7 @@ var estimate = new Estimate({
     }
 
     function process_data_flights(url_data, callback){
-        console.log("Return on: "+url_data);
+        // console.log("Return on: "+url_data);
         async.map(url_data, send_data_get, function(err, results){
             // results is now an array of stats for each file 
              var destFlightData = results[0];
@@ -295,9 +295,9 @@ var estimate = new Estimate({
 
     }
 
-    var startDate = req.params.dropoff_date;
-    var dropoff_postcode = req.params.dropoff_postcode;
-    var pickup_postcode = req.params.pickup_postcode;
+    var startDate = req.body.dropoff_date;
+    var dropoff_postcode = req.body.dropoff_postcode;
+    var pickup_postcode = req.body.pickup_postcode;
 
     console.log('I made it!', startDate);
 async.waterfall([
