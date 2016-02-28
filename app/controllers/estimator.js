@@ -23,7 +23,6 @@ exports.createEstimate = function (req, res){
                 low: 209,
                 high: 498
             },
-            orig_url: 'www',
             orig_name: 'Palo Alto, CA',
             orig_coordinates: {
                 lat:  -122.387996,
@@ -34,7 +33,6 @@ exports.createEstimate = function (req, res){
                 lat:  -122.387996,
                 lng: 37.61594
             },
-            dest_url: 'www',
             dest_name: 'Palo Alto, CA',
             dest_coordinates: {
                 lat: -73.7789,
@@ -47,15 +45,9 @@ exports.createEstimate = function (req, res){
             },
         },
         hotel: {
-            id: 1,
-            url: 'www',
             cost_range: {
                 low: 78,
                 high: 245
-            },
-             hotel_coordinates:{
-                lat:  -122.387996,
-                lng: 37.61594
             },
         },
         airline_pet_fee: 100,
@@ -112,7 +104,7 @@ exports.createEstimate = function (req, res){
         async.map(url_data, send_data_get, function(err, results){
             // results is now an array of stats for each file 
             destAirportData = results[0][0];
-            // console.log(destAirportData);
+            console.log(destAirportData);
 
             destAirport = destAirportData["tags"]["iata"]["airportCode"]["value"];
             destAirportCord = destAirportData["position"]["coordinates"];
@@ -148,8 +140,8 @@ exports.createEstimate = function (req, res){
         async.map(url_data, send_data_get, function(err, results){
             // results is now an array of stats for each file 
              var destFlightData = results[0];
-             var destLength = Object.keys(destFlightData["offers"]).length;
-             console.log(destLength);
+             // var destLength = Object.keys(destFlightData["offers"]).length;
+             // console.log(destLength);
 
             destFlight_legId = destFlightData["legs"][0]["legId"];
             destFlight_totalFare = destFlightData["offers"][0]["totalFare"];
@@ -160,12 +152,10 @@ exports.createEstimate = function (req, res){
             estimate['flight']['orig_url'] = destFlight_detailsUrl;
             estimate['flight']['orig_id'] = destFlight_legId;
 
-             // destAirportCode = destAirportData["tags"]["iata"]["airportCode"]["value"];
-            // console.log(destFlight_totalFare);
-            // console.log(destFlight_detailsUrl);
+        
 
             var arrvlFlightData = results[1];
-            var arrvlLength = Object.keys(arrvlFlightData["offers"]).length;
+            // var arrvlLength = Object.keys(arrvlFlightData["offers"]).length;
 
             arrvlFlight_legId = arrvlFlightData["legs"][0]["legId"];
             arrvlFlight_totalFare = arrvlFlightData["offers"][0]["totalFare"];
@@ -236,8 +226,8 @@ async.waterfall([
     },
     function(arrvlAirport, destAirport, arrvlCityCord, callback) {
 
-        var dateReturn = "2016-03-05";
-        var dateFly = "2016-03-04";
+        var dateReturn = "2016-05-05";
+        var dateFly = "2016-05-04";
         var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
         var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
         var url_data3 = "http://terminal2.expedia.com:80/x/hotels?maxhotels=10&radius=10km&location="+arrvlCityCord["lat"]+"%2C"+arrvlCityCord["lng"]+"&sort=price&checkInDate="+dateFly+"&checkOutDate="+dateReturn+"&apikey="+apiKey;
