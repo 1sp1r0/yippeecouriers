@@ -17,6 +17,9 @@ var validate = require("validate.js");
 var yippeeUtils = require('../helpers/utils');
 var yippeeConstants = require('../helpers/constants');
 
+// Date Format
+var dateFormat = require('dateformat');
+
 // Models
 var Trip = require('../models/trip');
 var Pet = require('../models/pet');
@@ -52,7 +55,7 @@ exports.scrapbook = function (req, res){
                             request(file.permalink_public, function(error, response, body){
                                 var $ = cheerio.load(body);
                                 var imageUrl = $('.image_body').attr("href");
-                                processedMessages.push({'file' : imageUrl, 'title' : file.title, 'timestamp' : Date(file.timestamp)});
+                                processedMessages.push({'file' : imageUrl, 'title' : file.title, 'date' : dateFormat(Date(file.timestamp), "dddd, mmmm dS, yyyy"), 'time' : dateFormat(Date(file.timestamp), "h:MM:ss TT")});
                                 callback();
                             });
                         }
@@ -66,7 +69,7 @@ exports.scrapbook = function (req, res){
                             });
                         }
                     }else{
-                        processedMessages.push({'text' : message.text, 'timestamp' : Date(message.ts)});
+                        processedMessages.push({'text' : message.text, 'date' : dateFormat(Date(message.ts), "dddd, mmmm dS, yyyy"), 'time' : dateFormat(Date(message.ts), "h:MM:ss TT")});
                         callback();
                     }
                 }
@@ -76,10 +79,12 @@ exports.scrapbook = function (req, res){
                         console.log("error: ", err);
                     }
 
+
                     res.render('scrapbook',{
                         title: 'Yippee Scrapbook',
                         trip_name: trip.trip_name,
                         trip: trip,
+                        date_formatted: dateFormat(trip.trip_date, "dddd, mmmm dS, yyyy"),
                         messages: processedMessages
                     });
                 }
@@ -115,7 +120,7 @@ exports.createEstimate = function(req, res){
 exports.createEstimate2 = function (req, res){
     var estimate = new Estimate({
         trip_name: "Fly Fluffy! Fly!",
-        trip_date: '2016-12-16',
+        trip_date: dateFormat('2016-12-16', "dddd, mmmm dS, yyyy"),
         flight: {
             cost_range: {
                 low: 209,
