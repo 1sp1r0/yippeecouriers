@@ -7,9 +7,10 @@ block content
         .intro-text
           .intro-heading We Make Pets Fly!
           .intro-lead-in We'll hand-carry your little ones on the plane and provide  updates every step the way.
-          a.page-scroll.btn.btn-xl(onClick='transferFormEntries()') Request Trip
+          a.portfolio-link(href='#tripModal', data-toggle='modal')
+              button.btn.btn-xl Request Trip
     // About Section
-    section#about
+    section.bg-light-gray#about
       .container
         .row
           .col-lg-12.text-center
@@ -57,7 +58,7 @@ block content
                     h4.subheading Plan the route and date
                   .timeline-body
                     p.text-muted
-                      | We have a flat-rate pricing policy and can send you an immediate estimate of the costs, based on the date, route and number of pets. 
+                      | We have a flat-rate fee and can send you an immediate estimate of the costs, based on the date and route. 
               li.timeline-inverted
                 .timeline-image
                   img.img-circle.img-responsive(src='img/about/2.jpg', alt='')
