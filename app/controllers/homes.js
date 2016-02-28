@@ -12,8 +12,8 @@ var mongoose = require('mongoose');
 
 
 // yippee utils
-var yippeeUtils = require('yippee-utils');
-var yippeeConstants = require('yippee-constants');
+var yippeeUtils = require('../helpers/utils');
+var yippeeConstants = require('../helpers/constants');
 
 // ASYNC
 var async = require('async');
@@ -38,7 +38,10 @@ exports.index = function (req, res){
 exports.scrapbook = function (req, res){
     var tripId = req.params.trip_id
     var conditions = {'_id' : tripId}
-    Trip.findOne(conditions, function(error, trip){
+    Trip
+    .findOne(conditions)
+    .populate('_pets')
+    .exec(function(error, trip){
         if(trip){
             request('https://slack.com/api/channels.history?token=' + slackToken + '&channel=C0PAUA2AH&pretty=1', function(error, response, body){
                 var originalMessages = JSON.parse(body).messages;
@@ -75,7 +78,7 @@ exports.scrapbook = function (req, res){
                         console.log("error: ", err);
                     }
 
-                    console.log(processedMessages);
+                    console.log(trip);
 
                     res.render('scrapbook',{
                         title: 'Yippee Scrapbook',
@@ -123,6 +126,12 @@ exports.scrapbook = function (req, res){
         }else if(error){
             console.log("error: " + error.stack);
         }
+    });
+}
+
+exports.scrapbooktemp = function (req,res){
+    res.render('scrapbook-temp', {
+        title: 'Sample Scrapbook'
     });
 }
 
@@ -448,7 +457,7 @@ exports.createTrip = function (req, res){
 //     created_at: Date,
 //     updated_at: Date
 
-        req.body.main_contact = 'sender';
+        req.body.main_contact = yippeeConstants.MAIN_CONTANT_SENDER;
         req.body.sender_name = 'david';
         req.body.sender_email = 'doo@asdsad.com';
         req.body.sender_phone = '12321321321';

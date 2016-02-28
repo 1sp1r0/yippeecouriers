@@ -19,21 +19,21 @@ block content
           .col-md-4
             span.fa-stack.fa-4x
               i.fa.fa-circle.fa-stack-2x.text-primary
-              i.fa.fa-shopping-cart.fa-stack-1x.fa-inverse
+              i.fa.fa-smile-o.fa-stack-1x.fa-inverse
             h4.service-heading Single Courier Chain of Custody
             p.text-muted
               | No faceless airline agents. The same person picks up and drops off your pet, end-to-end. 
           .col-md-4
             span.fa-stack.fa-4x
               i.fa.fa-circle.fa-stack-2x.text-primary
-              i.fa.fa-laptop.fa-stack-1x.fa-inverse
+              i.fa.fa-bell.fa-stack-1x.fa-inverse
             h4.service-heading Constant Progress Updates
             p.text-muted
               | Your courier will update you throughout the journey via text message, sending you an update every time a milestone is completed (e.g. flight landed)
           .col-md-4
             span.fa-stack.fa-4x
               i.fa.fa-circle.fa-stack-2x.text-primary
-              i.fa.fa-lock.fa-stack-1x.fa-inverse
+              i.fa.fa-camera.fa-stack-1x.fa-inverse
             h4.service-heading Photographic Proof of Delivery and Trip Scrapbook
             p.text-muted
               | We'll take a picture of your pet at the delivery location and send you a scrapbook to commemorate the trip.
@@ -64,7 +64,7 @@ block content
                 .timeline-panel
                   .timeline-heading
                     h4 2. Meet Our Couriers
-                    h4.subheading Bay Area pet-lovers and travel geeks
+                    h4.subheading Pet-lovers and travel geeks
                   .timeline-body
                     p.text-muted
                       | We'll schedule a video call with your courier so you can meet them and discuss the flight plan, as well as pickup and dropoff specifics. All of our carriers are background-checked, pet lovers and have a passion for travel!
@@ -111,11 +111,11 @@ block content
               li.timeline-inverted
                 .timeline-image
                   h4
-                    | Be Part
+                    | Start Their 
                     br
-                    | Of Our
+                    | Next
                     br
-                    | Story!
+                    | Adventure!
 
     // Scrapbook Section
     section#scrapbook.bg-light-gray
@@ -186,7 +186,7 @@ block content
             .row
                 .col-lg-12.text-center
                     h2.section-heading Pet Travel Cost Estimator
-                    h3.section-subheading.text-muted Lorem ipsum dolor sit amet consectetur.
+                    h3.section-subheading.text-muted Enter your pickup and delivery details and we'll send you an estimate of the costs.
             .row
                 form(role='form', action="/request-estimate", method="post", id="estimate-form")
                     .col-md-12
@@ -228,14 +228,14 @@ block content
             .row
               .col-lg-8.col-lg-offset-2.text-center
                 p.large.text-muted
-                  | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.
+                  | Travel costs fluctuate, but our couriers will work with you to find the right route for your pet. 
     // Contact Section
     section#contact
       .container
         .row
           .col-lg-12.text-center
             h2.section-heading Contact Us
-            h3.section-subheading.text-muted Lorem ipsum dolor sit amet consectetur.
+            h3.section-subheading.text-muted Have other questions? Drop us a line!
         .row
           .col-lg-12
             form#contactForm(name='sentMessage', novalidate='')
@@ -262,7 +262,7 @@ block content
       .container
         .row
           .col-md-4
-            span.copyright Copyright © Your Website 2014
+            span.copyright Copyright © Yippee Air 2016
           .col-md-4
             ul.list-inline.social-buttons
               li
@@ -481,7 +481,7 @@ block content
                         p.estimate-details
                             span Other Fee: 
                             span#other-fee $100
-                form(role='form', action="/request-quote", method="post")
+                form(role='form', action="/create-trip", method="post")
                     .row
                         .col-md-4
                             .form-group
