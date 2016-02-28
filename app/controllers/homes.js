@@ -99,8 +99,7 @@ exports.scrapbooktemp = function (req,res){
 
 // post | create an estimate
 exports.createEstimate = function (req, res){
-
-    var estimate = new Estimate({
+var estimate = new Estimate({
         trip_name: "Fly Fluffy! Fly!",
         trip_date: '2016-12-16',
         flight: {
@@ -156,6 +155,8 @@ exports.createEstimate = function (req, res){
         });
     }
 
+
+
     function process_data_city(url_data, callback){
         async.map(url_data, send_data_get, function(err, results){
             // results is now an array of stats for each file 
@@ -189,7 +190,7 @@ exports.createEstimate = function (req, res){
         async.map(url_data, send_data_get, function(err, results){
             // results is now an array of stats for each file 
             destAirportData = results[0][0];
-            // console.log(destAirportData);
+            console.log(destAirportData);
 
             destAirport = destAirportData["tags"]["iata"]["airportCode"]["value"];
             destAirportCord = destAirportData["position"]["coordinates"];
@@ -225,8 +226,8 @@ exports.createEstimate = function (req, res){
         async.map(url_data, send_data_get, function(err, results){
             // results is now an array of stats for each file 
              var destFlightData = results[0];
-             var destLength = Object.keys(destFlightData["offers"]).length;
-             console.log(destLength);
+             // var destLength = Object.keys(destFlightData["offers"]).length;
+             // console.log(destLength);
 
             destFlight_legId = destFlightData["legs"][0]["legId"];
             destFlight_totalFare = destFlightData["offers"][0]["totalFare"];
@@ -237,12 +238,10 @@ exports.createEstimate = function (req, res){
             estimate['flight']['orig_url'] = destFlight_detailsUrl;
             estimate['flight']['orig_id'] = destFlight_legId;
 
-             // destAirportCode = destAirportData["tags"]["iata"]["airportCode"]["value"];
-            // console.log(destFlight_totalFare);
-            // console.log(destFlight_detailsUrl);
+        
 
             var arrvlFlightData = results[1];
-            var arrvlLength = Object.keys(arrvlFlightData["offers"]).length;
+            // var arrvlLength = Object.keys(arrvlFlightData["offers"]).length;
 
             arrvlFlight_legId = arrvlFlightData["legs"][0]["legId"];
             arrvlFlight_totalFare = arrvlFlightData["offers"][0]["totalFare"];
@@ -296,75 +295,51 @@ exports.createEstimate = function (req, res){
 
     }
 
-    // function process_data_hotels(url_data, callback){
-    //     console.log("Return on: "+url_data);
-    //     async.map(url_data, send_data_get, function(err, results){
-    //         // results is now an array of stats for each file 
-    //         hotelCord = results[0]["HotelInfoList"]["HotelInfo"]["Location"]["GeoLocation"];
-    //         hotelCost = results[0]["HotelInfoList"]["HotelInfo"]["Price"]["TotalRate"]["Value"];
-    //         hotelURL = results[0]["HotelInfoList"]["HotelInfo"]["DetailsUrl"];
-
-    //         estimate['hotel']['hotel_coordinates']  = {
-    //             lat: hotelCord['Latitude'], 
-    //             lng: hotelCord['Longitude']
-    //         };
-
-    //         estimate['hotel']['cost_range']['low'] = hotelCost;
-    //         estimate['hotel']['cost_range']['high'] = hotelCost;
-
-    //         estimate['hotel']['url'] = hotelURL;
-
-
-    //         console.log(results[0]["HotelInfoList"]["HotelInfo"][0]);
-    //         callback(null, results[0]);
-    //     });
-    // }
-
     var startDate = req.params.dropoff_date;
     var dropoff_postcode = req.params.dropoff_postcode;
     var pickup_postcode = req.params.pickup_postcode;
 
     console.log('I made it!', startDate);
+async.waterfall([
+    function(callback) {
+        //Zipcode to City / State / Zip
+        var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address='+pickup_postcode+'&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address='+dropoff_postcode+'&sensor=true'];
+        process_data_city(url_data, callback);
+       
+    },
+    function(destCityCord, arrvlCityCord, callback) {
+      // Find closest Airport
+        var url_data1 = "http://terminal2.expedia.com/x/geo/features?lat="+destCityCord["lat"]+"&lng="+destCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
+        var url_data2 = "http://terminal2.expedia.com/x/geo/features?lat="+arrvlCityCord["lat"]+"&lng="+arrvlCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
+        var url_data = [url_data1, url_data2];
+        process_data_airport(url_data, callback);
 
-    async.waterfall([
-        function(callback) {
-            //Zipcode to City / State / Zip
-            var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address=' + dropoff_postcode + '&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address=' + pickup_postcode + '&sensor=true'];
-            process_data_city(url_data, callback);
-           
-        },
-        function(destCityCord, arrvlCityCord, callback) {
-          // Find closest Airport
-            var url_data1 = "http://terminal2.expedia.com/x/geo/features?lat="+destCityCord["lat"]+"&lng="+destCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
-            var url_data2 = "http://terminal2.expedia.com/x/geo/features?lat="+arrvlCityCord["lat"]+"&lng="+arrvlCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
-            var url_data = [url_data1, url_data2];
-            process_data_airport(url_data, callback);
+    },
+    function(arrvlAirport, destAirport, arrvlCityCord, callback) {
 
-        },
-        function(arrvlAirport, destAirport, arrvlCityCord, callback) {
-
-            var dateReturn = "2016-03-05";
-            var dateFly = startDate;
-            var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
-            var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
-            var url_data3 = "http://terminal2.expedia.com:80/x/hotels?maxhotels=10&radius=10km&location="+arrvlCityCord["lat"]+"%2C"+arrvlCityCord["lng"]+"&sort=price&checkInDate="+dateFly+"&checkOutDate="+dateReturn+"&apikey="+apiKey;
-            var url_data = [url_data1, url_data2, url_data3];
-            process_data_flights(url_data, callback);
+        var dateReturn = "2016-05-05";
+        var dateFly = "2016-05-04";
+        var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
+        var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
+        var url_data3 = "http://terminal2.expedia.com:80/x/hotels?maxhotels=10&radius=10km&location="+arrvlCityCord["lat"]+"%2C"+arrvlCityCord["lng"]+"&sort=price&checkInDate="+dateFly+"&checkOutDate="+dateReturn+"&apikey="+apiKey;
+        var url_data = [url_data1, url_data2, url_data3];
+        process_data_flights(url_data, callback);
 
 
+    }
+    
+], function (err, result) {
+    // result now equals 'done'
+    console.log(estimate);
+    estimate.save(function(error, savedEstimate) {
+        if(savedEstimate){
+            console.log(savedEstimate);
+        }else if(error){
+            console.log("error: " + error);
         }
-        
-    ], function (err, result) {
-        // result now equals 'done'
-        console.log(estimate);
-        estimate.save(function(error, savedEstimate) {
-            if(savedEstimate){
-                console.log(savedEstimate);
-            }else if(error){
-                console.log("error: " + error);
-            }
-        });
     });
+});
+
 
     res.render('index',{
         title: 'Yippee Air Courier'
