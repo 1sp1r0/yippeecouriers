@@ -6,6 +6,19 @@
 	margin-bottom: 2px !important;
 }
 
+#primary-contact-label{
+	margin-right: 1em;
+}
+
+#sender-label{
+	margin-left: .4em;
+	margin-right: .5em;
+}
+
+#receiver-label{
+	margin-left: .4em;
+}
+
 section#estimate{
 	background-color:#222;background-image:url(../img/map-image.png);background-position:center;background-repeat:no-repeat
 }

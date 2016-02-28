@@ -460,10 +460,7 @@ block content
                             .form-group
                                 input.form-control(type='text', name="pet_notes", placeholder='Enter Pet Notes')
                     .row
-                        .col-md-4
-                            .form-group
-                                input.form-control(type='text', name="trip_name", placeholder='Enter Trip Name')
-                        .col-md-8
+                        .col-md-12
                             .form-group
                                 input.form-control(type='text', name="trip_notes", placeholder='Enter Trip Notes')
                     .row
@@ -481,6 +478,14 @@ block content
                                 input.form-control(type='text', name="receiver_email", placeholder='Enter Receiver\'s Email')
                             .form-group
                                 input.form-control(type='text', name="receiver_phone", placeholder='Enter Receiver\'s Phone Number')
+                    .row
+                        .col-md-12
+                            p
+                                span#primary-contact-label Who is the primary contact for this trip? 
+                                input(type='radio', name='main_contact', value='sender')
+                                span#sender-label Sender 
+                                input(type='radio', name='main_contact', value='receiver')
+                                span#receiver-label Receiver
                         input#estimate-id(type='hidden', name='estimate_id', value='test-estimate-id')
                     .col-lg-12.text-center
                         button.btn.btn-xl(onClick='submitQuote()') Request Quote
