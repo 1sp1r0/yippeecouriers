@@ -107,6 +107,7 @@ var estimate = new Estimate({
                 low: 209,
                 high: 498
             },
+            orig_url: 'www',
             orig_name: 'Palo Alto, CA',
             orig_coordinates: {
                 lat:  -122.387996,
@@ -117,6 +118,7 @@ var estimate = new Estimate({
                 lat:  -122.387996,
                 lng: 37.61594
             },
+            dest_url: 'www',
             dest_name: 'Palo Alto, CA',
             dest_coordinates: {
                 lat: -73.7789,
@@ -129,9 +131,15 @@ var estimate = new Estimate({
             },
         },
         hotel: {
+            id: 1,
+            url: 'www',
             cost_range: {
                 low: 78,
                 high: 245
+            },
+             hotel_coordinates:{
+                lat:  -122.387996,
+                lng: 37.61594
             },
         },
         airline_pet_fee: 100,
@@ -304,6 +312,7 @@ async.waterfall([
     function(callback) {
         //Zipcode to City / State / Zip
         var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address='+pickup_postcode+'&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address='+dropoff_postcode+'&sensor=true'];
+
         process_data_city(url_data, callback);
        
     },
@@ -317,8 +326,9 @@ async.waterfall([
     },
     function(arrvlAirport, destAirport, arrvlCityCord, callback) {
 
-        var dateReturn = "2016-05-05";
-        var dateFly = "2016-05-04";
+
+        var dateReturn = "2016-03-05";
+        var dateFly = "2016-03-04";
         var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
         var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
         var url_data3 = "http://terminal2.expedia.com:80/x/hotels?maxhotels=10&radius=10km&location="+arrvlCityCord["lat"]+"%2C"+arrvlCityCord["lng"]+"&sort=price&checkInDate="+dateFly+"&checkOutDate="+dateReturn+"&apikey="+apiKey;
@@ -345,6 +355,8 @@ async.waterfall([
         title: 'Yippee Air Courier'
     });
 }
+
+
 
 // post | create a trip
 exports.createTrip = function (req, res){
