@@ -38,6 +38,12 @@ exports.scrapbook = function (req, res){
     });
 }
 
+exports.scrapbooktemp = function (req,res){
+    res.render('scrapbook-temp', {
+        title: 'Sample Scrapbook'
+    });
+}
+
 // get | show admin panel for couriers
 exports.couriers = function (req, res){
     Trip
