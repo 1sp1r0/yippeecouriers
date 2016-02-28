@@ -188,38 +188,47 @@ block content
                     h2.section-heading Pet Travel Cost Estimator
                     h3.section-subheading.text-muted Lorem ipsum dolor sit amet consectetur.
             .row
-                form(role='form', action="/request-estimate", method="post")
-                    .form-group
-                        input.form-control(type='text', name="trip_name", placeholder='Enter Trip Name')
-                    .form-group
-                        input.form-control(type='text', name="contact_name", placeholder='Enter Full Name')
-                    .form-group
-                        input.form-control(type='text', name="email", placeholder='Enter Email')
-                    .form-group
-                        input.form-control(type='text', name="phone", placeholder='Enter Phone Number')
-                    .form-group
-                        input.form-control(type='text', name="pet_name", placeholder='Enter Pet Name')
-                    button.btn.btn-primary(type='submit') Request Estimate
+                form(role='form', action="/request-estimate", method="post", id="estimate-form")
+                    .col-md-12
+                        .form-group
+                            input.form-control(type='text', name="pickup_date", placeholder='Drop Off Date')
+                    .col-md-6
+                        h4.estimate-label Pickup Address
+                        .form-group
+                            input.form-control(type='text', name="pickup_address1", placeholder='Address 1')
+                        .form-group
+                            input.form-control(type='text', name="pickup_address2", placeholder='Address 2')
+                        .form-group
+                            input.form-control(type='text', name="pickup_city", placeholder='City')
+                        .row
+                            .col-md-6
+                                .form-group
+                                    input.form-control(type='text', name="pickup_state", placeholder='State')
+                            .col-md-6
+                                .form-group
+                                    input.form-control(type='text', name="pickup_postcode", placeholder='Postal Code')
+                    .col-md-6
+                        h4.estimate-label Dropoff Address
+                        .form-group
+                            input.form-control(type='text', name="dropoff_address1", placeholder='Address 1')
+                        .form-group
+                            input.form-control(type='text', name="dropoff_address2", placeholder='Address 2')
+                        .form-group
+                            input.form-control(type='text', name="dropoff_city", placeholder='City')
+                        .row
+                            .col-md-6
+                                .form-group
+                                    input.form-control(type='text', name="dropoff_state", placeholder='State')
+                            .col-md-6
+                                .form-group
+                                    input.form-control(type='text', name="dropoff_postcode", placeholder='Postal Code')
+                    .col-lg-12.text-center
+                        a.portfolio-link(href='#quoteModal', data-toggle='modal')
+                            button.btn.btn-xl(onClick='submitEstimate()') Request Estimate
             .row
               .col-lg-8.col-lg-offset-2.text-center
                 p.large.text-muted
                   | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.
-    // Clients Aside
-    aside.clients
-      .container
-        .row
-          .col-md-3.col-sm-6
-            a(href='#')
-              img.img-responsive.img-centered(src='img/logos/envato.jpg', alt='')
-          .col-md-3.col-sm-6
-            a(href='#')
-              img.img-responsive.img-centered(src='img/logos/designmodo.jpg', alt='')
-          .col-md-3.col-sm-6
-            a(href='#')
-              img.img-responsive.img-centered(src='img/logos/themeforest.jpg', alt='')
-          .col-md-3.col-sm-6
-            a(href='#')
-              img.img-responsive.img-centered(src='img/logos/creative-market.jpg', alt='')
     // Contact Section
     section#contact
       .container
@@ -440,6 +449,83 @@ block content
                 button.btn.btn-primary(type='button', data-dismiss='modal')
                   i.fa.fa-times
                   |  Close Project
+    // Quote Modal
+    #quoteModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+      .modal-content
+        .close-modal(data-dismiss='modal')
+          .lr
+            .rl
+        .container
+          .row
+            .col-lg-8.col-lg-offset-2
+              .modal-body
+                h2 Chat with a Courier
+                h4
+                    span Your Estimated Pet Travel Cost is 
+                    span#estimate-range $850-1100
+                .row
+                    .col-md-4
+                        p.estimate-details
+                            span Flight: 
+                            span#flight-cost $200-300
+                        p.estimate-details
+                            span Airline Pet Fee: 
+                            span#pet-fee $150
+                    .col-md-4
+                        p.estimate-details Hotel: 
+                            span#hotel-cost $100-150
+                    .col-md-4
+                        p.estimate-details
+                            span Yippee Fee: 
+                            span#yipee-fee $300
+                        p.estimate-details
+                            span Other Fee: 
+                            span#other-fee $100
+                form(role='form', action="/request-quote", method="post")
+                    .row
+                        .col-md-4
+                            .form-group
+                                input.form-control(type='text', name="pet_name", placeholder='Enter Pet Name')
+                        .col-md-4
+                            .form-group
+                                input.form-control(type='text', name="pet_weight", placeholder='Enter Pet Weight')
+                        .col-md-4
+                            .form-group
+                                input.form-control(type='text', name="pet_age", placeholder='Enter Pet Age')
+                    .row
+                        .col-md-12
+                            .form-group
+                                input.form-control(type='text', name="pet_notes", placeholder='Enter Pet Notes')
+                    .row
+                        .col-md-12
+                            .form-group
+                                input.form-control(type='text', name="trip_notes", placeholder='Enter Trip Notes')
+                    .row
+                        .col-md-6
+                            .form-group
+                                input.form-control(type='text', name="sender_name", placeholder='Enter Sender\'s Full Name')
+                            .form-group
+                                input.form-control(type='text', name="sender_email", placeholder='Enter Sender\'s Email')
+                            .form-group
+                                input.form-control(type='text', name="sender_phone", placeholder='Enter Sender\'s Phone Number')
+                        .col-md-6
+                            .form-group
+                                input.form-control(type='text', name="receiver_name", placeholder='Enter Receiver\'s Full Name')
+                            .form-group
+                                input.form-control(type='text', name="receiver_email", placeholder='Enter Receiver\'s Email')
+                            .form-group
+                                input.form-control(type='text', name="receiver_phone", placeholder='Enter Receiver\'s Phone Number')
+                    .row
+                        .col-md-12
+                            p
+                                span#primary-contact-label Who is the primary contact for this trip? 
+                                input(type='radio', name='main_contact', value='sender')
+                                span#sender-label Sender 
+                                input(type='radio', name='main_contact', value='receiver')
+                                span#receiver-label Receiver
+                        input#estimate-id(type='hidden', name='estimate_id', value='test-estimate-id')
+                    .col-lg-12.text-center
+                        button.btn.btn-xl(onClick='submitQuote()') Request Quote
     // jQuery
     script(src='/js/jquery.js')
     // Bootstrap Core JavaScript
@@ -453,3 +539,5 @@ block content
     script(src='/js/contact_me.js')
     // Custom Theme JavaScript
     script(src='/js/agency.js')
+    // Custom Yippee JavaScript
+    script(src='/js/custom.js')

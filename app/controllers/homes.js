@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 // Models
 var Trip = require('../models/trip');
 var Pet = require('../models/pet');
+var Estimate = require('../models/estimate');
 
 // get | show app
 exports.index = function (req, res){
@@ -54,8 +55,57 @@ exports.couriers = function (req, res){
     });
 }
 
-// post | create a dataset
+
+// post | create an estimate
 exports.createEstimate = function (req, res){
+
+    // Erik, do a bunch of stuff here to call the APIs and create the actual estimate
+
+    var estimate = new Estimate({
+        trip_name: "Fly Fluffy! Fly!",
+        trip_date: '2016-12-16',
+        flight: {
+            cost_range: {
+                low: 209,
+                high: 498
+            },
+            orig_code: 'SFO',
+            orig_coordinates: {
+                latitude:  -122.387996,
+                longitude: 37.61594
+            },
+            dest_code: 'JFK',
+            dest_coordinates: {
+                latitude: -73.7789,
+                longitude: 37.61594
+            },
+        },
+        hotel: {
+            cost_range: {
+                low: 78,
+                high: 245
+            },
+        },
+        airline_pet_fee: 100,
+        yippee_fee: 200,
+        misc_fee: 0,
+        total_fee: {
+            low: 587,
+            high: 1043
+        },
+    });
+
+    estimate.save(function(error, savedEstimate) {
+        if(savedEstimate){
+            console.log(savedEstimate);
+        }else if(error){
+            console.log("error: " + error);
+        }
+    });
+}
+
+// post | create a trip
+exports.createTrip = function (req, res){
     var trip = new Trip({
         trip_name: req.body.trip_name,
         sender_name: req.body.contact_name,
@@ -84,18 +134,18 @@ exports.createEstimate = function (req, res){
                                     console.log(error);
                                 }else{
                                     res.redirect('/');
-                                    var slackMessage = `New estimate request from ${foundTrip.sender_name} for their pet ${savedPet.name}!`
+                                    var slackMessage = `New estimate request from *${foundTrip.sender_name}* for their pet *${savedPet.name}*!`
                                     request.post('https://hooks.slack.com/services/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', {json:{"text":slackMessage}});
                                 }
                             });
                         }
                     })
                 }else if(error){
-                    console.log("error: " + error.stack);
+                    console.log("error: " + error);
                 }
             })
         }else if(error){
-            console.log("error: " + error.stack);
+            console.log("error: " + error);
         }
     });
 }
