@@ -105,20 +105,20 @@ exports.scrapbooktemp = function (req,res){
 }
 
 // post | fake create estimate
-exports.createEstimate = function(req, res){
-    console.log('fake createEstimate');
-    res.json({
-        'estimate_range': '$100-200',
-        'flight_cost': '$10',
-        'pet_fee': '$20',
-        'hotel_cost': '$30',
-        'yipee_fee': '$40',
-        'other_fee': '$50'
-    });
-}
+// exports.createEstimate = function(req, res){
+//     console.log('fake createEstimate');
+//     res.json({
+//         'estimate_range': '$100-200',
+//         'flight_cost': '$10',
+//         'pet_fee': '$20',
+//         'hotel_cost': '$30',
+//         'yipee_fee': '$40',
+//         'other_fee': '$50'
+//     });
+// }
 
 // post | create an estimate
-exports.createEstimate2 = function (req, res){
+exports.createEstimate = function (req, res){
     var estimate = new Estimate({
         id:'123',
         trip_name: "Fly Fluffy! Fly!",
@@ -415,10 +415,11 @@ exports.createEstimate2 = function (req, res){
             }
 
         res.json({
-        'estimate_range': "$"+estimate['total_fee']['high'],
-        'flight_cost': "$"+estimate['flight']['cost_range']['high'],
+        'estimate_range': " $"+estimate['total_fee']['high'],
+        'flight_cost': " $"+estimate['flight']['cost_range']['high'],
         'pet_fee': '$100',
-        'hotel_cost': Math.round(estimate['hotel']['cost_range']['high']),
+        'hotel_cost': " $"+Math.round(estimate['hotel']['cost_range']['high']),
+
         'yipee_fee': '$200',
         'other_fee': '$25'
     });
