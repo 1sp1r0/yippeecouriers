@@ -1,41 +1,44 @@
-//Module Includes
+// Module Includes
 var express = require('express'),
     app = express(),
     router = express.Router(),
     path = require('path'),
     bodyParser = require('body-parser');
 
-//Database Config
+// Database Config
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/yippee');
 
-//View Engine Config
+// View Engine Config
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'jade');
 
-//Body Parser Config
+// Body Parser Config
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded( {
     extended: true
 }));
 
-//Public Folder Config
+// Public Folder Config
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Controllers
-var HomesController = require('./app/controllers/homes');
+// Controllers
+var HomeController = require('./app/controllers/homes');
+var AdminController = require('./app/controllers/admin');
 var EstimatorController = require('./app/controllers/estimator');
-//Routes
-app.get('/', HomesController.index);
-app.get('/couriers', HomesController.couriers);
-app.get('/scrapbook/:trip_id', HomesController.scrapbook);
 
 
+// Routes - Home
+app.get('/', HomeController.index);
+app.get('/scrapbook/:trip_id', HomeController.scrapbook);
+app.post('/create-estimate', HomeController.createEstimate);
+app.post('/create-trip', HomeController.createTrip);
+
+// Routes - Estimators
 app.get('/test', EstimatorController.createEstimate);
 
-app.post('/create-estimate', HomesController.createEstimate);
-app.post('/create-trip', HomesController.createTrip);
-
+// Routes - Admin
+app.get('/couriers', HomeController.couriers);
 
 //Server Launch
 app.listen(3000, function () {
