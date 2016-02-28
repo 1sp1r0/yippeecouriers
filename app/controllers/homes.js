@@ -17,6 +17,9 @@ var validate = require("validate.js");
 var yippeeUtils = require('../helpers/utils');
 var yippeeConstants = require('../helpers/constants');
 
+// Date Format
+var dateFormat = require('dateformat');
+
 // Models
 var Trip = require('../models/trip');
 var Pet = require('../models/pet');
@@ -41,7 +44,7 @@ exports.scrapbook = function (req, res){
     .populate('_pets')
     .exec(function(error, trip){
         if(trip){
-            request('https://slack.com/api/channels.history?token=' + slackToken + '&channel=C0PAUA2AH&pretty=1', function(error, response, body){
+            request('https://slack.com/api/channels.history?token=' + slackToken + '&channel=C0PDBF475&pretty=1', function(error, response, body){
                 var originalMessages = JSON.parse(body).messages;
                 var processedMessages = [];
 
@@ -52,7 +55,7 @@ exports.scrapbook = function (req, res){
                             request(file.permalink_public, function(error, response, body){
                                 var $ = cheerio.load(body);
                                 var imageUrl = $('.image_body').attr("href");
-                                processedMessages.push({'file' : imageUrl, 'title' : file.title, 'timestamp' : Date(file.timestamp)});
+                                processedMessages.push({'file' : imageUrl, 'title' : file.title, 'date' : dateFormat(Date(file.timestamp), "dddd, mmmm dS, yyyy"), 'time' : dateFormat(Date(file.timestamp), "h:MM:ss TT")});
                                 callback();
                             });
                         }
@@ -66,7 +69,9 @@ exports.scrapbook = function (req, res){
                             });
                         }
                     }else{
-                        processedMessages.push({'text' : message.text, 'timestamp' : Date(message.ts)});
+                        if(!message.text.includes('<@U')){
+                            processedMessages.push({'text' : message.text, 'date' : dateFormat(Date(message.ts), "dddd, mmmm dS, yyyy"), 'time' : dateFormat(Date(message.ts), "h:MM:ss TT")});
+                        }
                         callback();
                     }
                 }
@@ -80,7 +85,8 @@ exports.scrapbook = function (req, res){
                         title: 'Yippee Scrapbook',
                         trip_name: trip.trip_name,
                         trip: trip,
-                        messages: processedMessages
+                        date_formatted: dateFormat(trip.trip_date, "dddd, mmmm dS, yyyy"),
+                        messages: processedMessages.reverse()
                     });
                 }
 
@@ -98,25 +104,25 @@ exports.scrapbooktemp = function (req,res){
     });
 }
 
-//post | fake create estimate
-// exports.createEstimate = function(req, res){
-//     console.log('fake createEstimate');
-//     res.json({
-//         'estimate_range': '$100-200',
-//         'flight_cost': '$10',
-//         'pet_fee': '$20',
-//         'hotel_cost': '$30',
-//         'yipee_fee': '$40',
-//         'other_fee': '$50'
-//     });
-// }
+// post | fake create estimate
+exports.createEstimate = function(req, res){
+    console.log('fake createEstimate');
+    res.json({
+        'estimate_range': '$100-200',
+        'flight_cost': '$10',
+        'pet_fee': '$20',
+        'hotel_cost': '$30',
+        'yipee_fee': '$40',
+        'other_fee': '$50'
+    });
+}
 
 // post | create an estimate
-exports.createEstimate = function (req, res){
+exports.createEstimate2 = function (req, res){
     var estimate = new Estimate({
         id:'123',
         trip_name: "Fly Fluffy! Fly!",
-        trip_date: '2016-12-16',
+        trip_date: dateFormat('2016-12-16', "dddd, mmmm dS, yyyy"),
         flight: {
             cost_range: {
                 low: 209,

@@ -33,7 +33,9 @@ html
                         span.icon-bar
                         span.icon-bar
                         span.icon-bar
-                    a.navbar-brand.page-scroll(href='#page-top') Start Bootstrap
+                    a.navbar-brand.page-scroll(href='#page-top')
+                        a.pull-left(href='#')
+                            img.pull-left(src="/img/logorec(200x36).png", style="padding-top: 5px;")
                 // Collect the nav links, forms, and other content for toggling
                 #bs-example-navbar-collapse-1.collapse.navbar-collapse
                     ul.nav.navbar-nav.navbar-right
@@ -44,6 +46,6 @@ html
                             a.page-scroll(href='#main') Main
                         
                         li
-                            a.page-scroll(href='#contact') Contact
+                            a.page-scroll.make-yellow(href='#contact') Contact
                 // /.navbar-collapse
         block content
