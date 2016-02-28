@@ -49,8 +49,7 @@ function requestEstimate(){
     })
     .fail(function(err) {
         console.log( "error: ", err );
-        $('#estimate-range').html('Sorry we couldn\'t find a matching flight');
-        
+        // $('#estimate-range').html('Sorry we couldn\'t find a matching flight');
     });
 }
 
