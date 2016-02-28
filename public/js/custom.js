@@ -22,13 +22,12 @@ function submitEstimate(){
     });
 }
 
-function submitQuote(){
+function submitTrip(){
     // get the form data
     // there are many ways to get this data using jQuery (you can use the class or id also)
     var formData = {
-        'trip_name'              : $('input[name=trip_name]').val(),
         'contact_name'             : $('input[name=contact_name]').val(),
-        'pet_name'    : $('input[name=pet_name]').val()
+        'pet_name'                 : $('input[name=pet_name]').val()
     };
 
     // process the form

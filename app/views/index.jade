@@ -200,10 +200,10 @@ block content
                                 .form-group
                                     input.form-control(type='text', name="dropoff_postcode", placeholder='Postal Code')
                     .col-lg-12.text-center
-                        a.portfolio-link(href='#quoteModal', data-toggle='modal')
+                        a.portfolio-link.estimate-button(href='#estimateModal', data-toggle='modal')
                             button.btn.btn-xl(onClick='requestEstimate()') Request Estimate
-                        a.portfolio-link(href='#quoteModal', data-toggle='modal')
-                            button.btn.btn-xl(onClick='requestTrip()') Request Estimate
+                        a.portfolio-link(href='#tripModal', data-toggle='modal')
+                            button.btn.btn-xl(onClick='requestTrip()') Request Trip
             .row
               .col-lg-8.col-lg-offset-2.text-center
                 p.large.text-muted
@@ -414,8 +414,8 @@ block content
                 button.btn.btn-primary(type='button', data-dismiss='modal')
                   i.fa.fa-times
                   |  Close Project
-    // Quote Modal
-    #quoteModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+    // Trip Modal
+    #tripModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
       .modal-content
         .close-modal(data-dismiss='modal')
           .lr
@@ -424,29 +424,8 @@ block content
           .row
             .col-lg-8.col-lg-offset-2
               .modal-body
-                h2 Chat with a Courier
-                h4
-                    span Your Estimated Pet Travel Cost is 
-                    span#estimate-range $850-1100
-                .row
-                    .col-md-4
-                        p.estimate-details
-                            span Flight: 
-                            span#flight-cost $200-300
-                        p.estimate-details
-                            span Airline Pet Fee: 
-                            span#pet-fee $150
-                    .col-md-4
-                        p.estimate-details Hotel: 
-                            span#hotel-cost $100-150
-                    .col-md-4
-                        p.estimate-details
-                            span Yippee Fee: 
-                            span#yipee-fee $300
-                        p.estimate-details
-                            span Other Fee: 
-                            span#other-fee $100
-                form(role='form', action="/request-quote", method="post")
+                h2 Request Trip
+                form(role='form')
                     .row
                         .col-md-4
                             .form-group
@@ -490,7 +469,42 @@ block content
                                 span#receiver-label Receiver
                         input#estimate-id(type='hidden', name='estimate_id', value='test-estimate-id')
                     .col-lg-12.text-center
-                        button.btn.btn-xl(onClick='submitQuote()') Request Quote
+                        button.btn.btn-xl(onClick='submitQuote()') Request Trip
+    // Estimate Modal
+    #estimateModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+      .modal-content
+        .close-modal(data-dismiss='modal')
+          .lr
+            .rl
+        .container
+          .row
+            .col-lg-8.col-lg-offset-2
+              .modal-body
+                h2 Estimate
+                h4
+                    span Your Estimated Pet Travel Cost is 
+                    span#estimate-range $850-1100
+                .row
+                    .col-md-4
+                        p.estimate-details
+                            span Flight: 
+                            span#flight-cost $200-300
+                        p.estimate-details
+                            span Airline Pet Fee: 
+                            span#pet-fee $150
+                    .col-md-4
+                        p.estimate-details Hotel: 
+                            span#hotel-cost $100-150
+                    .col-md-4
+                        p.estimate-details
+                            span Yippee Fee: 
+                            span#yipee-fee $300
+                        p.estimate-details
+                            span Other Fee: 
+                            span#other-fee $100
+                .row
+                    .col-lg-12.text-center
+                        button.btn.btn-xl(onClick='submitTrip()') Request Trip
     // jQuery
     script(src='/js/jquery.js')
     // Bootstrap Core JavaScript
