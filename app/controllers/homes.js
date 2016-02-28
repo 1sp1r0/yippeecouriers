@@ -73,8 +73,6 @@ exports.scrapbook = function (req, res){
                         console.log("error: ", err);
                     }
 
-                    console.log(trip);
-
                     res.render('scrapbook',{
                         title: 'Yippee Scrapbook',
                         trip_name: trip.trip_name,
@@ -97,9 +95,22 @@ exports.scrapbooktemp = function (req,res){
     });
 }
 
+//post | fake create estimate
+// exports.createEstimate = function(req, res){
+//     console.log('fake createEstimate');
+//     res.json({
+//         'estimate_range': '$100-200',
+//         'flight_cost': '$10',
+//         'pet_fee': '$20',
+//         'hotel_cost': '$30',
+//         'yipee_fee': '$40',
+//         'other_fee': '$50'
+//     });
+// }
+
 // post | create an estimate
 exports.createEstimate = function (req, res){
-var estimate = new Estimate({
+    var estimate = new Estimate({
         trip_name: "Fly Fluffy! Fly!",
         trip_date: '2016-12-16',
         flight: {
@@ -359,83 +370,6 @@ var estimate = new Estimate({
 
 // post | create a trip
 exports.createTrip = function (req, res){
-    console.log('in create trip');
-
-// trip_name: { type: String, required: false },    // friendly name; 
-//     status: {type: String, required: true},
-//     main_contact: { type: String, required: false }, //sender or receiver
-//     sender_name: { type: String, required: true },
-//     sender_email: { type: String, required: true },
-//     sender_phone: { type: String, required: true },
-//     receiver_name: { type: String, required: true },
-//     receiver_email: { type: String, required: true },
-//     receiver_phone: { type: String, required: true },
-//     trip_date: {type: Date, required: true},
-//     pickup_address: {
-//         address1: { type: String, required: true },
-//         address2: { type: String, required: false },
-//         city: { type: String, required: true },
-//         state: { type: String, required: true },
-//         postcode: { type: String, required: true },
-//     },
-//     dropoff_date: {type: Date, required: false},
-//     dropoff_address: {
-//         address1: { type: String, required: true },
-//         address2: { type: String, required: false },
-//         city: { type: String, required: true },
-//         state: { type: String, required: true },
-//         postcode: { type: String, required: true },
-//     },
-//     trip_notes: {type: String, required: false},
-//     _pets: [{type: mongoose.Schema.Types.ObjectId, ref:'Pet', required: true }],
-//     _estimateID: {type: mongoose.Schema.Types.ObjectId, ref:'Estimate', required: false},
-//     created_at: Date,
-//     updated_at: Date
-        // req.body.main_contact = 'sender';
-        // req.body.sender_name = 'david';
-        // req.body.sender_email = 'doo@asdsad.com';
-        // req.body.sender_phone = '12321321321';
-        // req.body.receiver_name = 'blah';
-        // req.body.receiver_email = 'asdasdsa@asdasdsa.com';
-        // req.body.receiver_phone = 'sdfsdfds';
-        // req.body.trip_date = '2016-12-12';
-        // req.body.pickup_address1 = '123 main street';
-        // req.body.pickup_address2 = '21321321';
-        // req.body.pickup_city = 'q4qwewqqw';
-        // req.body.pickup_state = 'sd';
-        // req.body.pickup_postcode = '2132132';
-
-        // req.body.trip_date = '2016-12-12';
-        // req.body.pickup_address1 = '123 main street';
-        // req.body.pickup_address2 = '21321321';
-        // req.body.pickup_city = 'q4qwewqqw';
-        // req.body.pickup_state = 'sd';
-        // req.body.pickup_postcode = '2132132';
-
-        // req.body.origin_airport_code = 'SFO';
-        // req.body.destination_airport_code = 'JFK';
-
-        // req.body.dropoff_address1 = '23232 main street';
-        // req.body.dropoff_address2 = '21321321';
-        // req.body.dropoff_city = 'q4qwewqqw';
-        // req.body.dropoff_state = 'sd';
-        // req.body.dropoff_postcode = '2132132';
-
-        // req.body.trip_notes = 'asdasdsa';
-
-        // // req.body.estimateId = 'MONGOTHINGHEREsawqrasdsad';
-
-        // req.body.pet_name = 'fido';
-        // req.body.pet_weight = '223';
-        // req.body.pet_notes = 'asdasdsadsa';
-        // req.body.pet_age = '3243';
-        // req.body.pet_species = 'dig';
-        // req.body.pet_medical_notes = 'dead';
-        // req.body.pet_has_carrier = true;
-        // req.body.pet_notes = 'nothing to say';
-
-        console.log('req.body.dropoff_postcode: ', req.body.dropoff_postcode);
-        console.log('req.body.sender_phone: ', req.body.sender_phone);
 
         // now we save the trip
         var trip = new Trip({
