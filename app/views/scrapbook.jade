@@ -1,8 +1,14 @@
-extends layout 
+extends layout
 
 block content
     section
         .container
             h1 #{trip_name}
             each message in messages
-                p #{message.text}
+                if message.text
+                    p #{message.text}
+                    p #{message.timestamp}
+                if message.file
+                    h3 #{message.title}
+                    p #{message.timestamp}
+                    img.img-responsive(src='#{message.file}', style='max-width: 500px')
