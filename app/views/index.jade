@@ -468,7 +468,7 @@ block content
                     .row
                         .col-md-12
                             .form-group
-                                input.form-control(type='text', name="pickup_date", placeholder='Pick Up Date')
+                                input.form-control(type='text', name="trip_date", placeholder='Pick Up Date')
                     .row
                         .col-md-6
                             h4 Pickup Address
@@ -546,7 +546,7 @@ block content
                                 span#receiver-label Receiver
                     input#estimate-id(type='hidden', name='estimate_id', value='test-estimate-id')
                     .col-lg-12.text-center
-                        button.btn.btn-xl(onClick='submitQuote()') Request Trip
+                        button.btn.btn-xl(onClick='requestTrip()') Request Trip
     // Estimate Modal
     #estimateModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
       .modal-content

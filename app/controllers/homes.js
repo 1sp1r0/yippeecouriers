@@ -86,39 +86,6 @@ exports.scrapbook = function (req, res){
                 }
 
                 async.eachSeries(originalMessages, messageParser, messageErrorCallback);
-
-
-                // for (var message of originalMessages) {
-                //     if(message.file){
-                //         var fileId = message.file.id;
-                //         if(message.file.public_url_shared){
-                //             request('https://slack.com/api/files.info?token=' + slackToken + '&file=' + fileId + '&pretty=1', function(error, response, body){
-                //                 request(JSON.parse(body).file.permalink_public, function(error, response, body){
-                //                     var $ = cheerio.load(body);
-                //                     var imageUrl = $('.image_body').attr("href");
-                //                     // console.log('Public URL: ', $('.image_body').attr("href"));
-                //                     processedMessages.push({'file' : imageUrl});
-                //                     console.log('push: ', {'file' : imageUrl});
-                //                 });
-                //             });
-                //         }else{
-                //             request('https://slack.com/api/files.sharedPublicURL?token=' + slackToken + '&file=' + fileId + '&pretty=1', function(error, response, body){
-                //                 request(JSON.parse(body).file.permalink_public, function(error, response, body){
-                //                     var imageUrl = $('.image_body').attr("href");
-                //                     // console.log('Public URL: ', $('.image_body').attr("href"));
-                //                     processedMessages.push({'file' : imageUrl});
-                //                 });
-                //             });
-                //         }
-                //     }else{
-                //         // console.log(message.text);
-                //         processedMessages.push({'text' : message.text});
-                //     }
-                // }
-                // console.log('originalMessages: ', originalMessages);
-                // console.log('processedMessages: ', processedMessages);
-
-                // console.log('file id: ', JSON.parse(body).messages);
             });
         }else if(error){
             console.log("error: " + error.stack);
@@ -321,43 +288,41 @@ exports.createEstimate = function (req, res){
         });
     }
 
-async.waterfall([
-    function(callback) {
-        //Zipcode to City / State / Zip
-        var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address=94024&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address=10001&sensor=true'];
-        process_data_city(url_data, callback);
-       
-    },
-    function(destCity, arrvlCity, callback) {
-      // Find closest Airport
-        var url_data1 = "http://terminal2.expedia.com/x/geo/features?lat="+destCity["lat"]+"&lng="+destCity["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
-        var url_data2 = "http://terminal2.expedia.com/x/geo/features?lat="+arrvlCity["lat"]+"&lng="+arrvlCity["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
-        var url_data = [url_data1, url_data2];
-        process_data_airport(url_data, callback);
+    async.waterfall([
+        function(callback) {
+            //Zipcode to City / State / Zip
+            var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address=94024&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address=10001&sensor=true'];
+            process_data_city(url_data, callback);
+           
+        },
+        function(destCity, arrvlCity, callback) {
+          // Find closest Airport
+            var url_data1 = "http://terminal2.expedia.com/x/geo/features?lat="+destCity["lat"]+"&lng="+destCity["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
+            var url_data2 = "http://terminal2.expedia.com/x/geo/features?lat="+arrvlCity["lat"]+"&lng="+arrvlCity["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
+            var url_data = [url_data1, url_data2];
+            process_data_airport(url_data, callback);
 
-    },
-    function(arrvlAirport, destAirport, callback) {
-        var dateReturn = "2016-05-05";
-        var dateFly = "2016-05-04";
-        var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
-        var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
-        var url_data = [url_data1, url_data2];
-        process_data_flights(url_data, callback);
-    }
-
-], function (err, result, result2) {
-    // result now equals 'done'
-    console.log(estimate);
-    estimate.save(function(error, savedEstimate) {
-        if (error) {
-            console.log("Error Saving Estimate: " + error);
+        },
+        function(arrvlAirport, destAirport, callback) {
+            var dateReturn = "2016-05-05";
+            var dateFly = "2016-05-04";
+            var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
+            var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
+            var url_data = [url_data1, url_data2];
+            process_data_flights(url_data, callback);
         }
 
-        res.json(yippeeUtils.createJsonResponse(error, savedEstimate));
-    });
-});
+    ], function (err, result, result2) {
+        // result now equals 'done'
+        console.log(estimate);
+        estimate.save(function(error, savedEstimate) {
+            if (error) {
+                console.log("Error Saving Estimate: " + error);
+            }
 
-    
+            res.json(yippeeUtils.createJsonResponse(error, savedEstimate));
+        });
+    });
 
     res.render('index',{
         title: 'Yippee Air Courier'
