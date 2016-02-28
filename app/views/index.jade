@@ -188,43 +188,47 @@ block content
                     h2.section-heading Pet Travel Cost Estimator
                     h3.section-subheading.text-muted Enter your pickup and delivery details and we'll send you an estimate of the costs.
             .row
-                form(role='form', action="/request-estimate", method="post", id="estimate-form")
+                form(role='form', id="estimate-form")
                     .col-md-12
                         .form-group
-                            input.form-control(type='text', name="trip_date", placeholder='Drop Off Date')
+                            input.form-control(type='text', name="estimate_pickup_date", placeholder='Drop Off Date')
                     .col-md-6
                         h4.estimate-label Pickup Address
                         .form-group
-                            input.form-control(type='text', name="pickup_address1", placeholder='Address 1')
+                            input.form-control(type='text', name="estimate_pickup_address1", placeholder='Address 1')
                         .form-group
-                            input.form-control(type='text', name="pickup_address2", placeholder='Address 2')
+                            input.form-control(type='text', name="estimate_pickup_address2", placeholder='Address 2')
                         .form-group
-                            input.form-control(type='text', name="pickup_city", placeholder='City')
+                            input.form-control(type='text', name="estimate_pickup_city", placeholder='City')
                         .row
                             .col-md-6
                                 .form-group
-                                    input.form-control(type='text', name="pickup_state", placeholder='State')
+                                    input.form-control(type='text', name="estimate_pickup_state", placeholder='State')
                             .col-md-6
                                 .form-group
-                                    input.form-control(type='text', name="pickup_postcode", placeholder='Postal Code')
+                                    input.form-control(type='text', name="estimate_pickup_postcode", placeholder='Postal Code')
                     .col-md-6
                         h4.estimate-label Dropoff Address
                         .form-group
-                            input.form-control(type='text', name="dropoff_address1", placeholder='Address 1')
+                            input.form-control(type='text', name="estimate_dropoff_address1", placeholder='Address 1')
                         .form-group
-                            input.form-control(type='text', name="dropoff_address2", placeholder='Address 2')
+                            input.form-control(type='text', name="estimate_dropoff_address2", placeholder='Address 2')
                         .form-group
-                            input.form-control(type='text', name="dropoff_city", placeholder='City')
+                            input.form-control(type='text', name="estimate_dropoff_city", placeholder='City')
                         .row
                             .col-md-6
                                 .form-group
-                                    input.form-control(type='text', name="dropoff_state", placeholder='State')
+                                    input.form-control(type='text', name="estimate_dropoff_state", placeholder='State')
                             .col-md-6
                                 .form-group
-                                    input.form-control(type='text', name="dropoff_postcode", placeholder='Postal Code')
-                    .col-lg-12.text-center
-                        a.portfolio-link(href='#quoteModal', data-toggle='modal')
-                            button.btn.btn-xl(onClick='submitEstimate()') Request Estimate
+                                    input.form-control(type='text', name="estimate_dropoff_postcode", placeholder='Postal Code')
+                    .row.text-center
+                        .col-lg-3.col-lg-offset-3.col-md-4.col-md-offset-2
+                            a.portfolio-link(href='#estimateModal', data-toggle='modal')
+                                button.btn.btn-xl.modal-button(onClick='requestEstimate()') Request Estimate
+                        .col-lg-3.col-md-4
+                            a.portfolio-link(href='#tripModal', data-toggle='modal')
+                                button.btn.btn-xl.modal-button Request Trip
             .row
               .col-lg-8.col-lg-offset-2.text-center
                 p.large.text-muted
@@ -449,8 +453,8 @@ block content
                 button.btn.btn-primary(type='button', data-dismiss='modal')
                   i.fa.fa-times
                   |  Close Project
-    // Quote Modal
-    #quoteModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+    // Trip Modal
+    #tripModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
       .modal-content
         .close-modal(data-dismiss='modal')
           .lr
@@ -459,7 +463,101 @@ block content
           .row
             .col-lg-8.col-lg-offset-2
               .modal-body
-                h2 Chat with a Courier
+                h2 Request Trip
+                form(role='form')
+                    .row
+                        .col-md-12
+                            .form-group
+                                input.form-control(type='text', name="trip_date", placeholder='Pick Up Date')
+                    .row
+                        .col-md-6
+                            h4 Pickup Address
+                            .form-group
+                                input.form-control(type='text', name="pickup_address1", placeholder='Address 1')
+                            .form-group
+                                input.form-control(type='text', name="pickup_address2", placeholder='Address 2')
+                            .form-group
+                                input.form-control(type='text', name="pickup_city", placeholder='City')
+                            .row
+                                .col-md-6
+                                    .form-group
+                                        input.form-control(type='text', name="pickup_state", placeholder='State')
+                                .col-md-6
+                                    .form-group
+                                        input.form-control(type='text', name="pickup_postcode", placeholder='Postal Code')
+                        .col-md-6
+                            h4 Dropoff Address
+                            .form-group
+                                input.form-control(type='text', name="dropoff_address1", placeholder='Address 1')
+                            .form-group
+                                input.form-control(type='text', name="dropoff_address2", placeholder='Address 2')
+                            .form-group
+                                input.form-control(type='text', name="dropoff_city", placeholder='City')
+                            .row
+                                .col-md-6
+                                    .form-group
+                                        input.form-control(type='text', name="dropoff_state", placeholder='State')
+                                .col-md-6
+                                    .form-group
+                                        input.form-control(type='text', name="dropoff_postcode", placeholder='Postal Code')
+                    .row
+                        h4 Pet Info
+                        .col-md-4
+                            .form-group
+                                input.form-control(type='text', name="pet_name", placeholder='Enter Pet Name')
+                        .col-md-4
+                            .form-group
+                                input.form-control(type='text', name="pet_weight", placeholder='Enter Pet Weight')
+                        .col-md-4
+                            .form-group
+                                input.form-control(type='text', name="pet_age", placeholder='Enter Pet Age')
+                    .row
+                        .col-md-12
+                            .form-group
+                                input.form-control(type='text', name="pet_notes", placeholder='Enter Pet Notes')
+                    .row
+                        .col-md-12
+                            .form-group
+                                input.form-control(type='text', name="trip_notes", placeholder='Enter Trip Notes')
+                    .row
+                        .col-md-6
+                            h4 Sender Contact
+                            .form-group
+                                input.form-control(type='text', name="sender_name", placeholder='Enter Sender\'s Full Name')
+                            .form-group
+                                input.form-control(type='text', name="sender_email", placeholder='Enter Sender\'s Email')
+                            .form-group
+                                input.form-control(type='text', name="sender_phone", placeholder='Enter Sender\'s Phone Number')
+                        .col-md-6
+                            h4 Receiver Contact
+                            .form-group
+                                input.form-control(type='text', name="receiver_name", placeholder='Enter Receiver\'s Full Name')
+                            .form-group
+                                input.form-control(type='text', name="receiver_email", placeholder='Enter Receiver\'s Email')
+                            .form-group
+                                input.form-control(type='text', name="receiver_phone", placeholder='Enter Receiver\'s Phone Number')
+                    .row
+                        .col-md-12
+                            p
+                                span#primary-contact-label Who is the primary contact for this trip? 
+                                input(type='radio', name='main_contact', value='sender')
+                                span#sender-label Sender 
+                                input(type='radio', name='main_contact', value='receiver')
+                                span#receiver-label Receiver
+                    input#estimate-id(type='hidden', name='estimate_id', value='test-estimate-id')
+                    .col-lg-12.text-center
+                        button.btn.btn-xl(onClick='requestTrip()') Request Trip
+    // Estimate Modal
+    #estimateModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+      .modal-content
+        .close-modal(data-dismiss='modal')
+          .lr
+            .rl
+        .container
+          .row
+            .col-lg-8.col-lg-offset-2
+              .modal-body
+                h2 Estimate
                 h4
                     span Your Estimated Pet Travel Cost is 
                     span#estimate-range $850-1100
@@ -481,51 +579,10 @@ block content
                         p.estimate-details
                             span Other Fee: 
                             span#other-fee $100
-                form(role='form', action="/create-trip", method="post")
-                    .row
-                        .col-md-4
-                            .form-group
-                                input.form-control(type='text', name="pet_name", placeholder='Enter Pet Name')
-                        .col-md-4
-                            .form-group
-                                input.form-control(type='text', name="pet_weight", placeholder='Enter Pet Weight')
-                        .col-md-4
-                            .form-group
-                                input.form-control(type='text', name="pet_age", placeholder='Enter Pet Age')
-                    .row
-                        .col-md-12
-                            .form-group
-                                input.form-control(type='text', name="pet_notes", placeholder='Enter Pet Notes')
-                    .row
-                        .col-md-12
-                            .form-group
-                                input.form-control(type='text', name="trip_notes", placeholder='Enter Trip Notes')
-                    .row
-                        .col-md-6
-                            .form-group
-                                input.form-control(type='text', name="sender_name", placeholder='Enter Sender\'s Full Name')
-                            .form-group
-                                input.form-control(type='text', name="sender_email", placeholder='Enter Sender\'s Email')
-                            .form-group
-                                input.form-control(type='text', name="sender_phone", placeholder='Enter Sender\'s Phone Number')
-                        .col-md-6
-                            .form-group
-                                input.form-control(type='text', name="receiver_name", placeholder='Enter Receiver\'s Full Name')
-                            .form-group
-                                input.form-control(type='text', name="receiver_email", placeholder='Enter Receiver\'s Email')
-                            .form-group
-                                input.form-control(type='text', name="receiver_phone", placeholder='Enter Receiver\'s Phone Number')
-                    .row
-                        .col-md-12
-                            p
-                                span#primary-contact-label Who is the primary contact for this trip? 
-                                input(type='radio', name='main_contact', value='sender')
-                                span#sender-label Sender 
-                                input(type='radio', name='main_contact', value='receiver')
-                                span#receiver-label Receiver
-                        input#estimate-id(type='hidden', name='estimate_id', value='test-estimate-id')
+                .row
                     .col-lg-12.text-center
-                        button.btn.btn-xl(onClick='submitQuote()') Request Quote
+                        a.portfolio-link(href='#tripModal', data-toggle='modal')
+                            button.btn.btn-xl(data-dismiss='modal') Continue
     // jQuery
     script(src='/js/jquery.js')
     // Bootstrap Core JavaScript

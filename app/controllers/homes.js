@@ -84,39 +84,6 @@ exports.scrapbook = function (req, res){
                 }
 
                 async.eachSeries(originalMessages, messageParser, messageErrorCallback);
-
-
-                // for (var message of originalMessages) {
-                //     if(message.file){
-                //         var fileId = message.file.id;
-                //         if(message.file.public_url_shared){
-                //             request('https://slack.com/api/files.info?token=' + slackToken + '&file=' + fileId + '&pretty=1', function(error, response, body){
-                //                 request(JSON.parse(body).file.permalink_public, function(error, response, body){
-                //                     var $ = cheerio.load(body);
-                //                     var imageUrl = $('.image_body').attr("href");
-                //                     // console.log('Public URL: ', $('.image_body').attr("href"));
-                //                     processedMessages.push({'file' : imageUrl});
-                //                     console.log('push: ', {'file' : imageUrl});
-                //                 });
-                //             });
-                //         }else{
-                //             request('https://slack.com/api/files.sharedPublicURL?token=' + slackToken + '&file=' + fileId + '&pretty=1', function(error, response, body){
-                //                 request(JSON.parse(body).file.permalink_public, function(error, response, body){
-                //                     var imageUrl = $('.image_body').attr("href");
-                //                     // console.log('Public URL: ', $('.image_body').attr("href"));
-                //                     processedMessages.push({'file' : imageUrl});
-                //                 });
-                //             });
-                //         }
-                //     }else{
-                //         // console.log(message.text);
-                //         processedMessages.push({'text' : message.text});
-                //     }
-                // }
-                // console.log('originalMessages: ', originalMessages);
-                // console.log('processedMessages: ', processedMessages);
-
-                // console.log('file id: ', JSON.parse(body).messages);
             });
         }else if(error){
             console.log("error: " + error.stack);
@@ -133,10 +100,9 @@ exports.scrapbooktemp = function (req,res){
 // post | create an estimate
 exports.createEstimate = function (req, res){
 
-    
     var estimate = new Estimate({
         trip_name: "Fly Fluffy! Fly!",
-        trip_date: '2016-12-23',
+        trip_date: '2016-12-16',
         flight: {
             cost_range: {
                 low: 209,
@@ -199,16 +165,16 @@ exports.createEstimate = function (req, res){
             destCity = destCityData["results"][0]["formatted_address"];
 
             //Insert Model
-            estimate['orig_name'] = destCity;
-            estimate['orig_coordinates'] = destCityCord;
+            estimate['flight']['orig_name'] = destCity;
+            estimate['flight']['orig_coordinates'] = destCityCord;
            
             arrvlCityData = results[1];
             arrvlCityCord = arrvlCityData["results"][0]["geometry"]["location"];
             arrvlCity = arrvlCityData["results"][0]["formatted_address"];
 
             //Insert Model
-            estimate['dest_name'] = arrvlCity;
-            estimate['dest_coordinates'] = arrvlCityCord;
+            estimate['flight']['dest_name'] = arrvlCity;
+            estimate['flight']['dest_coordinates'] = arrvlCityCord;
 
             console.log("Return ERR on with City: "+err);
             callback(null, destCityCord, arrvlCityCord);
@@ -229,8 +195,8 @@ exports.createEstimate = function (req, res){
             destAirportCord = destAirportData["position"]["coordinates"];
 
             //Insert Model
-            estimate['orig_air_code'] = destCity;
-            estimate['orig_coordinates'] = {
+            estimate['flight']['orig_air_code'] = destAirport;
+            estimate['flight']['orig_air_coordinates'] = {
                 lat: destAirportCord[0], 
                 lng: destAirportCord[1]
             };
@@ -240,16 +206,16 @@ exports.createEstimate = function (req, res){
              arrvlAirport = arrvlAirportData["tags"]["iata"]["airportCode"]["value"];
              arrvlAirportCord = arrvlAirportData["position"]["coordinates"];
              // arrvlAirportCode = arrvlAirportData[''];
-             // console.log(arrvlAirport);
+             console.log("test "+arrvlAirportCord);
 
-            estimate['dest_air_code'] = arrvlCity;
-            estimate['dest_coordinates'] = {
-                lat: arrvlCityCord[0], 
-                lng: arrvlCityCord[1]
+            estimate['flight']['dest_air_code'] = arrvlAirport;
+            estimate['flight']['dest_air_coordinates'] = {
+                lat: arrvlAirportCord[0], 
+                lng: arrvlAirportCord[1]
             };
             
             console.log("Return ERR on with Airport: "+err);
-            callback(null, destAirport, arrvlAirport);
+            callback(null, destAirport, arrvlAirport, arrvlCityCord);
         });
 
     }
@@ -260,19 +226,20 @@ exports.createEstimate = function (req, res){
             // results is now an array of stats for each file 
              var destFlightData = results[0];
              var destLength = Object.keys(destFlightData["offers"]).length;
-             // console.log(destAirportData);
+             console.log(destLength);
 
             destFlight_legId = destFlightData["legs"][0]["legId"];
             destFlight_totalFare = destFlightData["offers"][0]["totalFare"];
             destFlight_detailsUrl = destFlightData["offers"][0]["detailsUrl"];
 
              //Insert Model
-            estimate['orig_name'] = destCity;
-            estimate['orig_coordinates'] = destCityCord;
+            estimate['flight']['orig_name'] = destCity;
+            estimate['flight']['orig_url'] = destFlight_detailsUrl;
+            estimate['flight']['orig_id'] = destFlight_legId;
 
              // destAirportCode = destAirportData["tags"]["iata"]["airportCode"]["value"];
-            console.log(destFlight_totalFare);
-            console.log(destFlight_detailsUrl);
+            // console.log(destFlight_totalFare);
+            // console.log(destFlight_detailsUrl);
 
             var arrvlFlightData = results[1];
             var arrvlLength = Object.keys(arrvlFlightData["offers"]).length;
@@ -282,69 +249,117 @@ exports.createEstimate = function (req, res){
             arrvlFlight_detailsUrl = arrvlFlightData["offers"][0]["detailsUrl"];
 
             //Insert Model
-            estimate['dest_name'] = arrvlCity;
+            estimate['flight']['dest_name'] = arrvlCity;
+            estimate['flight']['dest_url'] = arrvlFlight_detailsUrl;
+            estimate['flight']['dest_id'] = arrvlFlight_legId;
 
 
             estimate['flight']['cost_range']['low'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
             estimate['flight']['cost_range']['high'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
 
+            console.log(results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"]);
+            hotel_id = results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"];
+            
+            estimate['hotel']['id'] = hotel_id;
 
-            console.log(arrvlFlight_totalFare);
-            console.log(arrvlFlight_detailsUrl);
+            // results is now an array of stats for each file 
+            hotelCord = results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["GeoLocation"];
+            hotelCost = results[2]["HotelInfoList"]["HotelInfo"][9]["Price"]["TotalRate"]["Value"];
+            hotelURL = results[2]["HotelInfoList"]["HotelInfo"][9]["DetailsUrl"];
+
+            estimate['hotel']['hotel_coordinates']  = {
+                lat: hotelCord['Latitude'], 
+                lng: hotelCord['Longitude']
+            };
+
+            estimate['hotel']['cost_range']['low'] = hotelCost;
+            estimate['hotel']['cost_range']['high'] = hotelCost;
+
+            estimate['hotel']['url'] = hotelURL;
+
+            totalcost = parseInt(hotelCost) + parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare) + 300;
+            estimate['total_fee']['low'] = totalcost;
+            estimate['total_fee']['high'] = totalcost;
+
+            console.log("IT only costs: "+totalcost);
+
+
+            console.log(results[2]["HotelInfoList"]["HotelInfo"][9]);
+
+
+            // console.log(arrvlFlight_totalFare);
+            // console.log(arrvlFlight_detailsUrl);
             
             console.log("Return ERR on with Airport: "+err);
-            callback(null, destFlight_totalFare, arrvlFlight_totalFare);
+            callback(null, hotel_id, arrvlCityCord);
         });
 
     }
 
-    function process_data(url_data, callback){
-        console.log("Return on: "+url_data);
-        async.map(url_data, send_data_get, function(err, results){
-            // results is now an array of stats for each file 
-            
-            console.log("Return on: "+url_data);
-            callback(null, results[0], results[1]);
-        });
-    }
+    // function process_data_hotels(url_data, callback){
+    //     console.log("Return on: "+url_data);
+    //     async.map(url_data, send_data_get, function(err, results){
+    //         // results is now an array of stats for each file 
+    //         hotelCord = results[0]["HotelInfoList"]["HotelInfo"]["Location"]["GeoLocation"];
+    //         hotelCost = results[0]["HotelInfoList"]["HotelInfo"]["Price"]["TotalRate"]["Value"];
+    //         hotelURL = results[0]["HotelInfoList"]["HotelInfo"]["DetailsUrl"];
 
-async.waterfall([
-    function(callback) {
-        //Zipcode to City / State / Zip
-        var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address=94024&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address=10001&sensor=true'];
-        process_data_city(url_data, callback);
-       
-    },
-    function(destCity, arrvlCity, callback) {
-      // Find closest Airport
-        var url_data1 = "http://terminal2.expedia.com/x/geo/features?lat="+destCity["lat"]+"&lng="+destCity["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
-        var url_data2 = "http://terminal2.expedia.com/x/geo/features?lat="+arrvlCity["lat"]+"&lng="+arrvlCity["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
-        var url_data = [url_data1, url_data2];
-        process_data_airport(url_data, callback);
+    //         estimate['hotel']['hotel_coordinates']  = {
+    //             lat: hotelCord['Latitude'], 
+    //             lng: hotelCord['Longitude']
+    //         };
 
-    },
-    function(arrvlAirport, destAirport, callback) {
-        var dateReturn = "2016-05-05";
-        var dateFly = "2016-05-04";
-        var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
-        var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
-        var url_data = [url_data1, url_data2];
-        process_data_flights(url_data, callback);
-    }
+    //         estimate['hotel']['cost_range']['low'] = hotelCost;
+    //         estimate['hotel']['cost_range']['high'] = hotelCost;
 
-], function (err, result, result2) {
-    // result now equals 'done'
-    console.log(estimate);
-    estimate.save(function(error, savedEstimate) {
-        if (error) {
-            console.log("Error Saving Estimate: " + error);
+    //         estimate['hotel']['url'] = hotelURL;
+
+
+    //         console.log(results[0]["HotelInfoList"]["HotelInfo"][0]);
+    //         callback(null, results[0]);
+    //     });
+    // }
+
+
+    async.waterfall([
+        function(callback) {
+            //Zipcode to City / State / Zip
+            var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address=94024&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address=10001&sensor=true'];
+            process_data_city(url_data, callback);
+           
+        },
+        function(destCityCord, arrvlCityCord, callback) {
+          // Find closest Airport
+            var url_data1 = "http://terminal2.expedia.com/x/geo/features?lat="+destCityCord["lat"]+"&lng="+destCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
+            var url_data2 = "http://terminal2.expedia.com/x/geo/features?lat="+arrvlCityCord["lat"]+"&lng="+arrvlCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
+            var url_data = [url_data1, url_data2];
+            process_data_airport(url_data, callback);
+
+        },
+        function(arrvlAirport, destAirport, arrvlCityCord, callback) {
+
+            var dateReturn = "2016-03-05";
+            var dateFly = "2016-03-04";
+            var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
+            var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
+            var url_data3 = "http://terminal2.expedia.com:80/x/hotels?maxhotels=10&radius=10km&location="+arrvlCityCord["lat"]+"%2C"+arrvlCityCord["lng"]+"&sort=price&checkInDate="+dateFly+"&checkOutDate="+dateReturn+"&apikey="+apiKey;
+            var url_data = [url_data1, url_data2, url_data3];
+            process_data_flights(url_data, callback);
+
+
         }
-
-        res.json(yippeeUtils.createJsonResponse(error, savedEstimate));
+        
+    ], function (err, result) {
+        // result now equals 'done'
+        console.log(estimate);
+        estimate.save(function(error, savedEstimate) {
+            if(savedEstimate){
+                console.log(savedEstimate);
+            }else if(error){
+                console.log("error: " + error);
+            }
+        });
     });
-});
-
-    
 
     res.render('index',{
         title: 'Yippee Air Courier'
@@ -353,6 +368,7 @@ async.waterfall([
 
 // post | create a trip
 exports.createTrip = function (req, res){
+    console.log('in create trip');
 
 // trip_name: { type: String, required: false },    // friendly name; 
 //     status: {type: String, required: true},
@@ -384,49 +400,51 @@ exports.createTrip = function (req, res){
 //     _estimateID: {type: mongoose.Schema.Types.ObjectId, ref:'Estimate', required: false},
 //     created_at: Date,
 //     updated_at: Date
+        // req.body.main_contact = 'sender';
+        // req.body.sender_name = 'david';
+        // req.body.sender_email = 'doo@asdsad.com';
+        // req.body.sender_phone = '12321321321';
+        // req.body.receiver_name = 'blah';
+        // req.body.receiver_email = 'asdasdsa@asdasdsa.com';
+        // req.body.receiver_phone = 'sdfsdfds';
+        // req.body.trip_date = '2016-12-12';
+        // req.body.pickup_address1 = '123 main street';
+        // req.body.pickup_address2 = '21321321';
+        // req.body.pickup_city = 'q4qwewqqw';
+        // req.body.pickup_state = 'sd';
+        // req.body.pickup_postcode = '2132132';
 
-        req.body.main_contact = yippeeConstants.MAIN_CONTANT_SENDER;
-        req.body.sender_name = 'david';
-        req.body.sender_email = 'doo@asdsad.com';
-        req.body.sender_phone = '12321321321';
-        req.body.receiver_name = 'blah';
-        req.body.receiver_email = 'asdasdsa@asdasdsa.com';
-        req.body.receiver_phone = 'sdfsdfds';
-        req.body.trip_date = '2016-12-12';
-        req.body.pickup_address1 = '123 main street';
-        req.body.pickup_address2 = '21321321';
-        req.body.pickup_city = 'q4qwewqqw';
-        req.body.pickup_state = 'sd';
-        req.body.pickup_postcode = '2132132';
+        // req.body.trip_date = '2016-12-12';
+        // req.body.pickup_address1 = '123 main street';
+        // req.body.pickup_address2 = '21321321';
+        // req.body.pickup_city = 'q4qwewqqw';
+        // req.body.pickup_state = 'sd';
+        // req.body.pickup_postcode = '2132132';
 
-        req.body.trip_date = '2016-12-12';
-        req.body.pickup_address1 = '123 main street';
-        req.body.pickup_address2 = '21321321';
-        req.body.pickup_city = 'q4qwewqqw';
-        req.body.pickup_state = 'sd';
-        req.body.pickup_postcode = '2132132';
+        // req.body.origin_airport_code = 'SFO';
+        // req.body.destination_airport_code = 'JFK';
 
-        req.body.origin_airport_code = 'SFO';
-        req.body.destination_airport_code = 'JFK';
+        // req.body.dropoff_address1 = '23232 main street';
+        // req.body.dropoff_address2 = '21321321';
+        // req.body.dropoff_city = 'q4qwewqqw';
+        // req.body.dropoff_state = 'sd';
+        // req.body.dropoff_postcode = '2132132';
 
-        req.body.dropoff_address1 = '23232 main street';
-        req.body.dropoff_address2 = '21321321';
-        req.body.dropoff_city = 'q4qwewqqw';
-        req.body.dropoff_state = 'sd';
-        req.body.dropoff_postcode = '2132132';
+        // req.body.trip_notes = 'asdasdsa';
 
-        req.body.trip_notes = 'asdasdsa';
+        // // req.body.estimateId = 'MONGOTHINGHEREsawqrasdsad';
 
-        // req.body.estimateId = 'MONGOTHINGHEREsawqrasdsad';
+        // req.body.pet_name = 'fido';
+        // req.body.pet_weight = '223';
+        // req.body.pet_notes = 'asdasdsadsa';
+        // req.body.pet_age = '3243';
+        // req.body.pet_species = 'dig';
+        // req.body.pet_medical_notes = 'dead';
+        // req.body.pet_has_carrier = true;
+        // req.body.pet_notes = 'nothing to say';
 
-        req.body.pet_name = 'fido';
-        req.body.pet_weight = '223';
-        req.body.pet_notes = 'asdasdsadsa';
-        req.body.pet_age = '3243';
-        req.body.pet_species = 'dig';
-        req.body.pet_medical_notes = 'dead';
-        req.body.pet_has_carrier = true;
-        req.body.pet_notes = 'nothing to say';
+        console.log('req.body.dropoff_postcode: ', req.body.dropoff_postcode);
+        console.log('req.body.sender_phone: ', req.body.sender_phone);
 
         // now we save the trip
         var trip = new Trip({
