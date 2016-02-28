@@ -40,7 +40,15 @@ function requestEstimate(){
     // using the done promise callback
     .done(function(data) {
         // log data to the console so we can see
-        // console.log(data); 
+        $('#estimate-range').html(data.estimate_range);
+        $('#flight-cost').html(data.flight_cost);
+        $('#pet-fee').html(data.pet_fee);
+        $('#hotel-cost').html(data.hotel_cost);
+        $('#yipee-fee').html(data.yipee_fee);
+        $('#other-fee').html(data.other_fee);
+    })
+    .fail(function(err) {
+        console.log( "error: ", err );
     });
 }
 
