@@ -192,13 +192,14 @@ block content
                     .col-md-12
                         .form-group
                           #datetimepicker.input-append.date
-                            input.form-control#dp(type='text', name="estimate_pickup_date", value="2015-03-16", placeholder='Drop Off Date', date-format='yyyy-mm-dd')
+                            input.form-control#dp(type='text', name="estimate_trip_date", value="2016-03-16", placeholder='Drop Off Date', date-format='yyyy-mm-dd')
                           //- span.add-on    
                           //- #datetimepicker1.input-group.date
                           //-     input.form-control(type='text', name="estimate_pickup_date", placeholder='Drop Off Date')
                           //-       span.input-group-addon
                           //-         span.glyphicon.glyphicon-calendar                          
                             //- input.form-control(type='text', name="estimate_pickup_date", placeholder='Drop Off Date')
+
                     .col-md-6
                         h4.estimate-label Pickup Address
                         .form-group
@@ -235,7 +236,7 @@ block content
                                 button.btn.btn-xl.modal-button(onClick='requestEstimate()') Request Estimate
                         .col-lg-3.col-md-4
                             a.portfolio-link(href='#tripModal', data-toggle='modal')
-                                button.btn.btn-xl.modal-button Request Trip
+                                button.btn.btn-xl.modal-button(onClick='transferFormEntries()') Request Trip
             .row
               .col-lg-8.col-lg-offset-2.text-center
                 p.large.text-muted
@@ -588,11 +589,9 @@ block content
                             span#other-fee $100
                 .row
                     .col-lg-12.text-center
-                        a.portfolio-link(href='#tripModal', data-toggle='modal')
-                            button.btn.btn-xl(data-dismiss='modal') Continue
-    
 
-    
+                        //- a.portfolio-link(href='#tripModal', data-toggle='modal')
+                        button.btn.btn-xl(onClick='modalSwap()') Continue
     // jQuery
     script(src='/js/jquery.js')
     // Bootstrap Core JavaScript

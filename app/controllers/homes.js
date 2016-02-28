@@ -213,12 +213,12 @@ var estimate = new Estimate({
                 lng: destAirportCord[1]
             };
 
-             arrvlAirportData = results[1][0];
+            arrvlAirportData = results[1][0];
 
-             arrvlAirport = arrvlAirportData["tags"]["iata"]["airportCode"]["value"];
-             arrvlAirportCord = arrvlAirportData["position"]["coordinates"];
-             // arrvlAirportCode = arrvlAirportData[''];
-             // console.log("test "+arrvlAirportCord);
+            arrvlAirport = arrvlAirportData["tags"]["iata"]["airportCode"]["value"];
+            arrvlAirportCord = arrvlAirportData["position"]["coordinates"];
+            // arrvlAirportCode = arrvlAirportData[''];
+            // console.log("test "+arrvlAirportCord);
 
             estimate['flight']['dest_air_code'] = arrvlAirport;
             estimate['flight']['dest_air_coordinates'] = {
@@ -306,52 +306,64 @@ var estimate = new Estimate({
 
     }
 
-    var startDate = req.body.dropoff_date;
+    var startDate = req.body.trip_date;
     var dropoff_postcode = req.body.dropoff_postcode;
     var pickup_postcode = req.body.pickup_postcode;
 
-    console.log('I made it!', startDate);
-async.waterfall([
-    function(callback) {
-        //Zipcode to City / State / Zip
-        var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address='+pickup_postcode+'&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address='+dropoff_postcode+'&sensor=true'];
+    async.waterfall([
+        function(callback) {
+            //Zipcode to City / State / Zip
+            var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address='+pickup_postcode+'&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address='+dropoff_postcode+'&sensor=true'];
 
-        process_data_city(url_data, callback);
-       
-    },
-    function(destCityCord, arrvlCityCord, callback) {
-      // Find closest Airport
-        var url_data1 = "http://terminal2.expedia.com/x/geo/features?lat="+destCityCord["lat"]+"&lng="+destCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
-        var url_data2 = "http://terminal2.expedia.com/x/geo/features?lat="+arrvlCityCord["lat"]+"&lng="+arrvlCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
-        var url_data = [url_data1, url_data2];
-        process_data_airport(url_data, callback);
+            process_data_city(url_data, callback);
+           
+        },
+        function(destCityCord, arrvlCityCord, callback) {
+          // Find closest Airport
+            var url_data1 = "http://terminal2.expedia.com/x/geo/features?lat="+destCityCord["lat"]+"&lng="+destCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
+            var url_data2 = "http://terminal2.expedia.com/x/geo/features?lat="+arrvlCityCord["lat"]+"&lng="+arrvlCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
+            var url_data = [url_data1, url_data2];
+            process_data_airport(url_data, callback);
 
-    },
-    function(arrvlAirport, destAirport, arrvlCityCord, callback) {
+        },
+        function(arrvlAirport, destAirport, arrvlCityCord, callback) {
+            console.log(startDate);
+            var d = new Date(startDate);
+            console.log(d);
+
+            var day = (d.getDate()+1).toString();
+            day = day.length > 1 ? day : '0' + day;
+
+            var month = (d.getMonth()+1).toString();
+            month = month.length > 1 ? month : '0' + month;
+
+            var dateReturn = d.getFullYear()+'-'+month+'-'+day;
+            console.log("Return Date "+dateReturn);
+
+            var dateFly = startDate;
+            console.log("Fly Date "+dateFly);
 
 
-        var dateReturn = "2016-03-05";
-        var dateFly = "2016-03-04";
-        var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
-        var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
-        var url_data3 = "http://terminal2.expedia.com:80/x/hotels?maxhotels=10&radius=10km&location="+arrvlCityCord["lat"]+"%2C"+arrvlCityCord["lng"]+"&sort=price&checkInDate="+dateFly+"&checkOutDate="+dateReturn+"&apikey="+apiKey;
-        var url_data = [url_data1, url_data2, url_data3];
-        process_data_flights(url_data, callback);
+            var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
+            var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
+            var url_data3 = "http://terminal2.expedia.com:80/x/hotels?maxhotels=10&radius=10km&location="+arrvlCityCord["lat"]+"%2C"+arrvlCityCord["lng"]+"&sort=price&checkInDate="+dateFly+"&checkOutDate="+dateReturn+"&apikey="+apiKey;
+            var url_data = [url_data1, url_data2, url_data3];
+            process_data_flights(url_data, callback);
 
 
-    }
-    
-], function (err, result) {
-    // result now equals 'done'
-    console.log(estimate);
-    estimate.save(function(error, savedEstimate) {
-        if(savedEstimate){
-            console.log(savedEstimate);
-        }else if(error){
-            console.log("error: " + error);
         }
+        
+    ], function (err, result) {
+        // result now equals 'done'
+        console.log(estimate);
+        estimate.save(function(error, savedEstimate) {
+            if(savedEstimate){
+                console.log(savedEstimate);
+            }else if(error){
+                console.log("error: " + error);
+            }
+        });
     });
-});
 
 
     res.render('index',{
