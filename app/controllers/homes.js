@@ -398,7 +398,7 @@ exports.createTrip = function (req, res){
 //     created_at: Date,
 //     updated_at: Date
 
-        req.body.main_contact = 'sender';
+        req.body.main_contact = yippeeConstants.MAIN_CONTANT_SENDER;
         req.body.sender_name = 'david';
         req.body.sender_email = 'doo@asdsad.com';
         req.body.sender_phone = '12321321321';
