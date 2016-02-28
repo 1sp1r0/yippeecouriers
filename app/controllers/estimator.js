@@ -18,7 +18,17 @@ var apiKey = "lcUYhjUA083IM9r8Ep7RA8QybLu2MMBS";
        options = {url, json: true};
        // console.log(url);
         request.get(options, function (error, response, body) {
-          console.log(body);
+          // console.log(body);
+          callback(null, body);
+
+        });
+    }
+
+    function send_data_get_url(url, callback){
+       options = {url};
+       // console.log(url);
+        request.get(options, function (error, response, body) {
+          // console.log(body);
           callback(null, body);
 
         });
@@ -52,16 +62,23 @@ var apiKey = "lcUYhjUA083IM9r8Ep7RA8QybLu2MMBS";
         console.log("Return on: "+url_data);
         async.map(url_data, send_data_get, function(err, results){
             // results is now an array of stats for each file 
-             destAirportData = results[0];
-             destAirport = destAirportData[''];
-             destAirportCords = destAirportData[''];
+             destAirportData = results[0][0];
+             // console.log(destAirportData);
 
-             arrvlAirportData = results[1];
-             arrvlAirport = arrvlAirportData[''];
-             arrvlAirportCords = arrvlAirportData[''];
+             destAirport = destAirportData["tags"]["iata"]["airportCode"]["value"];
+             // destAirportCode = destAirportData["tags"]["iata"]["airportCode"]["value"];
+             console.log(destAirport);
+
+
+             arrvlAirportData = results[1][0];
+
+             arrvlAirport = arrvlAirportData["tags"]["iata"]["airportCode"]["value"];
+             // arrvlAirportCode = arrvlAirportData[''];
+             console.log(arrvlAirport);
+
             
-            console.log("Return ERR on with City: "+err);
-            callback(null, destAirport, destAirport);
+            console.log("Return ERR on with Airport: "+err);
+            callback(null, destAirport, arrvlAirport);
         });
 
     }
@@ -70,10 +87,29 @@ var apiKey = "lcUYhjUA083IM9r8Ep7RA8QybLu2MMBS";
         console.log("Return on: "+url_data);
         async.map(url_data, send_data_get, function(err, results){
             // results is now an array of stats for each file 
+             var destFlightData = results[0];
+             var destLength = Object.keys(destFlightData["offers"]).length;
+             // console.log(destAirportData);
 
+            destFlight_legId = destFlightData["legs"][0]["legId"];
+            destFlight_totalFare = destFlightData["offers"][0]["totalFare"];
+            destFlight_detailsUrl = destFlightData["offers"][0]["detailsUrl"];
+             // destAirportCode = destAirportData["tags"]["iata"]["airportCode"]["value"];
+            console.log(destFlight_totalFare);
+            console.log(destFlight_detailsUrl);
+
+            var arrvlFlightData = results[1];
+            var arrvlLength = Object.keys(arrvlFlightData["offers"]).length;
+
+            arrvlFlight_legId = arrvlFlightData["legs"][0]["legId"];
+            arrvlFlight_totalFare = arrvlFlightData["offers"][0]["totalFare"];
+            arrvlFlight_detailsUrl = arrvlFlightData["offers"][0]["detailsUrl"];
+             // arrvlAirportCode = arrvlAirportData[''];
+            console.log(destFlight_totalFare);
+            console.log(destFlight_detailsUrl);
             
-            console.log("Return on: "+url_data);
-            callback(null, results[0], results[1]);
+            console.log("Return ERR on with Airport: "+err);
+            callback(null, destFlight_totalFare, destFlight_totalFare);
         });
 
     }
@@ -97,17 +133,21 @@ async.waterfall([
         process_data_city(url_data, callback);
        
     },
-    function(destCity, arrvlCity, callback) {
+    function(destCity, arrvlCity, callback) {arrvlCity
       // Find closest Airport
-        var url_data1 = "http://terminal2.expedia.com:80/x/geo/features?within=100mi&lat="+destCity["lat"]+"&lng="+destCity["lng"]+"&type=airport&apikey="+apiKey;
-        var url_data2 = "http://terminal2.expedia.com:80/x/geo/features?within=100mi&lat="+arrvlCity["lat"]+"&lng="+arrvlCity["lng"]+"&type=airport&apikey="+apiKey;
+        var url_data1 = "http://terminal2.expedia.com/x/geo/features?lat="+destCity["lat"]+"&lng="+destCity["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
+        var url_data2 = "http://terminal2.expedia.com/x/geo/features?lat="+arrvlCity["lat"]+"&lng="+arrvlCity["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
         var url_data = [url_data1, url_data2];
         process_data_airport(url_data, callback);
 
     },
-    function(arg1, arg2, callback) {
-        // arg1 now equals 'three'
-        callback(null, arg2, arg1);
+    function(arrvlAirport, destAirport, callback) {
+        var dateReturn = "2016-05-05";
+        var dateFly = "2016-05-04";
+        var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
+        var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
+        var url_data = [url_data1, url_data2];
+        process_data_flights(url_data, callback);
     }
 ], function (err, result, result2) {
     // result now equals 'done'
