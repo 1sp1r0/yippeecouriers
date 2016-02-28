@@ -89,39 +89,6 @@ exports.scrapbook = function (req, res){
                 }
 
                 async.eachSeries(originalMessages, messageParser, messageErrorCallback);
-
-
-                // for (var message of originalMessages) {
-                //     if(message.file){
-                //         var fileId = message.file.id;
-                //         if(message.file.public_url_shared){
-                //             request('https://slack.com/api/files.info?token=' + slackToken + '&file=' + fileId + '&pretty=1', function(error, response, body){
-                //                 request(JSON.parse(body).file.permalink_public, function(error, response, body){
-                //                     var $ = cheerio.load(body);
-                //                     var imageUrl = $('.image_body').attr("href");
-                //                     // console.log('Public URL: ', $('.image_body').attr("href"));
-                //                     processedMessages.push({'file' : imageUrl});
-                //                     console.log('push: ', {'file' : imageUrl});
-                //                 });
-                //             });
-                //         }else{
-                //             request('https://slack.com/api/files.sharedPublicURL?token=' + slackToken + '&file=' + fileId + '&pretty=1', function(error, response, body){
-                //                 request(JSON.parse(body).file.permalink_public, function(error, response, body){
-                //                     var imageUrl = $('.image_body').attr("href");
-                //                     // console.log('Public URL: ', $('.image_body').attr("href"));
-                //                     processedMessages.push({'file' : imageUrl});
-                //                 });
-                //             });
-                //         }
-                //     }else{
-                //         // console.log(message.text);
-                //         processedMessages.push({'text' : message.text});
-                //     }
-                // }
-                // console.log('originalMessages: ', originalMessages);
-                // console.log('processedMessages: ', processedMessages);
-
-                // console.log('file id: ', JSON.parse(body).messages);
             });
         }else if(error){
             console.log("error: " + error.stack);
@@ -376,47 +343,45 @@ exports.createEstimate = function (req, res){
     // }
 
 
-async.waterfall([
-    function(callback) {
-        //Zipcode to City / State / Zip
-        var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address=94024&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address=10001&sensor=true'];
-        process_data_city(url_data, callback);
-       
-    },
-    function(destCityCord, arrvlCityCord, callback) {
-      // Find closest Airport
-        var url_data1 = "http://terminal2.expedia.com/x/geo/features?lat="+destCityCord["lat"]+"&lng="+destCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
-        var url_data2 = "http://terminal2.expedia.com/x/geo/features?lat="+arrvlCityCord["lat"]+"&lng="+arrvlCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
-        var url_data = [url_data1, url_data2];
-        process_data_airport(url_data, callback);
+    async.waterfall([
+        function(callback) {
+            //Zipcode to City / State / Zip
+            var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address=94024&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address=10001&sensor=true'];
+            process_data_city(url_data, callback);
+           
+        },
+        function(destCityCord, arrvlCityCord, callback) {
+          // Find closest Airport
+            var url_data1 = "http://terminal2.expedia.com/x/geo/features?lat="+destCityCord["lat"]+"&lng="+destCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
+            var url_data2 = "http://terminal2.expedia.com/x/geo/features?lat="+arrvlCityCord["lat"]+"&lng="+arrvlCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
+            var url_data = [url_data1, url_data2];
+            process_data_airport(url_data, callback);
 
-    },
-    function(arrvlAirport, destAirport, arrvlCityCord, callback) {
+        },
+        function(arrvlAirport, destAirport, arrvlCityCord, callback) {
 
-        var dateReturn = "2016-03-05";
-        var dateFly = "2016-03-04";
-        var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
-        var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
-        var url_data3 = "http://terminal2.expedia.com:80/x/hotels?maxhotels=10&radius=10km&location="+arrvlCityCord["lat"]+"%2C"+arrvlCityCord["lng"]+"&sort=price&checkInDate="+dateFly+"&checkOutDate="+dateReturn+"&apikey="+apiKey;
-        var url_data = [url_data1, url_data2, url_data3];
-        process_data_flights(url_data, callback);
+            var dateReturn = "2016-03-05";
+            var dateFly = "2016-03-04";
+            var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
+            var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
+            var url_data3 = "http://terminal2.expedia.com:80/x/hotels?maxhotels=10&radius=10km&location="+arrvlCityCord["lat"]+"%2C"+arrvlCityCord["lng"]+"&sort=price&checkInDate="+dateFly+"&checkOutDate="+dateReturn+"&apikey="+apiKey;
+            var url_data = [url_data1, url_data2, url_data3];
+            process_data_flights(url_data, callback);
 
 
-    }
-    
-], function (err, result) {
-    // result now equals 'done'
-    console.log(estimate);
-    estimate.save(function(error, savedEstimate) {
-        if(savedEstimate){
-            console.log(savedEstimate);
-        }else if(error){
-            console.log("error: " + error);
         }
+        
+    ], function (err, result) {
+        // result now equals 'done'
+        console.log(estimate);
+        estimate.save(function(error, savedEstimate) {
+            if(savedEstimate){
+                console.log(savedEstimate);
+            }else if(error){
+                console.log("error: " + error);
+            }
+        });
     });
-});
-
-    
 
     res.render('index',{
         title: 'Yippee Air Courier'
@@ -425,6 +390,7 @@ async.waterfall([
 
 // post | create a trip
 exports.createTrip = function (req, res){
+    console.log('in create trip');
 
 // trip_name: { type: String, required: false },    // friendly name; 
 //     status: {type: String, required: true},
@@ -456,49 +422,51 @@ exports.createTrip = function (req, res){
 //     _estimateID: {type: mongoose.Schema.Types.ObjectId, ref:'Estimate', required: false},
 //     created_at: Date,
 //     updated_at: Date
+        // req.body.main_contact = 'sender';
+        // req.body.sender_name = 'david';
+        // req.body.sender_email = 'doo@asdsad.com';
+        // req.body.sender_phone = '12321321321';
+        // req.body.receiver_name = 'blah';
+        // req.body.receiver_email = 'asdasdsa@asdasdsa.com';
+        // req.body.receiver_phone = 'sdfsdfds';
+        // req.body.trip_date = '2016-12-12';
+        // req.body.pickup_address1 = '123 main street';
+        // req.body.pickup_address2 = '21321321';
+        // req.body.pickup_city = 'q4qwewqqw';
+        // req.body.pickup_state = 'sd';
+        // req.body.pickup_postcode = '2132132';
 
-        req.body.main_contact = yippeeConstants.MAIN_CONTANT_SENDER;
-        req.body.sender_name = 'david';
-        req.body.sender_email = 'doo@asdsad.com';
-        req.body.sender_phone = '12321321321';
-        req.body.receiver_name = 'blah';
-        req.body.receiver_email = 'asdasdsa@asdasdsa.com';
-        req.body.receiver_phone = 'sdfsdfds';
-        req.body.trip_date = '2016-12-12';
-        req.body.pickup_address1 = '123 main street';
-        req.body.pickup_address2 = '21321321';
-        req.body.pickup_city = 'q4qwewqqw';
-        req.body.pickup_state = 'sd';
-        req.body.pickup_postcode = '2132132';
+        // req.body.trip_date = '2016-12-12';
+        // req.body.pickup_address1 = '123 main street';
+        // req.body.pickup_address2 = '21321321';
+        // req.body.pickup_city = 'q4qwewqqw';
+        // req.body.pickup_state = 'sd';
+        // req.body.pickup_postcode = '2132132';
 
-        req.body.trip_date = '2016-12-12';
-        req.body.pickup_address1 = '123 main street';
-        req.body.pickup_address2 = '21321321';
-        req.body.pickup_city = 'q4qwewqqw';
-        req.body.pickup_state = 'sd';
-        req.body.pickup_postcode = '2132132';
+        // req.body.origin_airport_code = 'SFO';
+        // req.body.destination_airport_code = 'JFK';
 
-        req.body.origin_airport_code = 'SFO';
-        req.body.destination_airport_code = 'JFK';
+        // req.body.dropoff_address1 = '23232 main street';
+        // req.body.dropoff_address2 = '21321321';
+        // req.body.dropoff_city = 'q4qwewqqw';
+        // req.body.dropoff_state = 'sd';
+        // req.body.dropoff_postcode = '2132132';
 
-        req.body.dropoff_address1 = '23232 main street';
-        req.body.dropoff_address2 = '21321321';
-        req.body.dropoff_city = 'q4qwewqqw';
-        req.body.dropoff_state = 'sd';
-        req.body.dropoff_postcode = '2132132';
+        // req.body.trip_notes = 'asdasdsa';
 
-        req.body.trip_notes = 'asdasdsa';
+        // // req.body.estimateId = 'MONGOTHINGHEREsawqrasdsad';
 
-        // req.body.estimateId = 'MONGOTHINGHEREsawqrasdsad';
+        // req.body.pet_name = 'fido';
+        // req.body.pet_weight = '223';
+        // req.body.pet_notes = 'asdasdsadsa';
+        // req.body.pet_age = '3243';
+        // req.body.pet_species = 'dig';
+        // req.body.pet_medical_notes = 'dead';
+        // req.body.pet_has_carrier = true;
+        // req.body.pet_notes = 'nothing to say';
 
-        req.body.pet_name = 'fido';
-        req.body.pet_weight = '223';
-        req.body.pet_notes = 'asdasdsadsa';
-        req.body.pet_age = '3243';
-        req.body.pet_species = 'dig';
-        req.body.pet_medical_notes = 'dead';
-        req.body.pet_has_carrier = true;
-        req.body.pet_notes = 'nothing to say';
+        console.log('req.body.dropoff_postcode: ', req.body.dropoff_postcode);
+        console.log('req.body.sender_phone: ', req.body.sender_phone);
 
         // now we save the trip
         var trip = new Trip({
