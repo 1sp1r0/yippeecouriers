@@ -19,6 +19,13 @@ function modalSwap(){
     }, 450);
 }
 
+function modalHide(){
+    $('#estimateModal').modal('hide');
+    $('#estimate-range').html('Please wait while your estimate is calculated.');
+    $('#continue').html('Continue');
+    $('#continue').attr('onClick', 'modalSwap()');
+}
+
 function requestEstimate(){
     transferFormEntries();
     // get the form data
@@ -49,6 +56,9 @@ function requestEstimate(){
     })
     .fail(function(err) {
         console.log( "error: ", err );
+        $('#estimate-range').html('Sorry we couldn\'t find a matching flight');
+        $('#continue').html('Try Again');
+        $('#continue').attr('onClick', 'modalHide()');
     });
 }
 

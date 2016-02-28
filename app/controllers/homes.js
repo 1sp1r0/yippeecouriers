@@ -195,8 +195,10 @@ exports.createEstimate = function (req, res){
             // results is now an array of stats for each file 
 
             destCityData = results[0];
-            destCityCord = destCityData["results"][0]["geometry"]["location"];
-            destCity = destCityData["results"][0]["formatted_address"];
+            if(destCityData){
+                destCityCord = destCityData["results"][0]["geometry"]["location"];
+                destCity = destCityData["results"][0]["formatted_address"];
+            }
 
             //Insert Model
             estimate['flight']['orig_name'] = destCity;
@@ -278,9 +280,15 @@ exports.createEstimate = function (req, res){
              // var destLength = Object.keys(destFlightData["offers"]).length;
             // console.log(destFlightData["legs"][0]["segments"]);
 
-            destFlight_legId = destFlightData["legs"][0]["legId"];
-            destFlight_totalFare = destFlightData["offers"][0]["totalFare"];
-            destFlight_detailsUrl = destFlightData["offers"][0]["detailsUrl"];
+            var destFlight_legId = "";
+            var destFlight_totalFare = "";
+            var destFlight_detailsUrl = "";
+
+            if(destFlightData){
+                destFlight_legId = destFlightData["legs"][0]["legId"];
+                destFlight_totalFare = destFlightData["offers"][0]["totalFare"];
+                destFlight_detailsUrl = destFlightData["offers"][0]["detailsUrl"];
+            }
 
             //  if(destFlightData["offers"][0]["segments"][0].hasOwnProperty("distance")){
             //     destFlight_carrier = destFlightData["legs"][0]["segments"]["airlineName"];
@@ -301,12 +309,20 @@ exports.createEstimate = function (req, res){
 
         
 
-            var arrvlFlightData = results[1];
+            var arrvlFlightData = {};
+            arrvlFlightData = results[1];
             // var arrvlLength = Object.keys(arrvlFlightData["offers"]).length;
 
-            arrvlFlight_detailsUrl = arrvlFlightData["offers"][0]["detailsUrl"];
-            arrvlFlight_legId = arrvlFlightData["legs"][0]["legId"];
-            arrvlFlight_totalFare = arrvlFlightData["offers"][0]["totalFare"];
+            var arrvlFlight_detailsUrl = '';
+            var arrvlFlight_legId = '';
+            var arrvlFlight_totalFare = '';
+            
+            if(arrvlFlightData){
+                arrvlFlight_detailsUrl = arrvlFlightData["offers"][0]["detailsUrl"];
+                arrvlFlight_totalFare = arrvlFlightData["offers"][0]["totalFare"];
+                arrvlFlight_legId = arrvlFlightData["legs"][0]["legId"];
+            }
+            
            
 
             // if(arrvlFlightData["offers"][0]["segments"].hasOwnProperty("distance")){
