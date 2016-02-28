@@ -44,7 +44,7 @@ exports.scrapbook = function (req, res){
     .populate('_pets')
     .exec(function(error, trip){
         if(trip){
-            request('https://slack.com/api/channels.history?token=' + slackToken + '&channel=C0PAUA2AH&pretty=1', function(error, response, body){
+            request('https://slack.com/api/channels.history?token=' + slackToken + '&channel=C0PDBF475&pretty=1', function(error, response, body){
                 var originalMessages = JSON.parse(body).messages;
                 var processedMessages = [];
 
@@ -69,7 +69,9 @@ exports.scrapbook = function (req, res){
                             });
                         }
                     }else{
-                        processedMessages.push({'text' : message.text, 'date' : dateFormat(Date(message.ts), "dddd, mmmm dS, yyyy"), 'time' : dateFormat(Date(message.ts), "h:MM:ss TT")});
+                        if(!message.text.includes('<@U')){
+                            processedMessages.push({'text' : message.text, 'date' : dateFormat(Date(message.ts), "dddd, mmmm dS, yyyy"), 'time' : dateFormat(Date(message.ts), "h:MM:ss TT")});
+                        }
                         callback();
                     }
                 }
@@ -78,7 +80,6 @@ exports.scrapbook = function (req, res){
                     if(err){
                         console.log("error: ", err);
                     }
-
 
                     res.render('scrapbook',{
                         title: 'Yippee Scrapbook',
