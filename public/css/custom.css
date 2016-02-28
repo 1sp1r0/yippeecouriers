@@ -6,6 +6,11 @@
 	margin-bottom: 2px !important;
 }
 
+.modal-button{
+	width: 100%;
+	margin-bottom: .5em;
+}
+
 #primary-contact-label{
 	margin-right: 1em;
 }
