@@ -9,6 +9,8 @@ var estimateSchema = new Schema({
             low: { type: Number, required: true },
             high: { type: Number, required: true },
         },
+        orig_id: { type: String, required: true },
+        orig_url: { type: String, required: true },
         orig_name: { type: String, required: true },
         orig_coordinates: {
             lat: { type: Number, required: true },
@@ -19,6 +21,8 @@ var estimateSchema = new Schema({
             lat: { type: Number, required: true },
             lng: { type: Number, required: true },
         },
+        dest_id: { type: String, required: true },
+        dest_url: { type: String, required: true },
         dest_name: { type: String, required: true },
         dest_coordinates: {
             lat: { type: Number, required: true },
@@ -32,9 +36,15 @@ var estimateSchema = new Schema({
         dest_air_code: { type: String, required: true },
     },
     hotel: {
+        id: { type: Number, required: true },
+        url: { type: String, required: true },
         cost_range: {
             low: { type: Number, required: true },
             high: { type: Number, required: true },
+        },
+        hotel_coordinates: {
+            lat: { type: Number, required: true },
+            lng: { type: Number, required: true },
         },
     },
     airline_pet_fee:  { type: Number, required: true },
