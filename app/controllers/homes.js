@@ -29,7 +29,10 @@ exports.index = function (req, res){
 exports.scrapbook = function (req, res){
     var tripId = req.params.trip_id
     var conditions = {'_id' : tripId}
-    Trip.findOne(conditions, function(error, trip){
+    Trip
+    .findOne(conditions)
+    .populate('_pets')
+    .exec(function(error, trip){
         if(trip){
             request('https://slack.com/api/channels.history?token=' + slackToken + '&channel=C0PAUA2AH&pretty=1', function(error, response, body){
                 var originalMessages = JSON.parse(body).messages;
