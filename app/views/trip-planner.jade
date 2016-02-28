@@ -1,0 +1,150 @@
+extends layout 
+
+block content
+    // Header
+    header
+      .container
+        .intro-text
+          .intro-lead-in Yippee Air Couriers!
+          .intro-heading We Make Pets Fly!
+          a.page-scroll.btn.btn-xl(href='#how-it-works') How it Works
+    
+    // Timeline - How it Works
+    section#how-it-works
+      .container
+        .row
+          .col-lg-12.text-center
+            h2.section-heading How It Works
+            h3.section-subheading.text-muted We'll pick up your pet at home and hand deliver them to a friend or family member, never leaving their side.
+        .row
+          .col-lg-12
+            ul.timeline
+              li
+                .timeline-image
+                  img.img-circle.img-responsive(src='img/about/1.jpg', alt='')
+                .timeline-panel
+                  .timeline-heading
+                    h4 1. Ride Lyft for the Pick-up
+                    h4.subheading We've got you covered
+                  .timeline-body
+                    p.text-muted
+                      | We have a flat-rate pricing policy and can send you an immediate estimate of the costs, based on the date, route and number of pets. 
+              li.timeline-inverted
+                .timeline-image
+                  img.img-circle.img-responsive(src='img/about/2.jpg', alt='')
+                .timeline-panel
+                  .timeline-heading
+                    h4 2. Jump on a Plane
+                    h4.subheading Take the bundle of joy with you, fly opitions below.
+                  .timeline-body
+                    p.text-muted
+                      | We'll schedule a video call with your courier so you can meet them and discuss the flight plan, as well as pickup and dropoff specifics. All of our carriers are background-checked, pet lovers and have a passion for travel!
+              li
+                .timeline-image
+                  img.img-circle.img-responsive(src='img/about/3.jpg', alt='')
+                .timeline-panel
+                  .timeline-heading
+                    h4 3. Lyft to the Drop-off
+                    h4.subheading We'll come to you
+                  .timeline-body
+                    p.text-muted
+                      | We'll pickup your pet at an address and time convenient to you and take them straight to the airport! You're encouraged to pack their favorite foods, toys or other accessories!
+              li.timeline-inverted
+                .timeline-image
+                  img.img-circle.img-responsive(src='img/about/4.jpg', alt='')
+                .timeline-panel
+                  .timeline-heading
+                    h4 4. Hotel
+                    h4.subheading If you've had a long flight, take a break, enjoy the area.
+                  .timeline-body
+                    p.text-muted
+                      | We'll keep your pet company at all times, guiding them through the travel experience. All of our carriers are familiar with airport and airline policies and will navigate them to provide the best experience possible for your pet. We'll send you updates when the flight takes off, enroute and on arrival, so you're never out of touch. 
+              li
+                .timeline-image
+                  img.img-circle.img-responsive(src='img/about/5.jpg', alt='')
+                .timeline-panel
+                  .timeline-heading
+                    h4 5. Fly Back
+                    h4.subheading Your flight back the next day.
+                  .timeline-body
+                    p.text-muted
+                      | We'll use dedicated car services to give your pet the speediest and most comfortable trip possible. We'll also coordinate with you pre-flight to ensure a smooth delivery, photographically commemorating the handoff to your pet's companion at the destination.
+              li.timeline-inverted
+                .timeline-image
+                  img.img-circle.img-responsive(src='img/about/6.jpg', alt='')
+                .timeline-panel
+                  .timeline-heading
+                    h4 6. Enjoy the miles!
+                    h4.subheading We'll send you a scrapbook for you to share!
+                  .timeline-body
+                    p.text-muted
+                      | Tell your friends about your jetsetting pet! We'll assemble a scrapbook of all the status updates and send you a link upon the completion of your pet's journey.
+              li.timeline-inverted
+                .timeline-image
+                  h4
+                    | Start Their 
+                    br
+                    | Next
+                    br
+                    | Adventure!
+
+    // Estimate Modal
+    #estimateModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+      .modal-content
+        .close-modal(data-dismiss='modal')
+          .lr
+            .rl
+        .container
+          .row
+            .col-lg-8.col-lg-offset-2
+              .modal-body
+                h2 Estimate
+                h3 For your pickup date of 
+                    span#date-trip 2016-03-15
+                h4
+                    span Your Estimated Pet Travel Cost is 
+                    span#estimate-range $850-1100
+                .row
+                    .col-md-4
+                        p.estimate-details
+                            span Flight: 
+                            span#flight-cost $200-300
+                        p.estimate-details
+                            span Airline Pet Fee: 
+                            span#pet-fee $150
+                    .col-md-4
+                        p.estimate-details Hotel: 
+                            span#hotel-cost $100-150
+                    .col-md-4
+                        p.estimate-details
+                            span Yippee Fee: 
+                            span#yipee-fee $300
+                        p.estimate-details
+                            span Other Fee: 
+                            span#other-fee $100
+                .row
+                    .col-lg-12.text-center
+
+                        //- a.portfolio-link(href='#tripModal', data-toggle='modal')
+                        button.btn.btn-xl(onClick='modalSwap()') Continue
+    // jQuery
+    script(src='/js/jquery.js')
+    // Bootstrap Core JavaScript
+    script(src='/js/bootstrap.min.js')
+    // Plugin JavaScript
+    script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js')
+    script(src='/js/classie.js')
+    script(src='/js/cbpAnimatedHeader.js')
+    // jQuery
+    script(src='/js/bootstrap-datepicker.js')
+    // Contact Form JavaScript
+    script(src='/js/jqBootstrapValidation.js')
+    script(src='/js/contact_me.js')
+    // Custom Theme JavaScript
+    script(src='/js/agency.js')
+    // Custom Yippee JavaScript
+    script(src='/js/custom.js')
+    script(type='text/javascript').
+      $('#dp').datepicker({
+      format: 'yyyy-mm-dd'
+      });
