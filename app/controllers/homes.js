@@ -10,9 +10,15 @@ var cheerio = require('cheerio');
 // mongoose
 var mongoose = require('mongoose');
 
+// validate
+var validate = require("validate.js");
+
 // yippee utils
 var yippeeUtils = require('../helpers/utils');
 var yippeeConstants = require('../helpers/constants');
+
+// Date Format
+var dateFormat = require('dateformat');
 
 // Models
 var Trip = require('../models/trip');
@@ -49,7 +55,7 @@ exports.scrapbook = function (req, res){
                             request(file.permalink_public, function(error, response, body){
                                 var $ = cheerio.load(body);
                                 var imageUrl = $('.image_body').attr("href");
-                                processedMessages.push({'file' : imageUrl, 'title' : file.title, 'timestamp' : Date(file.timestamp)});
+                                processedMessages.push({'file' : imageUrl, 'title' : file.title, 'date' : dateFormat(Date(file.timestamp), "dddd, mmmm dS, yyyy"), 'time' : dateFormat(Date(file.timestamp), "h:MM:ss TT")});
                                 callback();
                             });
                         }
@@ -63,7 +69,7 @@ exports.scrapbook = function (req, res){
                             });
                         }
                     }else{
-                        processedMessages.push({'text' : message.text, 'timestamp' : Date(message.ts)});
+                        processedMessages.push({'text' : message.text, 'date' : dateFormat(Date(message.ts), "dddd, mmmm dS, yyyy"), 'time' : dateFormat(Date(message.ts), "h:MM:ss TT")});
                         callback();
                     }
                 }
@@ -73,12 +79,12 @@ exports.scrapbook = function (req, res){
                         console.log("error: ", err);
                     }
 
-                    console.log(trip);
 
                     res.render('scrapbook',{
                         title: 'Yippee Scrapbook',
                         trip_name: trip.trip_name,
                         trip: trip,
+                        date_formatted: dateFormat(trip.trip_date, "dddd, mmmm dS, yyyy"),
                         messages: processedMessages
                     });
                 }
@@ -97,11 +103,24 @@ exports.scrapbooktemp = function (req,res){
     });
 }
 
+//post | fake create estimate
+// exports.createEstimate = function(req, res){
+//     console.log('fake createEstimate');
+//     res.json({
+//         'estimate_range': '$100-200',
+//         'flight_cost': '$10',
+//         'pet_fee': '$20',
+//         'hotel_cost': '$30',
+//         'yipee_fee': '$40',
+//         'other_fee': '$50'
+//     });
+// }
+
 // post | create an estimate
 exports.createEstimate = function (req, res){
-var estimate = new Estimate({
+    var estimate = new Estimate({
         trip_name: "Fly Fluffy! Fly!",
-        trip_date: '2016-12-16',
+        trip_date: dateFormat('2016-12-16', "dddd, mmmm dS, yyyy"),
         flight: {
             cost_range: {
                 low: 209,
@@ -324,10 +343,23 @@ var estimate = new Estimate({
 
         },
         function(arrvlAirport, destAirport, arrvlCityCord, callback) {
+            console.log(startDate);
+            var d = new Date(startDate);
+            console.log(d);
+
+            var day = (d.getDate()+1).toString();
+            day = day.length > 1 ? day : '0' + day;
+
+            var month = (d.getMonth()+1).toString();
+            month = month.length > 1 ? month : '0' + month;
+
+            var dateReturn = d.getFullYear()+'-'+month+'-'+day;
+            console.log("Return Date "+dateReturn);
+
+            var dateFly = startDate;
+            console.log("Fly Date "+dateFly);
 
 
-            var dateReturn = "2016-03-05";
-            var dateFly = "2016-03-04";
             var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
             var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
             var url_data3 = "http://terminal2.expedia.com:80/x/hotels?maxhotels=10&radius=10km&location="+arrvlCityCord["lat"]+"%2C"+arrvlCityCord["lng"]+"&sort=price&checkInDate="+dateFly+"&checkOutDate="+dateReturn+"&apikey="+apiKey;
@@ -359,83 +391,6 @@ var estimate = new Estimate({
 
 // post | create a trip
 exports.createTrip = function (req, res){
-    console.log('in create trip');
-
-// trip_name: { type: String, required: false },    // friendly name; 
-//     status: {type: String, required: true},
-//     main_contact: { type: String, required: false }, //sender or receiver
-//     sender_name: { type: String, required: true },
-//     sender_email: { type: String, required: true },
-//     sender_phone: { type: String, required: true },
-//     receiver_name: { type: String, required: true },
-//     receiver_email: { type: String, required: true },
-//     receiver_phone: { type: String, required: true },
-//     trip_date: {type: Date, required: true},
-//     pickup_address: {
-//         address1: { type: String, required: true },
-//         address2: { type: String, required: false },
-//         city: { type: String, required: true },
-//         state: { type: String, required: true },
-//         postcode: { type: String, required: true },
-//     },
-//     dropoff_date: {type: Date, required: false},
-//     dropoff_address: {
-//         address1: { type: String, required: true },
-//         address2: { type: String, required: false },
-//         city: { type: String, required: true },
-//         state: { type: String, required: true },
-//         postcode: { type: String, required: true },
-//     },
-//     trip_notes: {type: String, required: false},
-//     _pets: [{type: mongoose.Schema.Types.ObjectId, ref:'Pet', required: true }],
-//     _estimateID: {type: mongoose.Schema.Types.ObjectId, ref:'Estimate', required: false},
-//     created_at: Date,
-//     updated_at: Date
-        // req.body.main_contact = 'sender';
-        // req.body.sender_name = 'david';
-        // req.body.sender_email = 'doo@asdsad.com';
-        // req.body.sender_phone = '12321321321';
-        // req.body.receiver_name = 'blah';
-        // req.body.receiver_email = 'asdasdsa@asdasdsa.com';
-        // req.body.receiver_phone = 'sdfsdfds';
-        // req.body.trip_date = '2016-12-12';
-        // req.body.pickup_address1 = '123 main street';
-        // req.body.pickup_address2 = '21321321';
-        // req.body.pickup_city = 'q4qwewqqw';
-        // req.body.pickup_state = 'sd';
-        // req.body.pickup_postcode = '2132132';
-
-        // req.body.trip_date = '2016-12-12';
-        // req.body.pickup_address1 = '123 main street';
-        // req.body.pickup_address2 = '21321321';
-        // req.body.pickup_city = 'q4qwewqqw';
-        // req.body.pickup_state = 'sd';
-        // req.body.pickup_postcode = '2132132';
-
-        // req.body.origin_airport_code = 'SFO';
-        // req.body.destination_airport_code = 'JFK';
-
-        // req.body.dropoff_address1 = '23232 main street';
-        // req.body.dropoff_address2 = '21321321';
-        // req.body.dropoff_city = 'q4qwewqqw';
-        // req.body.dropoff_state = 'sd';
-        // req.body.dropoff_postcode = '2132132';
-
-        // req.body.trip_notes = 'asdasdsa';
-
-        // // req.body.estimateId = 'MONGOTHINGHEREsawqrasdsad';
-
-        // req.body.pet_name = 'fido';
-        // req.body.pet_weight = '223';
-        // req.body.pet_notes = 'asdasdsadsa';
-        // req.body.pet_age = '3243';
-        // req.body.pet_species = 'dig';
-        // req.body.pet_medical_notes = 'dead';
-        // req.body.pet_has_carrier = true;
-        // req.body.pet_notes = 'nothing to say';
-
-        console.log('req.body.dropoff_postcode: ', req.body.dropoff_postcode);
-        console.log('req.body.sender_phone: ', req.body.sender_phone);
 
         // now we save the trip
         var trip = new Trip({

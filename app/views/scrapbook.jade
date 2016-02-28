@@ -11,7 +11,7 @@ block content
         .row
           .col-lg-12.text-center
             h2.section-heading #{trip._pets[0].name}
-            h3.section-subheading.text-muted #{trip.pickup_address.city} - #{trip.dropoff_address.city} - #{trip.trip_date}
+            h3.section-subheading.text-muted #{trip.pickup_address.city} - #{trip.dropoff_address.city} - #{date_formatted}
         .row
           .col-lg-12
             ul.timeline
@@ -26,7 +26,7 @@ block content
                         
                             .timeline-panel
                                 .timeline-heading
-                                    h4 #{message.title} - #{message.timestamp}
+                                    h4 #{message.title} - #{message.time}
                                 .timeline-body
                                   p.text-muted
                                     | #{message.text}
@@ -36,7 +36,7 @@ block content
                                 img.img-circle.img-responsive(src='#{message.file}', style="width:156px; height:156px; overflow:hidden; float:center; vertical-align:bottom; margin: 0 auto;", alt='')
                             .timeline-panel
                                 .timeline-heading
-                                    h4 #{message.title} - #{message.timestamp}
+                                    h4 #{message.title} - #{message.time}
                                 .timeline-body
                                     p.text-muted
                                         | #{message.text}
