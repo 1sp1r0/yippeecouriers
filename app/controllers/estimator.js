@@ -11,125 +11,109 @@ var request = require('request');
 var mongoose = require('mongoose');
 
 
-
-
-
-
 exports.createEstimate = function (req, res){
-
 var apiKey = "lcUYhjUA083IM9r8Ep7RA8QybLu2MMBS";
 
-//Close Airports
-// To get airport using a city or location name use the Search Resolution API   Parse response to get element annotated as t:AIRPORT and get the mapping airport code from element 
+    function send_data_get(url, callback){
+       options = {url, json: true};
+       // console.log(url);
+        request.get(options, function (error, response, body) {
+          console.log(body);
+          callback(null, body);
 
-// http://terminal2.expedia.com/x/suggestions/regions?query=Seattle&apikey={INSERT_KEY_HERE}
+        });
+    }
 
-// To get airport based on latitude, longitude use our Geo API. 
+    function process_data_city(url_data, callback){
+        async.map(url_data, send_data_get, function(err, results){
+            // results is now an array of stats for each file 
 
-// http://terminal2.expedia.com/x/geo/features?within=<x>km&lat=<latitude>&lng=<longitude>&type=airport&verbose=3&apikey={INSERT_KEY_HERE}
-function request_send_get(url, callback){
-console.log(url);
-options = {url, json: true};
+            destCityData = results[0];
+            destCity = destCityData["results"][0]["geometry"]["location"];
+            // console.log(destCity);
+            arrvlCityData = results[1];
+            arrvlCity = arrvlCityData["results"][0]["geometry"]["location"];
+            // console.log(arrvlCity);
 
-request.get(options, function (error, response, body) {
-  console.log(JSON.parse(body));
-  callback(null, body);
+            console.log("Return ERR on with City: "+err);
+            callback(null, destCity, arrvlCity);
+            //callback(null, results[0]["results"][0]["formatted_address"], results[1]["results"][0]["formatted_address"]);
 
-});
-
-}
-
-var postalCode = 94024;
-//Price Estimate
-console.log("Test");
-
-async.waterfall([
-    //function findCity(destZipcode, arrvlZipcode, callback){
-      function(callback){
-      //Find City
-      var cities = ['http://maps.googleapis.com/maps/api/geocode/json?address=94024&sensor=true"', 'http://maps.googleapis.com/maps/api/geocode/json?address=&sensor=true']
-
-      async.map(cities, request_send_get, function (e, r) {
-          console.log(r);
         });
 
-          urlDestCity = "http://maps.googleapis.com/maps/api/geocode/json?address=94024&sensor=true";
-          request_send_get(urlDestCity).then(function(data){
-            console.log("Data");
-            callback(null, data);
-          });
-          callback(null, destCityData);
-        }, 
-        function(callback){
 
-          urlArrvlCity = "http://maps.googleapis.com/maps/api/geocode/json?address=&sensor=true";
-          arrvlCityData = request_send_get(urlArrvlCity);
-          callback(null, arrvlCityData);
-        }], function (err, result) {
-     // result now equals 'done' 
-     console.log("good");
-     console.log(result);
+           
 
-});
+    }
 
-      destCity = destCityData["result"]['address_components'][0]['long_name']+", "+destCityData['result']['address_components'][2]['short_name'];
+    function process_data_airport(url_data, callback){
+        console.log("Return on: "+url_data);
+        async.map(url_data, send_data_get, function(err, results){
+            // results is now an array of stats for each file 
+             destAirportData = results[0];
+             destAirport = destAirportData[''];
+             destAirportCords = destAirportData[''];
 
+             arrvlAirportData = results[1];
+             arrvlAirport = arrvlAirportData[''];
+             arrvlAirportCords = arrvlAirportData[''];
+            
+            console.log("Return ERR on with City: "+err);
+            callback(null, destAirport, destAirport);
+        });
 
-      
-      arrvlCity = arrvlCityData['result']['address_components'][0]['long_name']+", "+arrvlCityData['result']['address_components'][2]['short_name'];;
+    }
 
-      callback(null, destCity, arrvlCity);
+    function process_data_flights(url_data, callback){
+        console.log("Return on: "+url_data);
+        async.map(url_data, send_data_get, function(err, results){
+            // results is now an array of stats for each file 
+
+            
+            console.log("Return on: "+url_data);
+            callback(null, results[0], results[1]);
+        });
+
+    }
+
+    function process_data(url_data, callback){
+        console.log("Return on: "+url_data);
+        async.map(url_data, send_data_get, function(err, results){
+            // results is now an array of stats for each file 
+
+            
+            console.log("Return on: "+url_data);
+            callback(null, results[0], results[1]);
+        });
+
+    }
+
+async.waterfall([
+    function(callback) {
+        //Zipcode to City / State / Zip
+        var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address=94024&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address=10001&sensor=true'];
+        process_data_city(url_data, callback);
+       
     },
-    function findAirport(destCity, arrvlCity, callback){
+    function(destCity, arrvlCity, callback) {
+      // Find closest Airport
+        var url_data1 = "http://terminal2.expedia.com:80/x/geo/features?within=100mi&lat="+destCity["lat"]+"&lng="+destCity["lng"]+"&type=airport&apikey="+apiKey;
+        var url_data2 = "http://terminal2.expedia.com:80/x/geo/features?within=100mi&lat="+arrvlCity["lat"]+"&lng="+arrvlCity["lng"]+"&type=airport&apikey="+apiKey;
+        var url_data = [url_data1, url_data2];
+        process_data_airport(url_data, callback);
 
-      urlDestAirport = "http://terminal2.expedia.com/x/suggestions/regions?query="+destCity+"&apikey="+apiKey;
-      destAirportData = request_send_get(urlDestAirport);
-      destAirport = destAirportData[''];
-
-
-      urlArrvlAirport = "http://terminal2.expedia.com/x/suggestions/regions?query="+arrvlCity+"&apikey="+apiKey;
-      arrvlAirportData = request_send_get(urlArrvlAirport);
-      arrvlAirport = arrvlAirportData[''];
-
-
-      callback(null, destAirport, arrvlAirport);
     },
-    function findFlights(destAirport, arrvlAirport, callback){
-
-
-      date = 1;
-      dateReturn = date+1;
-      //There
-      urlFlight = "http://terminal2.expedia.com:80/x/flights/v3/search/1/"+arrvlAirport+"/"+destAirport+"/"+dateReturn+"?apikey="+apiKey;
-      arrvlAirportData = request_send_get(urlArrvlAirport);
-      arrvlAirport = arrvlAirportData['recommended']['trends']['median']
-      //Return
-      urlReturnFlight = "http://terminal2.expedia.com:80/x/flights/v3/search/1/"+destAirport+"/"+arrvlAirport+"/"+dateReturn+"?apikey="+apiKey;
-      arrvlAirportData = request_send_get(urlArrvlAirport);
-      arrvlAirport = arrvlAirportData['recommended']['trends']['median']
-
-      callback(null, 'three');
-    },
-    function findHotel(arg1, callback){
+    function(arg1, arg2, callback) {
         // arg1 now equals 'three'
-        callback(null, 'done');
-    },
-    function calclatePrice(destCity, arrvlCity, callback){
-
-      urlDestAirport = "http://terminal2.expedia.com/x/suggestions/regions?query="+destCity+"&apikey="+apiKey;
-      destAirportData = request_send_get(urlDestAirport);
-
-      urlArrvlAirport = "http://terminal2.expedia.com/x/suggestions/regions?query="+arrvlCity+"&apikey="+apiKey;
-      arrvlAirportData = request_send_get(urlArrvlAirport);
-
-      callback(null, destAirport, arrvlAirport);
-    },
-], function (err, result) {
-   // result now equals 'done' 
-   console.log("good");
-
+        callback(null, arg2, arg1);
+    }
+], function (err, result, result2) {
+    // result now equals 'done'
+    console.log("Finihs" + JSON.stringify(result) + ", "+ JSON.stringify(result2));
 });
+
+res.render('index',{
+        title: 'Yippee Air Courier'
+    });
+
 }
-//Hotel Estimate
-
-
