@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 // create a schema for Pet
 var estimateSchema = new Schema({
     trip_id: { type: Number, required: false },
-    trip_date: { type: Date, required: true },
+    trip_date: { type: String, required: false },
     flight: { 
         cost_range: {
             low: { type: Number, required: true },
