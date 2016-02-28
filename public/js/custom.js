@@ -1,16 +1,16 @@
-function submitEstimate(){
+function requestEstimate(){
     // get the form data
     // there are many ways to get this data using jQuery (you can use the class or id also)
     var formData = {
-        'trip_date'              : $('input[name=trip_date]').val(),
-        'pickup_address1'          : $('input[name=pickup_address1]').val(),
-        'pickup_address2'          : $('input[name=pickup_address2]').val()
+        'dropoff_date'              : $('input[name=estimate_dropoff_date]').val(),
+        'dropoff_postcode'          : $('input[name=estimate_dropoff_postcode]').val(),
+        'pickup_postcode'           : $('input[name=estimate_pickup_postcode]').val()
     };
 
     // process the form
     $.ajax({
         type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
-        url         : '/request-estimate', // the url where we want to POST
+        url         : '/create-estimate', // the url where we want to POST
         data        : formData, // our data object
         dataType    : 'json', // what type of data do we expect back from the server
         encode          : true

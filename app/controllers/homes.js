@@ -320,11 +320,16 @@ exports.createEstimate = function (req, res){
     //     });
     // }
 
+    var startDate = req.params.dropoff_date;
+    var dropoff_postcode = req.params.dropoff_postcode;
+    var pickup_postcode = req.params.pickup_postcode;
+
+    console.log('I made it!', startDate);
 
     async.waterfall([
         function(callback) {
             //Zipcode to City / State / Zip
-            var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address=94024&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address=10001&sensor=true'];
+            var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address=' + dropoff_postcode + '&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address=' + pickup_postcode + '&sensor=true'];
             process_data_city(url_data, callback);
            
         },
@@ -339,7 +344,7 @@ exports.createEstimate = function (req, res){
         function(arrvlAirport, destAirport, arrvlCityCord, callback) {
 
             var dateReturn = "2016-03-05";
-            var dateFly = "2016-03-04";
+            var dateFly = startDate;
             var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
             var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
             var url_data3 = "http://terminal2.expedia.com:80/x/hotels?maxhotels=10&radius=10km&location="+arrvlCityCord["lat"]+"%2C"+arrvlCityCord["lng"]+"&sort=price&checkInDate="+dateFly+"&checkOutDate="+dateReturn+"&apikey="+apiKey;
