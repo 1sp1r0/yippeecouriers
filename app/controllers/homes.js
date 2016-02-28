@@ -120,6 +120,7 @@ exports.createEstimate = function(req, res){
 // post | create an estimate
 exports.createEstimate2 = function (req, res){
     var estimate = new Estimate({
+        id:'123',
         trip_name: "Fly Fluffy! Fly!",
         trip_date: dateFormat('2016-12-16', "dddd, mmmm dS, yyyy"),
         flight: {
@@ -128,17 +129,20 @@ exports.createEstimate2 = function (req, res){
                 high: 498
             },
             orig_url: 'www',
+            miles: 1,
             orig_name: 'Palo Alto, CA',
             orig_coordinates: {
                 lat:  -122.387996,
                 lng: 37.61594
             },
             orig_air_code: 'SFO',
+            orig_carrier: 'g',
             orig_air_coordinates:{
                 lat:  -122.387996,
                 lng: 37.61594
             },
             dest_url: 'www',
+            dest_carrier: 'x',
             dest_name: 'Palo Alto, CA',
             dest_coordinates: {
                 lat: -73.7789,
@@ -153,6 +157,7 @@ exports.createEstimate2 = function (req, res){
         hotel: {
             id: 1,
             url: 'www',
+            name: 'test',
             cost_range: {
                 low: 78,
                 high: 245
@@ -255,34 +260,58 @@ exports.createEstimate2 = function (req, res){
             // results is now an array of stats for each file 
              var destFlightData = results[0];
              // var destLength = Object.keys(destFlightData["offers"]).length;
-             // console.log(destLength);
+            // console.log(destFlightData["legs"][0]["segments"]);
 
             destFlight_legId = destFlightData["legs"][0]["legId"];
             destFlight_totalFare = destFlightData["offers"][0]["totalFare"];
             destFlight_detailsUrl = destFlightData["offers"][0]["detailsUrl"];
+
+            //  if(destFlightData["offers"][0]["segments"][0].hasOwnProperty("distance")){
+            //     destFlight_carrier = destFlightData["legs"][0]["segments"]["airlineName"];
+            //     destFlight_miles = destFlightData["legs"][0]["segments"]["distance"];
+            // }else{
+            //     destFlight_carrier = destFlightData["legs"][0]["segments"][0]["airlineName"];
+            //     destFlight_miles = destFlightData["legs"][0]["segments"][0]["distance"]; 
+            // }
 
              //Insert Model
             estimate['flight']['orig_name'] = destCity;
             estimate['flight']['orig_url'] = destFlight_detailsUrl;
             estimate['flight']['orig_id'] = destFlight_legId;
 
+           
+            // estimate['flight']['orig_name'] = destFlight_carrier;
+        
+
         
 
             var arrvlFlightData = results[1];
             // var arrvlLength = Object.keys(arrvlFlightData["offers"]).length;
 
+            arrvlFlight_detailsUrl = arrvlFlightData["offers"][0]["detailsUrl"];
             arrvlFlight_legId = arrvlFlightData["legs"][0]["legId"];
             arrvlFlight_totalFare = arrvlFlightData["offers"][0]["totalFare"];
-            arrvlFlight_detailsUrl = arrvlFlightData["offers"][0]["detailsUrl"];
+           
+
+            // if(arrvlFlightData["offers"][0]["segments"].hasOwnProperty("distance")){
+            //     arrvlFlight_miles = arrvlFlightData["offers"][0]["segments"]["distance"];
+            //     arrvlFlight_carrier = arrvlFlightData["offers"][0]["segments"]["airlineName"];
+            // }else{
+            //     arrvlFlight_miles = arrvlFlightData["offers"][0]["segments"][0]["distance"];
+            //     arrvlFlight_carrier = arrvlFlightData["offers"][0]["segments"][0]["airlineName"];
+            // }
 
             //Insert Model
             estimate['flight']['dest_name'] = arrvlCity;
             estimate['flight']['dest_url'] = arrvlFlight_detailsUrl;
             estimate['flight']['dest_id'] = arrvlFlight_legId;
 
+            // estimate['flight']['dest_name'] = arrvlFlight_carrier;
+
 
             estimate['flight']['cost_range']['low'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
             estimate['flight']['cost_range']['high'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
+            // estimate['flight']['miles'] = parseInt(destFlight_miles) + parseInt(arrvlFlight_miles);
 
             console.log(results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"]);
             hotel_id = results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"];
@@ -293,6 +322,9 @@ exports.createEstimate2 = function (req, res){
             hotelCord = results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["GeoLocation"];
             hotelCost = results[2]["HotelInfoList"]["HotelInfo"][9]["Price"]["TotalRate"]["Value"];
             hotelURL = results[2]["HotelInfoList"]["HotelInfo"][9]["DetailsUrl"];
+            hotelName = results[2]["HotelInfoList"]["HotelInfo"][9]["Name"];
+
+            hotelLocation = results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["City"] + ", " + results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["Province"];
 
             estimate['hotel']['hotel_coordinates']  = {
                 lat: hotelCord['Latitude'], 
@@ -302,7 +334,9 @@ exports.createEstimate2 = function (req, res){
             estimate['hotel']['cost_range']['low'] = hotelCost;
             estimate['hotel']['cost_range']['high'] = hotelCost;
 
+            estimate['hotel']['name'] = hotelName;
             estimate['hotel']['url'] = hotelURL;
+            estimate['hotel']['location'] = hotelLocation;
 
             totalcost = parseInt(hotelCost) + parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare) + 300;
             estimate['total_fee']['low'] = totalcost;
@@ -348,7 +382,7 @@ exports.createEstimate2 = function (req, res){
             var d = new Date(startDate);
             console.log(d);
 
-            var day = (d.getDate()+1).toString();
+            var day = (d.getDate()+2).toString();
             day = day.length > 1 ? day : '0' + day;
 
             var month = (d.getMonth()+1).toString();
@@ -379,13 +413,18 @@ exports.createEstimate2 = function (req, res){
             }else if(error){
                 console.log("error: " + error);
             }
+
+        res.json({
+        'estimate_range': "$"+estimate['total_fee']['high'],
+        'flight_cost': "$"+estimate['flight']['cost_range']['high'],
+        'pet_fee': '$100',
+        'hotel_cost': Math.round(estimate['hotel']['cost_range']['high']),
+        'yipee_fee': '$200',
+        'other_fee': '$25'
+    });
         });
     });
 
-
-    res.render('index',{
-        title: 'Yippee Air Courier'
-    });
 }
 
 
