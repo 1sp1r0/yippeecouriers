@@ -222,9 +222,25 @@ exports.createEstimate = function (req, res){
         // console.log("Return on: "+url_data);
         async.map(url_data, send_data_get, function(err, results){
             // results is now an array of stats for each file 
+
+            var keys = Object.keys( obj );
+
+            for( var i = 0,length = keys.length; i < length; i++ ) {
+                if(typeof results[0][0]["tags"]["common"]hasOwnProperty("majorAirport"0;
+            }
+
+            while(1){
+
+            var test = results[0][0]["tags"]["common"]["majorAirport"];
+
+            }
+
             destAirportData = results[0][0];
             // console.log(destAirportData);
+            // destAirportData["tags"]["common"] ["majorAirport"]
 
+
+            
             destAirport = destAirportData["tags"]["iata"]["airportCode"]["value"];
             destAirportCord = destAirportData["position"]["coordinates"];
 
