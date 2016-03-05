@@ -1,607 +1,628 @@
 extends layout 
 
 block content
-    // Header
-    header
-      .container
-        .intro-text
-          .intro-heading We Make Pets Fly!
-          .intro-lead-in We'll hand-carry your furry friends on the plane and provide updates every step the way.
-          a.portfolio-link(href='#tripModal', data-toggle='modal')
-              button.btn.btn-xl Request Trip
-    // About Section
-    section.bg-light-gray#about
-      .container
-        .row
-          .col-lg-12.text-center
-            h2.section-heading A Modern Pet Courier
-            h3.section-subheading.text-muted Our travel experts will hand-carry your pet to destinations worldwide. You'll be able to call us anytime -- day or night -- to see how things are going.
-        .row.text-center
-          .col-md-4
-            span.fa-stack.fa-4x
-              i.fa.fa-circle.fa-stack-2x.text-primary
-              i.fa.fa-smile-o.fa-stack-1x.fa-inverse
-            h4.service-heading Single Courier Chain of Custody
-            p.text-muted
-              | No faceless airline agents. The same person picks up and drops off your pet, end-to-end. You'll be able to reach them via phone or text throughout the journey.
-          .col-md-4
-            span.fa-stack.fa-4x
-              i.fa.fa-circle.fa-stack-2x.text-primary
-              i.fa.fa-bell.fa-stack-1x.fa-inverse
-            h4.service-heading Constant Progress Updates
-            p.text-muted
-              | Your courier will update you throughout the journey via text message, sending you an update every time a milestone is completed (e.g. flight landed)
-          .col-md-4
-            span.fa-stack.fa-4x
-              i.fa.fa-circle.fa-stack-2x.text-primary
-              i.fa.fa-camera.fa-stack-1x.fa-inverse
-            h4.service-heading Photographic Proof of Delivery and Trip Scrapbook
-            p.text-muted
-              | We'll take a picture of your pet at the delivery location and send you a scrapbook to commemorate the trip.
-    
-    // Timeline - How it Works
-    section#how-it-works
-      .container
-        .row
-          .col-lg-12.text-center
-            h2.section-heading How It Works
-            h3.section-subheading.text-muted We'll pick up your pet at home and hand deliver them to a friend or family member, never leaving their side.
-        .row
-          .col-lg-12
-            ul.timeline
-              li
-                .timeline-image
-                  img.img-circle.img-responsive(src='img/about/1.jpg', alt='')
-                .timeline-panel
-                  .timeline-heading
-                    h4 1. Get Estimate
-                    h4.subheading Plan the route and date
-                  .timeline-body
-                    p.text-muted
-                      | We have a flat-rate fee and can send you an immediate estimate of the costs, based on the date and route. 
-              li.timeline-inverted
-                .timeline-image
-                  img.img-circle.img-responsive(src='img/about/2.jpg', alt='')
-                .timeline-panel
-                  .timeline-heading
-                    h4 2. Meet Our Couriers
-                    h4.subheading Pet-lovers and travel geeks
-                  .timeline-body
-                    p.text-muted
-                      | We'll schedule a video call with your courier so you can meet them and discuss the flight plan, as well as pickup and dropoff specifics. All of our carriers are background-checked, pet lovers and have a passion for travel!
-              li
-                .timeline-image
-                  img.img-circle.img-responsive(src='img/about/3.jpg', alt='')
-                .timeline-panel
-                  .timeline-heading
-                    h4 3. Pickup
-                    h4.subheading We'll come to you
-                  .timeline-body
-                    p.text-muted
-                      | We'll pickup your pet at an address and time convenient to you and take them straight to the airport! You're encouraged to pack their favorite foods, toys or other accessories!
-              li.timeline-inverted
-                .timeline-image
-                  img.img-circle.img-responsive(src='img/about/4.jpg', alt='')
-                .timeline-panel
-                  .timeline-heading
-                    h4 4. Airport and Onboard
-                    h4.subheading Stay constantly connected to your pet
-                  .timeline-body
-                    p.text-muted
-                      | We'll keep your pet company at all times, guiding them through the travel experience. All of our carriers are familiar with airport and airline policies and will navigate them to provide the best experience possible for your pet. We'll send you updates when the flight takes off, enroute and on arrival, so you're never out of touch. 
-              li
-                .timeline-image
-                  img.img-circle.img-responsive(src='img/about/5.jpg', alt='')
-                .timeline-panel
-                  .timeline-heading
-                    h4 5. Arrival
-                    h4.subheading Direct to your desired destination
-                  .timeline-body
-                    p.text-muted
-                      | We'll use dedicated car services to give your pet the speediest and most comfortable trip possible. We'll also coordinate with you pre-flight to ensure a smooth delivery, photographically commemorating the handoff to your pet's companion at the destination.
-              li.timeline-inverted
-                .timeline-image
-                  img.img-circle.img-responsive(src='img/about/6.jpg', alt='')
-                .timeline-panel
-                  .timeline-heading
-                    h4 6. Commemorate and Celebrate
-                    h4.subheading We'll send you a scrapbook for you to share!
-                  .timeline-body
-                    p.text-muted
-                      | Tell your friends about your jetsetting pet! We'll assemble a scrapbook of all the status updates and send you a link upon the completion of your pet's journey.
-              li.timeline-inverted
-                .timeline-image
-                  h4
-                    |  Let Their
-                    br
-                    | Adventure
-                    br
-                    | Begin!
-
-    // Scrapbook Section
-    section#scrapbook.bg-light-gray
-      .container
-        .row
-          .col-lg-12.text-center
-            h2.section-heading A Scrapbook for your Pet's Journey
-            h3.section-subheading.text-muted We'll document the experience end-to-end, send you updates along the way and send you a link to a scrapbook that you can share with friends and family.
-        .row
-          .col-md-4.col-sm-6.portfolio-item
-            a.portfolio-link(href='#portfolioModal1', data-toggle='modal')
-              .portfolio-hover
-                .portfolio-hover-content
-                  i.fa.fa-plus.fa-3x
-              img.img-responsive(src='img/portfolio/rusty1-preview.png', alt='')
-            .portfolio-caption
-              h4 Rusty
-              p.text-muted San Francisco - Miami
-          .col-md-4.col-sm-6.portfolio-item
-            a.portfolio-link(href='#portfolioModal2', data-toggle='modal')
-              .portfolio-hover
-                .portfolio-hover-content
-                  i.fa.fa-plus.fa-3x
-              img.img-responsive(src='img/portfolio/pouncer2-preview.png', alt='')
-            .portfolio-caption
-              h4 Pouncer
-              p.text-muted Seattle - Boston
-          .col-md-4.col-sm-6.portfolio-item
-            a.portfolio-link(href='#portfolioModal3', data-toggle='modal')
-              .portfolio-hover
-                .portfolio-hover-content
-                  i.fa.fa-plus.fa-3x
-              img.img-responsive(src='img/portfolio/dolly3-preview.png', alt='')
-            .portfolio-caption
-              h4 Dolly
-              p.text-muted Chicago - Dallas
-          .col-md-4.col-sm-6.portfolio-item
-            a.portfolio-link(href='#portfolioModal4', data-toggle='modal')
-              .portfolio-hover
-                .portfolio-hover-content
-                  i.fa.fa-plus.fa-3x
-              img.img-responsive(src='img/portfolio/charlotte4-preview.png', alt='')
-            .portfolio-caption
-              h4 Charlotte
-              p.text-muted Phoenix - Philadelphia
-          .col-md-4.col-sm-6.portfolio-item
-            a.portfolio-link(href='#portfolioModal5', data-toggle='modal')
-              .portfolio-hover
-                .portfolio-hover-content
-                  i.fa.fa-plus.fa-3x
-              img.img-responsive(src='img/portfolio/gregory5-preview.png', alt='')
-            .portfolio-caption
-              h4 Gregory
-              p.text-muted Los Angeles - New York
-          .col-md-4.col-sm-6.portfolio-item
-            a.portfolio-link(href='#portfolioModal6', data-toggle='modal')
-              .portfolio-hover
-                .portfolio-hover-content
-                  i.fa.fa-plus.fa-3x
-              img.img-responsive(src='img/portfolio/max6-preview.png', alt='')
-            .portfolio-caption
-              h4 Max
-              p.text-muted Portland - Washington D.C.
-    
-    // Estimate Section
-    section#estimate.bg-light-gray
-        .container
-            .row
-                .col-lg-12.text-center
-                    h2.section-heading Pet Travel Cost Estimator
-                    h3.section-subheading.text-muted Enter your pickup and delivery details and we'll send you an estimate of the costs.
-            .row
-                form(role='form', id="estimate-form")
-                    .col-md-12
-                        h4.estimate-label Pickup Date
-                    .col-md-12
-                        .form-group
-                          #datetimepicker.input-append.date
-                            input.form-control#dp(type='text', name="estimate_trip_date", value="2016-03-16", placeholder='Pickup Date', date-format='yyyy-mm-dd')
-                          //- span.add-on    
-                          //- #datetimepicker1.input-group.date
-                          //-     input.form-control(type='text', name="estimate_pickup_date", placeholder='Drop Off Date')
-                          //-       span.input-group-addon
-                          //-         span.glyphicon.glyphicon-calendar                          
-                            //- input.form-control(type='text', name="estimate_pickup_date", placeholder='Drop Off Date')
-                    .col-md-6
-                        h4.estimate-label Pickup Address
-                        .form-group
-                            input.form-control(type='text', name="estimate_pickup_address1", placeholder='Address 1')
-                        .form-group
-                            input.form-control(type='text', name="estimate_pickup_address2", placeholder='Address 2')
-                        .form-group
-                            input.form-control(type='text', name="estimate_pickup_city", placeholder='City')
-                        .row
-                            .col-md-6
-                                .form-group
-                                    input.form-control(type='text', name="estimate_pickup_state", placeholder='State')
-                            .col-md-6
-                                .form-group
-                                    input.form-control(type='text', name="estimate_pickup_postcode", placeholder='Postal Code')
-                    .col-md-6
-                        h4.estimate-label Dropoff Address
-                        .form-group
-                            input.form-control(type='text', name="estimate_dropoff_address1", placeholder='Address 1')
-                        .form-group
-                            input.form-control(type='text', name="estimate_dropoff_address2", placeholder='Address 2')
-                        .form-group
-                            input.form-control(type='text', name="estimate_dropoff_city", placeholder='City')
-                        .row
-                            .col-md-6
-                                .form-group
-                                    input.form-control(type='text', name="estimate_dropoff_state", placeholder='State')
-                            .col-md-6
-                                .form-group
-                                    input.form-control(type='text', name="estimate_dropoff_postcode", placeholder='Postal Code')
-                    .row.text-center
-                        .col-lg-3.col-lg-offset-3.col-md-4.col-md-offset-2
-                            a.portfolio-link(href='#estimateModal', data-toggle='modal')
-                                button.btn.btn-xl.modal-button(onClick='requestEstimate()') Request Estimate
-                        .col-lg-3.col-md-4
-                            a.portfolio-link(href='#tripModal', data-toggle='modal')
-                                button.btn.btn-xl.modal-button(onClick='transferFormEntries()') Request Trip
-            .row
-              .col-lg-8.col-lg-offset-2.text-center
-                p.large.text-muted
-                  | Travel costs fluctuate, but our couriers will work with you to find the right route for your pet. 
-    // Contact Section
-    section#contact-yippee.bg-light-gray
-      .container
-        .row
-          .col-lg-12.text-center
-            h2.section-heading Contact Us
-            h3.section-subheading.text-muted
-                span Have other questions? Drop us a line! 
-                a(href='mailto:fly@yippeeair.com') fly@yippeeair.com
-            h2
-                a.portfolio-link(href='mailto:fly@yippeeair.com', data-toggle='modal')
-                    button.btn.btn-xl Email Yippee
-    footer
-      .container
-        .row
-          .col-md-4
-            span.copyright Copyright © Yippee Air 2016
-          .col-md-4
-            ul.list-inline.social-buttons
-              li
-                a(href='#')
-                  i.fa.fa-twitter
-              li
-                a(href='#')
-                  i.fa.fa-facebook
-              li
-                a(href='#')
-                  i.fa.fa-linkedin
-          .col-md-4
-            ul.list-inline.quicklinks
-              li
-                a(href='#') Privacy Policy
-              li
-                a(href='#') Terms of Use
-    // Portfolio Modals
-    // Use the modals below to showcase details about your portfolio projects!
-    // Portfolio Modal 1
-    #portfolioModal1.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
-      .modal-content
-        .close-modal(data-dismiss='modal')
-          .lr
-            .rl
-        .container
-          .row
-            .col-lg-8.col-lg-offset-2
-              .modal-body
-                // Project Details Go Here
-                h2 Rusty - Puppy of Leisure
-                p.item-intro.text-muted Rusty commutes between his mom and dad on opposite coasts.
-                img.img-responsive.img-centered(src='img/portfolio/rusty1.png', alt='')
-                p
-                  | Rusty is very well behaved and always gets an exit row for his long legs.
-                p
-                  strong Want to get a quote for your furry friend? 
-                   
-                  a(href='https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc') Click Here
-                  
-                ul.list-inline
-                  li Date: July 2014
-                  li Client: John Macy
-                  li Category: Dog Travel
-                button.btn.btn-primary(type='button', data-dismiss='modal')
-                  i.fa.fa-times
-                  |  Close Project
-    // Portfolio Modal 2
-    #portfolioModal2.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
-      .modal-content
-        .close-modal(data-dismiss='modal')
-          .lr
-            .rl
-        .container
-          .row
-            .col-lg-8.col-lg-offset-2
-              .modal-body
-                h2 Pouncer - Small and Sassy
-                p.item-intro.text-muted Pouncer needs a break from the rain from time to time to visit her friends on the East Coast.
-                img.img-responsive.img-centered(src='img/portfolio/pouncer2.png', alt='')
-                p
-                  | Pouncer always chases her toy around the terminal before she boards her transcontinental flights
-                p
-                  strong Want to get a quote for your furry friend? 
-                   
-                  a(href='https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc') Click Here
-                  
-                ul.list-inline
-                  li Date: September 2015
-                  li Client: Deborah Chang
-                  li Category: Cat Travel
-                button.btn.btn-primary(type='button', data-dismiss='modal')
-                  i.fa.fa-times
-                  |  Close Project
-    // Portfolio Modal 3
-    #portfolioModal3.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
-      .modal-content
-        .close-modal(data-dismiss='modal')
-          .lr
-            .rl
-        .container
-          .row
-            .col-lg-8.col-lg-offset-2
-              .modal-body
-                // Project Details Go Here
-                h2 Dolly
-                p.item-intro.text-muted A Busy City Girl
-                img.img-responsive.img-centered(src='img/portfolio/dolly3.png', alt='')
-                p
-                  | Dolly does some part time modeling and needs to make photo shoots from time to time. She loves the limelight.
-                p
-                  strong Want to get a quote for your furry friend? 
-                   
-                  a(href='https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc') Click Here
-                  
-                ul.list-inline
-                  li Date: January 2015
-                  li Client: Arlene Taylor
-                  li Category: Dog Travel
-                button.btn.btn-primary(type='button', data-dismiss='modal')
-                  i.fa.fa-times
-                  |  Close Project
-    // Portfolio Modal 4
-    #portfolioModal4.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
-      .modal-content
-        .close-modal(data-dismiss='modal')
-          .lr
-            .rl
-        .container
-          .row
-            .col-lg-8.col-lg-offset-2
-              .modal-body
-                // Project Details Go Here
-                h2 Charlotte
-                p.item-intro.text-muted Queen of the Desert
-                img.img-responsive.img-centered(src='img/portfolio/charlotte4.png', alt='')
-                p
-                  | Charlotte visits her owner at University of Pennsylvania when she's not chasing birds in the Arizona Desert.
-                p
-                  strong Want to get a quote for your furry friend? 
-                   
-                  a(href='https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc') Click Here
-                  
-                ul.list-inline
-                  li Date: April 2015
-                  li Client: Bernardo Roriz
-                  li Category: Cat Travel
-                button.btn.btn-primary(type='button', data-dismiss='modal')
-                  i.fa.fa-times
-                  |  Close Project
-    // Portfolio Modal 5
-    #portfolioModal5.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
-      .modal-content
-        .close-modal(data-dismiss='modal')
-          .lr
-            .rl
-        .container
-          .row
-            .col-lg-8.col-lg-offset-2
-              .modal-body
-                // Project Details Go Here
-                h2 Gregory
-                p.item-intro.text-muted The Foodie
-                img.img-responsive.img-centered(src='img/portfolio/gregory5.png', alt='')
-                p
-                  | Gregory has a special diet and makes trips to New York for culinary excursions.
-                p
-                  strong Want to get a quote for your furry friend? 
-                   
-                  a(href='https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc') Click Here
-                  2
-                ul.list-inline
-                  li Date: June 2015
-                  li Client: Don Martin
-                  li Category: Rabbit Travel
-                button.btn.btn-primary(type='button', data-dismiss='modal')
-                  i.fa.fa-times
-                  |  Close Project
-    // Portfolio Modal 6
-    #portfolioModal6.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
-      .modal-content
-        .close-modal(data-dismiss='modal')
-          .lr
-            .rl
-        .container
-          .row
-            .col-lg-8.col-lg-offset-2
-              .modal-body
-                // Project Details Go Here
-                h2 Max
-                p.item-intro.text-muted Always Up for a New Adventure
-                img.img-responsive.img-centered(src='img/portfolio/max6.png', alt='')
-                p
-                  | Max's dad travels all the time, so sometimes Max tags along and meets up for a run on the beach.
-                p
-                  strong Want to get a quote for your furry friend? 
-                   
-                  a(href='https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc') Click Here
-                  
-                ul.list-inline
-                  li Date: July 2014
-                  li Client: John Macy
-                  li Category: Dog Travel
-                button.btn.btn-primary(type='button', data-dismiss='modal')
-                  i.fa.fa-times
-                  |  Close Project
-    // Trip Modal
-    #tripModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
-      .modal-content
-        .close-modal(data-dismiss='modal')
-          .lr
-            .rl
-        .container
-          .row
-            .col-lg-8.col-lg-offset-2
-              .modal-body
-                h2 Request Trip
-                form(role='form')
-                    .row
-                        .col-md-12
-                            .form-group
-                                input.form-control(type='text', name="trip_date", placeholder='Pick Up Date')
-                    .row
-                        .col-md-6
-                            h4 Pickup Address
-                            .form-group
-                                input.form-control(type='text', name="pickup_address1", placeholder='Address 1')
-                            .form-group
-                                input.form-control(type='text', name="pickup_address2", placeholder='Address 2')
-                            .form-group
-                                input.form-control(type='text', name="pickup_city", placeholder='City')
-                            .row
-                                .col-md-6
-                                    .form-group
-                                        input.form-control(type='text', name="pickup_state", placeholder='State')
-                                .col-md-6
-                                    .form-group
-                                        input.form-control(type='text', name="pickup_postcode", placeholder='Postal Code')
-                        .col-md-6
-                            h4 Dropoff Address
-                            .form-group
-                                input.form-control(type='text', name="dropoff_address1", placeholder='Address 1')
-                            .form-group
-                                input.form-control(type='text', name="dropoff_address2", placeholder='Address 2')
-                            .form-group
-                                input.form-control(type='text', name="dropoff_city", placeholder='City')
-                            .row
-                                .col-md-6
-                                    .form-group
-                                        input.form-control(type='text', name="dropoff_state", placeholder='State')
-                                .col-md-6
-                                    .form-group
-                                        input.form-control(type='text', name="dropoff_postcode", placeholder='Postal Code')
-                    .row
-                        h4 Pet Info
-                        .col-md-4
-                            .form-group
-                                input.form-control(type='text', name="pet_name", placeholder='Enter Pet Name')
-                        .col-md-4
-                            .form-group
-                                input.form-control(type='text', name="pet_weight", placeholder='Enter Pet Weight')
-                        .col-md-4
-                            .form-group
-                                input.form-control(type='text', name="pet_age", placeholder='Enter Pet Age')
-                    .row
-                        .col-md-12
-                            .form-group
-                                input.form-control(type='text', name="pet_notes", placeholder='Enter Pet Notes')
-                    .row
-                        .col-md-12
-                            .form-group
-                                input.form-control(type='text', name="trip_notes", placeholder='Enter Trip Notes')
-                    .row
-                        .col-md-6
-                            h4 Sender Contact
-                            .form-group
-                                input.form-control(type='text', name="sender_name", placeholder='Enter Sender\'s Full Name')
-                            .form-group
-                                input.form-control(type='text', name="sender_email", placeholder='Enter Sender\'s Email')
-                            .form-group
-                                input.form-control(type='text', name="sender_phone", placeholder='Enter Sender\'s Phone Number')
-                        .col-md-6
-                            h4 Receiver Contact
-                            .form-group
-                                input.form-control(type='text', name="receiver_name", placeholder='Enter Receiver\'s Full Name')
-                            .form-group
-                                input.form-control(type='text', name="receiver_email", placeholder='Enter Receiver\'s Email')
-                            .form-group
-                                input.form-control(type='text', name="receiver_phone", placeholder='Enter Receiver\'s Phone Number')
-                    .row
-                        .col-md-12
-                            p
-                                span#primary-contact-label Who is the primary contact for this trip? 
-                                input(type='radio', name='main_contact', value='sender')
-                                span#sender-label Sender 
-                                input(type='radio', name='main_contact', value='receiver')
-                                span#receiver-label Receiver
-                    input#estimate-id(type='hidden', name='estimate_id', value='test-estimate-id')
-                    .col-lg-12.text-center
-                        button.btn.btn-xl(onClick='requestTrip()') Request Trip
-    // Estimate Modal
-    #estimateModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
-      .modal-content
-        .close-modal(data-dismiss='modal')
-          .lr
-            .rl
-        .container
-          .row
-            .col-lg-8.col-lg-offset-2
-              .modal-body
-
-                h2 Yippee Estimate
-                table.table
-                    tr
-                        td.lead Flight
-                        td.lead Hotel
-                        td.lead Fees
-                    tr
-                        td 
-                            span Ticket 
-
-                            span#flight-cost 
-                        td 
-                            span Hotel 
-                            span#hotel-cost 
-                        td 
-                            span Yippee 
-                            span#yipee-fee 
-                    tr
-                        td 
-                            span Pet Charge 
-                            span#pet-fee 
-                        td
-                        td 
-                            span Other 
-                            span#other-fee 
-                h4
-                    span Your Total Estimated Pet Travel Cost is 
-                    span#estimate-range Please wait while your estimate is calculated.
+        // Header
+        header
+            .container
+                .intro-text
+                    .intro-heading We Make Pets Fly!
+                    .intro-lead-in We'll hand-carry your furry friends to destinations worldwide.
+                    a.portfolio-link(href='#tripModal', data-toggle='modal')
+                            button.btn.btn-xl Request Trip
+        // About Section
+        section.bg-light-gray#about
+            .container
                 .row
                     .col-lg-12.text-center
+                        h2.section-heading A Modern Pet Courier
+                        h3.section-subheading.text-muted Our travel experts will hand-carry your pet to destinations worldwide. You'll be able to call/text us anytime -- day or night -- to see how things are going.
+                .row.text-center
+                    .col-md-4
+                        span.fa-stack.fa-4x
+                            i.fa.fa-circle.fa-stack-2x.text-primary
+                            i.fa.fa-smile-o.fa-stack-1x.fa-inverse
+                        h4.service-heading Single Courier Chain of Custody
+                        p.text-muted
+                            | No faceless airline agents. The same person picks up and drops off your pet, end-to-end. You'll be able to reach them via phone or text throughout the journey.
+                    .col-md-4
+                        span.fa-stack.fa-4x
+                            i.fa.fa-circle.fa-stack-2x.text-primary
+                            i.fa.fa-bell.fa-stack-1x.fa-inverse
+                        h4.service-heading Constant Progress Updates
+                        p.text-muted
+                            | Your courier will update you throughout the journey via text &amp; photo message, sending you an update every time a milestone is completed (e.g. flight landed).
+                    .col-md-4
+                        span.fa-stack.fa-4x
+                            i.fa.fa-circle.fa-stack-2x.text-primary
+                            i.fa.fa-camera.fa-stack-1x.fa-inverse
+                        h4.service-heading Fixed, Predictable Costs
+                        p.text-muted
+                            | We charge actual trip costs plus a flat service fee. You'll pay for our airline ticket and hotel (if needed), but won't be subject to random, unpredictable fees.
+        
+        // Timeline - How it Works
+        section#how-it-works
+            .container
+                .row
+                    .col-lg-12.text-center
+                        h2.section-heading How It Works
+                        h3.section-subheading.text-muted We'll pick up your pet at home and hand deliver them to a friend or family member, never leaving their side.
+                .row
+                    .col-lg-12
+                        ul.timeline
+                            li
+                                .timeline-image
+                                    img.img-circle.img-responsive(src='img/about/1.jpg', alt='')
+                                .timeline-panel
+                                    .timeline-heading
+                                        h4 1. Get Quote
+                                        h4.subheading Plan the route and date
+                                    .timeline-body
+                                        p.text-muted
+                                            | After you submit your trip request, we'll provide you with a detailed quote for your trip, including actual travel costs plus our fixed fee ( $200 to $600, depending on destination).
+                            li.timeline-inverted
+                                .timeline-image
+                                    img.img-circle.img-responsive(src='img/about/2.jpg', alt='')
+                                .timeline-panel
+                                    .timeline-heading
+                                        h4 2. Meet Your Courier
+                                        h4.subheading Pet-lovers and travel geeks
+                                    .timeline-body
+                                        p.text-muted
+                                            | We'll schedule a video call with your courier so you can meet them and discuss the flight plan, any special needs, as well as pickup and dropoff specifics. All of our carriers are background-checked, pet lovers and have a passion for travel!
+                            li
+                                .timeline-image
+                                    img.img-circle.img-responsive(src='img/about/3.jpg', alt='')
+                                .timeline-panel
+                                    .timeline-heading
+                                        h4 3. Pickup
+                                        h4.subheading We'll come to you
+                                    .timeline-body
+                                        p.text-muted
+                                            | We'll pickup your pet at an address and time convenient to you and take them straight to the airport! You're encouraged to pack their favorite foods, toys or other accessories!
+                            li.timeline-inverted
+                                .timeline-image
+                                    img.img-circle.img-responsive(src='img/about/4.jpg', alt='')
+                                .timeline-panel
+                                    .timeline-heading
+                                        h4 4. Airport and Onboard
+                                        h4.subheading Stay constantly connected to your pet
+                                    .timeline-body
+                                        p.text-muted
+                                            | We'll keep your pet company at all times, guiding them through the travel experience. All of our carriers are familiar with airport and airline policies and will navigate them to provide the best experience possible for your pet. We'll send you updates when the flight takes off, enroute and on arrival, so you're never out of touch. 
+                            li
+                                .timeline-image
+                                    img.img-circle.img-responsive(src='img/about/5.jpg', alt='')
+                                .timeline-panel
+                                    .timeline-heading
+                                        h4 5. Arrival
+                                        h4.subheading Direct to your desired destination
+                                    .timeline-body
+                                        p.text-muted
+                                            | We'll use dedicated car services to give your pet the speediest and most comfortable trip possible. We'll also coordinate with you pre-flight to ensure a smooth delivery, photographically commemorating the handoff to your pet's companion at the destination.
+                            li.timeline-inverted
+                                .timeline-image
+                                    img.img-circle.img-responsive(src='img/about/6.jpg', alt='')
+                                .timeline-panel
+                                    .timeline-heading
+                                        h4 6. Commemorate and Celebrate
+                                        h4.subheading We'll send you a scrapbook for you to share!
+                                    .timeline-body
+                                        p.text-muted
+                                            | Tell your friends about your jetsetting pet! We'll assemble a scrapbook of all the status updates and send you a link upon the completion of your pet's journey.
+                            li.timeline-inverted
+                                .timeline-image
+                                    h4
+                                        |  Let Their
+                                        br
+                                        | Adventure
+                                        br
+                                        | Begin!
 
-                        //- a.portfolio-link(href='#tripModal', data-toggle='modal')
-                        button#continue.btn.btn-xl(onClick='modalSwap()') Continue
-    // jQuery
-    script(src='/js/jquery.js')
-    // Bootstrap Core JavaScript
-    script(src='/js/bootstrap.min.js')
-    // Plugin JavaScript
-    script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js')
-    script(src='/js/classie.js')
-    script(src='/js/cbpAnimatedHeader.js')
-    // jQuery
-    script(src='/js/bootstrap-datepicker.js')
-    // Contact Form JavaScript
-    script(src='/js/jqBootstrapValidation.js')
-    script(src='/js/contact_me.js')
-    // Custom Theme JavaScript
-    script(src='/js/agency.js')
-    // Custom Yippee JavaScript
-    script(src='/js/custom.js')
-    script(type='text/javascript').
-      $('#dp').datepicker({
-      format: 'yyyy-mm-dd'
-      });
+        // Scrapbook Section
+        section#scrapbook.bg-light-gray
+            .container
+                .row
+                    .col-lg-12.text-center
+                        h2.section-heading Our Furry Friends
+                        h3.section-subheading.text-muted We've captured a few profiles of pets who travel with us regularly. We look forward to welcoming your pet onboard! 
+                .row
+                    .col-md-4.col-sm-6.portfolio-item
+                        a.portfolio-link(href='#portfolioModal1', data-toggle='modal')
+                            .portfolio-hover
+                                .portfolio-hover-content
+                                    i.fa.fa-plus.fa-3x
+                            img.img-responsive(src='img/portfolio/rusty1-preview.png', alt='')
+                        .portfolio-caption
+                            h4 Rusty
+                            p.text-muted San Francisco - Miami
+                    .col-md-4.col-sm-6.portfolio-item
+                        a.portfolio-link(href='#portfolioModal2', data-toggle='modal')
+                            .portfolio-hover
+                                .portfolio-hover-content
+                                    i.fa.fa-plus.fa-3x
+                            img.img-responsive(src='img/portfolio/pouncer2-preview.png', alt='')
+                        .portfolio-caption
+                            h4 Pouncer
+                            p.text-muted Seattle - London
+                    .col-md-4.col-sm-6.portfolio-item
+                        a.portfolio-link(href='#portfolioModal3', data-toggle='modal')
+                            .portfolio-hover
+                                .portfolio-hover-content
+                                    i.fa.fa-plus.fa-3x
+                            img.img-responsive(src='img/portfolio/dolly3-preview.png', alt='')
+                        .portfolio-caption
+                            h4 Dolly
+                            p.text-muted Chicago - Dallas
+                    .col-md-4.col-sm-6.portfolio-item
+                        a.portfolio-link(href='#portfolioModal4', data-toggle='modal')
+                            .portfolio-hover
+                                .portfolio-hover-content
+                                    i.fa.fa-plus.fa-3x
+                            img.img-responsive(src='img/portfolio/charlotte4-preview.png', alt='')
+                        .portfolio-caption
+                            h4 Charlotte
+                            p.text-muted Los Angeles - Hong Kong
+                    .col-md-4.col-sm-6.portfolio-item
+                        a.portfolio-link(href='#portfolioModal5', data-toggle='modal')
+                            .portfolio-hover
+                                .portfolio-hover-content
+                                    i.fa.fa-plus.fa-3x
+                            img.img-responsive(src='img/portfolio/gregory5-preview.png', alt='')
+                        .portfolio-caption
+                            h4 Gregory
+                            p.text-muted Phoenix - New York
+                    .col-md-4.col-sm-6.portfolio-item
+                        a.portfolio-link(href='#portfolioModal6', data-toggle='modal')
+                            .portfolio-hover
+                                .portfolio-hover-content
+                                    i.fa.fa-plus.fa-3x
+                            img.img-responsive(src='img/portfolio/max6-preview.png', alt='')
+                        .portfolio-caption
+                            h4 Max
+                            p.text-muted Portland - Washington D.C.
+
+        // Fees Section
+        section#fees.bg-light-gray
+            .container
+                .row
+                    .col-lg-12.text-center
+                        h2.section-heading Our Fees &amp; Service Area
+                        h3.section-subheading.text-muted Our pricing is simple: we charge for actual travel costs plus a flat service fee. Travel costs include roundtrip airfare, airline pet fees, an overnight hotel (if needed) and ground transport. 
+
+                        p TABLE GOES HERE
+                        p Actual travel costs plus...
+                        p Domestic 
+                        p 72 hours notice: $200
+                        p 72 hours but &gt; 24 hours: $400
+                        p 24 hours $500
+                        p International:
+                        p 72 hours notice: $300
+                        p 72 hours but &gt; 24 hours: $500
+                        p 24 hours: $600
+                        
+                        p We have couriers based in most major US cities, and can travel to destinations worldwide. We offer pickup throughout the United States, but smaller cities typically incur an additional expense for the courier to travel from the nearest major city. 
+        
+        // Estimate Section
+        section#estimate.bg-light-gray
+                .container
+                        .row
+                                .col-lg-12.text-center
+                                        h2.section-heading Request Estimate
+                                        h3.section-subheading.text-muted Enter your pickup and delivery details and we'll send you an estimate of the costs. If you're interested, you can request a firm quote from us, and a courier will contact you.
+                        .row
+                                form(role='form', id="estimate-form")
+                                        .col-md-12
+                                                h4.estimate-label Pickup Date
+                                        .col-md-12
+                                                .form-group
+                                                    #datetimepicker.input-append.date
+                                                        input.form-control#dp(type='text', name="estimate_trip_date", value="2016-03-16", placeholder='Pickup Date', date-format='yyyy-mm-dd')
+                                                    //- span.add-on    
+                                                    //- #datetimepicker1.input-group.date
+                                                    //-     input.form-control(type='text', name="estimate_pickup_date", placeholder='Drop Off Date')
+                                                    //-       span.input-group-addon
+                                                    //-         span.glyphicon.glyphicon-calendar                          
+                                                        //- input.form-control(type='text', name="estimate_pickup_date", placeholder='Drop Off Date')
+                                        .col-md-6
+                                                h4.estimate-label Pickup Address
+                                                .form-group
+                                                        input.form-control(type='text', name="estimate_pickup_address1", placeholder='Address 1')
+                                                .form-group
+                                                        input.form-control(type='text', name="estimate_pickup_address2", placeholder='Address 2')
+                                                .form-group
+                                                        input.form-control(type='text', name="estimate_pickup_city", placeholder='City')
+                                                .row
+                                                        .col-md-6
+                                                                .form-group
+                                                                        input.form-control(type='text', name="estimate_pickup_state", placeholder='State')
+                                                        .col-md-6
+                                                                .form-group
+                                                                        input.form-control(type='text', name="estimate_pickup_postcode", placeholder='Postal Code')
+                                        .col-md-6
+                                                h4.estimate-label Dropoff Address
+                                                .form-group
+                                                        input.form-control(type='text', name="estimate_dropoff_address1", placeholder='Address 1')
+                                                .form-group
+                                                        input.form-control(type='text', name="estimate_dropoff_address2", placeholder='Address 2')
+                                                .form-group
+                                                        input.form-control(type='text', name="estimate_dropoff_city", placeholder='City')
+                                                .row
+                                                        .col-md-6
+                                                                .form-group
+                                                                        input.form-control(type='text', name="estimate_dropoff_state", placeholder='State')
+                                                        .col-md-6
+                                                                .form-group
+                                                                        input.form-control(type='text', name="estimate_dropoff_postcode", placeholder='Postal Code')
+                                        .row.text-center
+                                                .col-lg-3.col-lg-offset-3.col-md-4.col-md-offset-2
+                                                        a.portfolio-link(href='#estimateModal', data-toggle='modal')
+                                                                button.btn.btn-xl.modal-button(onClick='requestEstimate()') Request Estimate
+                                                .col-lg-3.col-md-4
+                                                        a.portfolio-link(href='#tripModal', data-toggle='modal')
+                                                                button.btn.btn-xl.modal-button(onClick='transferFormEntries()') Request Trip
+                        .row
+                            .col-lg-8.col-lg-offset-2.text-center
+                                p.large.text-muted
+                                    | Travel costs fluctuate, but our couriers will work with you to find the right route for your pet. 
+        // Contact Section
+        section#contact-yippee.bg-light-gray
+            .container
+                .row
+                    .col-lg-12.text-center
+                        h2.section-heading Contact Us
+                        h3.section-subheading.text-muted
+                                span Have other questions? Drop us a line! 
+                                a(href='mailto:fly@yippeeair.com') fly@yippeeair.com
+                        h2
+                                a.portfolio-link(href='mailto:fly@yippeeair.com', data-toggle='modal')
+                                        button.btn.btn-xl Email Yippee
+        footer
+            .container
+                .row
+                    .col-md-4
+                        span.copyright Copyright © Yippee Air 2016
+                    .col-md-4
+                        ul.list-inline.social-buttons
+                            li
+                                a(href='#')
+                                    i.fa.fa-twitter
+                            li
+                                a(href='#')
+                                    i.fa.fa-facebook
+                            li
+                                a(href='#')
+                                    i.fa.fa-linkedin
+                    .col-md-4
+                        ul.list-inline.quicklinks
+                            li
+                                a(href='#') Privacy Policy
+                            li
+                                a(href='#') Terms of Use
+        // Portfolio Modals
+        // Use the modals below to showcase details about your portfolio projects!
+        // Portfolio Modal 1
+        #portfolioModal1.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+            .modal-content
+                .close-modal(data-dismiss='modal')
+                    .lr
+                        .rl
+                .container
+                    .row
+                        .col-lg-8.col-lg-offset-2
+                            .modal-body
+                                // Project Details Go Here
+                                h2 Rusty - Puppy of Leisure
+                                p.item-intro.text-muted Rusty commutes between his mom and dad on opposite coasts.
+                                img.img-responsive.img-centered(src='img/portfolio/rusty1.png', alt='')
+                                p
+                                    | Rusty is very well behaved and always gets an exit row for his long legs.
+                                p
+                                    strong Want to get a quote for your furry friend? 
+                                     
+                                    a(href='https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc') Click Here
+                                    
+                                ul.list-inline
+                                    li Date: July 2014
+                                    li Client: John Macy
+                                    li Category: Dog Travel
+                                button.btn.btn-primary(type='button', data-dismiss='modal')
+                                    i.fa.fa-times
+                                    |  Close Project
+        // Portfolio Modal 2
+        #portfolioModal2.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+            .modal-content
+                .close-modal(data-dismiss='modal')
+                    .lr
+                        .rl
+                .container
+                    .row
+                        .col-lg-8.col-lg-offset-2
+                            .modal-body
+                                h2 Pouncer - Small and Sassy
+                                p.item-intro.text-muted Pouncer needs a break from the rain from time to time to visit her friends on the East Coast.
+                                img.img-responsive.img-centered(src='img/portfolio/pouncer2.png', alt='')
+                                p
+                                    | Pouncer always chases her toy around the terminal before she boards her transcontinental flights
+                                p
+                                    strong Want to get a quote for your furry friend? 
+                                     
+                                    a(href='https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc') Click Here
+                                    
+                                ul.list-inline
+                                    li Date: September 2015
+                                    li Client: Deborah Chang
+                                    li Category: Cat Travel
+                                button.btn.btn-primary(type='button', data-dismiss='modal')
+                                    i.fa.fa-times
+                                    |  Close Project
+        // Portfolio Modal 3
+        #portfolioModal3.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+            .modal-content
+                .close-modal(data-dismiss='modal')
+                    .lr
+                        .rl
+                .container
+                    .row
+                        .col-lg-8.col-lg-offset-2
+                            .modal-body
+                                // Project Details Go Here
+                                h2 Dolly
+                                p.item-intro.text-muted A Busy City Girl
+                                img.img-responsive.img-centered(src='img/portfolio/dolly3.png', alt='')
+                                p
+                                    | Dolly does some part time modeling and needs to make photo shoots from time to time. She loves the limelight.
+                                p
+                                    strong Want to get a quote for your furry friend? 
+                                     
+                                    a(href='https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc') Click Here
+                                    
+                                ul.list-inline
+                                    li Date: January 2015
+                                    li Client: Arlene Taylor
+                                    li Category: Dog Travel
+                                button.btn.btn-primary(type='button', data-dismiss='modal')
+                                    i.fa.fa-times
+                                    |  Close Project
+        // Portfolio Modal 4
+        #portfolioModal4.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+            .modal-content
+                .close-modal(data-dismiss='modal')
+                    .lr
+                        .rl
+                .container
+                    .row
+                        .col-lg-8.col-lg-offset-2
+                            .modal-body
+                                // Project Details Go Here
+                                h2 Charlotte
+                                p.item-intro.text-muted Queen of the Desert
+                                img.img-responsive.img-centered(src='img/portfolio/charlotte4.png', alt='')
+                                p
+                                    | Charlotte visits her owner at University of Pennsylvania when she's not chasing birds in the Arizona Desert.
+                                p
+                                    strong Want to get a quote for your furry friend? 
+                                     
+                                    a(href='https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc') Click Here
+                                    
+                                ul.list-inline
+                                    li Date: April 2015
+                                    li Client: Bernardo Roriz
+                                    li Category: Cat Travel
+                                button.btn.btn-primary(type='button', data-dismiss='modal')
+                                    i.fa.fa-times
+                                    |  Close Project
+        // Portfolio Modal 5
+        #portfolioModal5.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+            .modal-content
+                .close-modal(data-dismiss='modal')
+                    .lr
+                        .rl
+                .container
+                    .row
+                        .col-lg-8.col-lg-offset-2
+                            .modal-body
+                                // Project Details Go Here
+                                h2 Gregory
+                                p.item-intro.text-muted The Foodie
+                                img.img-responsive.img-centered(src='img/portfolio/gregory5.png', alt='')
+                                p
+                                    | Gregory has a special diet and makes trips to New York for culinary excursions.
+                                p
+                                    strong Want to get a quote for your furry friend? 
+                                     
+                                    a(href='https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc') Click Here
+                                    2
+                                ul.list-inline
+                                    li Date: June 2015
+                                    li Client: Don Martin
+                                    li Category: Rabbit Travel
+                                button.btn.btn-primary(type='button', data-dismiss='modal')
+                                    i.fa.fa-times
+                                    |  Close Project
+        // Portfolio Modal 6
+        #portfolioModal6.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+            .modal-content
+                .close-modal(data-dismiss='modal')
+                    .lr
+                        .rl
+                .container
+                    .row
+                        .col-lg-8.col-lg-offset-2
+                            .modal-body
+                                // Project Details Go Here
+                                h2 Max
+                                p.item-intro.text-muted Always Up for a New Adventure
+                                img.img-responsive.img-centered(src='img/portfolio/max6.png', alt='')
+                                p
+                                    | Max's dad travels all the time, so sometimes Max tags along and meets up for a run on the beach.
+                                p
+                                    strong Want to get a quote for your furry friend? 
+                                     
+                                    a(href='https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc') Click Here
+                                    
+                                ul.list-inline
+                                    li Date: July 2014
+                                    li Client: John Macy
+                                    li Category: Dog Travel
+                                button.btn.btn-primary(type='button', data-dismiss='modal')
+                                    i.fa.fa-times
+                                    |  Close Project
+        // Trip Modal
+        #tripModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+            .modal-content
+                .close-modal(data-dismiss='modal')
+                    .lr
+                        .rl
+                .container
+                    .row
+                        .col-lg-8.col-lg-offset-2
+                            .modal-body
+                                h2 Request Trip
+                                form(role='form')
+                                        .row
+                                                .col-md-12
+                                                        .form-group
+                                                                input.form-control(type='text', name="trip_date", placeholder='Pick Up Date')
+                                        .row
+                                                .col-md-6
+                                                        h4 Pickup Address
+                                                        .form-group
+                                                                input.form-control(type='text', name="pickup_address1", placeholder='Address 1')
+                                                        .form-group
+                                                                input.form-control(type='text', name="pickup_address2", placeholder='Address 2')
+                                                        .form-group
+                                                                input.form-control(type='text', name="pickup_city", placeholder='City')
+                                                        .row
+                                                                .col-md-6
+                                                                        .form-group
+                                                                                input.form-control(type='text', name="pickup_state", placeholder='State')
+                                                                .col-md-6
+                                                                        .form-group
+                                                                                input.form-control(type='text', name="pickup_postcode", placeholder='Postal Code')
+                                                .col-md-6
+                                                        h4 Dropoff Address
+                                                        .form-group
+                                                                input.form-control(type='text', name="dropoff_address1", placeholder='Address 1')
+                                                        .form-group
+                                                                input.form-control(type='text', name="dropoff_address2", placeholder='Address 2')
+                                                        .form-group
+                                                                input.form-control(type='text', name="dropoff_city", placeholder='City')
+                                                        .row
+                                                                .col-md-6
+                                                                        .form-group
+                                                                                input.form-control(type='text', name="dropoff_state", placeholder='State')
+                                                                .col-md-6
+                                                                        .form-group
+                                                                                input.form-control(type='text', name="dropoff_postcode", placeholder='Postal Code')
+                                        .row
+                                                h4 Pet Info
+                                                .col-md-4
+                                                        .form-group
+                                                                input.form-control(type='text', name="pet_name", placeholder='Enter Pet Name')
+                                                .col-md-4
+                                                        .form-group
+                                                                input.form-control(type='text', name="pet_weight", placeholder='Enter Pet Weight')
+                                                .col-md-4
+                                                        .form-group
+                                                                input.form-control(type='text', name="pet_age", placeholder='Enter Pet Age')
+                                        .row
+                                                .col-md-12
+                                                        .form-group
+                                                                input.form-control(type='text', name="pet_notes", placeholder='Enter Pet Notes')
+                                        .row
+                                                .col-md-12
+                                                        .form-group
+                                                                input.form-control(type='text', name="trip_notes", placeholder='Enter Trip Notes')
+                                        .row
+                                                .col-md-6
+                                                        h4 Sender Contact
+                                                        .form-group
+                                                                input.form-control(type='text', name="sender_name", placeholder='Enter Sender\'s Full Name')
+                                                        .form-group
+                                                                input.form-control(type='text', name="sender_email", placeholder='Enter Sender\'s Email')
+                                                        .form-group
+                                                                input.form-control(type='text', name="sender_phone", placeholder='Enter Sender\'s Phone Number')
+                                                .col-md-6
+                                                        h4 Receiver Contact
+                                                        .form-group
+                                                                input.form-control(type='text', name="receiver_name", placeholder='Enter Receiver\'s Full Name')
+                                                        .form-group
+                                                                input.form-control(type='text', name="receiver_email", placeholder='Enter Receiver\'s Email')
+                                                        .form-group
+                                                                input.form-control(type='text', name="receiver_phone", placeholder='Enter Receiver\'s Phone Number')
+                                        .row
+                                                .col-md-12
+                                                        p
+                                                                span#primary-contact-label Who is the primary contact for this trip? 
+                                                                input(type='radio', name='main_contact', value='sender')
+                                                                span#sender-label Sender 
+                                                                input(type='radio', name='main_contact', value='receiver')
+                                                                span#receiver-label Receiver
+                                        input#estimate-id(type='hidden', name='estimate_id', value='test-estimate-id')
+                                        .col-lg-12.text-center
+                                                button.btn.btn-xl(onClick='requestTrip()') Request Trip
+        // Estimate Modal
+        #estimateModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+            .modal-content
+                .close-modal(data-dismiss='modal')
+                    .lr
+                        .rl
+                .container
+                    .row
+                        .col-lg-8.col-lg-offset-2
+                            .modal-body
+
+                                h2 Yippee Estimate
+                                table.table
+                                        tr
+                                                td.lead Flight
+                                                td.lead Hotel
+                                                td.lead Fees
+                                        tr
+                                                td 
+                                                        span Ticket 
+
+                                                        span#flight-cost 
+                                                td 
+                                                        span Hotel 
+                                                        span#hotel-cost 
+                                                td 
+                                                        span Yippee 
+                                                        span#yipee-fee 
+                                        tr
+                                                td 
+                                                        span Pet Charge 
+                                                        span#pet-fee 
+                                                td
+                                                td 
+                                                        span Other 
+                                                        span#other-fee 
+                                h4
+                                        span Your Total Estimated Pet Travel Cost is 
+                                        span#estimate-range Please wait while your estimate is calculated.
+                                .row
+                                        .col-lg-12.text-center
+
+                                                //- a.portfolio-link(href='#tripModal', data-toggle='modal')
+                                                button#continue.btn.btn-xl(onClick='modalSwap()') Continue
+        // jQuery
+        script(src='/js/jquery.js')
+        // Bootstrap Core JavaScript
+        script(src='/js/bootstrap.min.js')
+        // Plugin JavaScript
+        script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js')
+        script(src='/js/classie.js')
+        script(src='/js/cbpAnimatedHeader.js')
+        // jQuery
+        script(src='/js/bootstrap-datepicker.js')
+        // Contact Form JavaScript
+        script(src='/js/jqBootstrapValidation.js')
+        script(src='/js/contact_me.js')
+        // Custom Theme JavaScript
+        script(src='/js/agency.js')
+        // Custom Yippee JavaScript
+        script(src='/js/custom.js')
+        script(type='text/javascript').
+            $('#dp').datepicker({
+            format: 'yyyy-mm-dd'
+            });
