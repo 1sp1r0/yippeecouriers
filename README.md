@@ -30,7 +30,8 @@ Nginx Config: /etc/nginx/sites-available/default
 
 App Management:
 Start: pm2 start app
-Stop: pm2 stop app // stop the app
+Stop: pm2 stop app
+Restart: pm2 restart app
 
 Mongo
 mongo access only allowed locally. Login via SSH or connect via an SSH tunnel
