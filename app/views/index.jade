@@ -7,7 +7,7 @@ block content
                 .intro-text
                     .intro-heading We Make Pets Fly!
                     .intro-lead-in We'll hand-carry your furry friends to destinations worldwide.
-                    a.portfolio-link(href='#tripModal', data-toggle='modal')
+                    a.portfolio-link(href='#trip-modal', data-toggle='modal')
                             button.btn.btn-xl Request Trip
         // About Section
         section.bg-light-gray#about
@@ -534,7 +534,7 @@ block content
                                     i.fa.fa-times
                                     |  Close Window
         // Trip Modal
-        #tripModal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+        #trip-modal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
             .modal-content
                 .close-modal(data-dismiss='modal')
                     .lr
@@ -677,7 +677,7 @@ block content
                                 .row
                                         .col-lg-12.text-center
 
-                                                //- a.portfolio-link(href='#tripModal', data-toggle='modal')
+                                                //- a.portfolio-link(href='#trip-modal', data-toggle='modal')
                                                 button#continue.btn.btn-xl(onClick='modalSwap()') Continue
         
 

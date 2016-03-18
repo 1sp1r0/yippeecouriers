@@ -15,7 +15,7 @@ function transferFormEntries(){
 function modalSwap(){
     $('#estimate-modal').modal('hide');
     setTimeout(function(){
-        $('#tripModal').modal('show');
+        $('#trip-modal').modal('show');
     }, 450);
 }
 
@@ -140,7 +140,7 @@ function pageBootstrap() {
 
     // attach GA to the modals
     $('#estimate-modal').on('show.bs.modal', function (e) {
-      ga('send', 'estimate-modal');
+      ga('send', 'pageview', 'estimate-modal');
     })
 
     // create datepicker
