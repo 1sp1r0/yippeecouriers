@@ -1,3 +1,9 @@
+#dp{z-index:100000 !important;}
+
+select[multiple], select[size]{
+    height: 34px;
+}
+
 .estimate-label{
     color: #fff;
 }
