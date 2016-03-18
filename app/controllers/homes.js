@@ -283,9 +283,11 @@ exports.createEstimate = function (req, res){
             // }
 
              //Insert Model
-            estimate['flight']['orig_name'] = destCity;
-            estimate['flight']['orig_url'] = destFlight_detailsUrl;
-            estimate['flight']['orig_id'] = destFlight_legId;
+             if(estimate){
+                estimate['flight']['orig_name'] = destCity;
+                estimate['flight']['orig_url'] = destFlight_detailsUrl;
+                estimate['flight']['orig_id'] = destFlight_legId;
+             }
 
            
             // estimate['flight']['orig_name'] = destFlight_carrier;
@@ -318,57 +320,96 @@ exports.createEstimate = function (req, res){
             // }
 
             //Insert Model
-            estimate['flight']['dest_name'] = arrvlCity;
-            estimate['flight']['dest_url'] = arrvlFlight_detailsUrl;
-            estimate['flight']['dest_id'] = arrvlFlight_legId;
+            if(estimate){
+                estimate['flight']['dest_name'] = arrvlCity;
+                estimate['flight']['dest_url'] = arrvlFlight_detailsUrl;
+                estimate['flight']['dest_id'] = arrvlFlight_legId;
+            }
 
             // estimate['flight']['dest_name'] = arrvlFlight_carrier;
 
+            if(estimate){
+                estimate['flight']['cost_range']['low'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
+                estimate['flight']['cost_range']['high'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
+                // estimate['flight']['miles'] = parseInt(destFlight_miles) + parseInt(arrvlFlight_miles);
+            }
 
-            estimate['flight']['cost_range']['low'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
-            estimate['flight']['cost_range']['high'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
-            // estimate['flight']['miles'] = parseInt(destFlight_miles) + parseInt(arrvlFlight_miles);
+            var hotel_id;
 
-            console.log(results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"]);
-            hotel_id = results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"];
+            if(results[2]["HotelInfoList"]){
+                console.log(results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"]);
+                hotel_id = results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"];
+            }
             
-            estimate['hotel']['id'] = hotel_id;
+            if(hotel_id){
+                estimate['hotel']['id'] = hotel_id;
+            }
+
+            var hotelCord;
+            var hotelCost;
+            var hotelURL;
+            var hotelName;
+            var hotelLocation;
 
             // results is now an array of stats for each file 
-            hotelCord = results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["GeoLocation"];
-            hotelCost = results[2]["HotelInfoList"]["HotelInfo"][9]["Price"]["TotalRate"]["Value"];
-            hotelURL = results[2]["HotelInfoList"]["HotelInfo"][9]["DetailsUrl"];
-            hotelName = results[2]["HotelInfoList"]["HotelInfo"][9]["Name"];
+            if(results[2]["HotelInfoList"]){
+                hotelCord = results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["GeoLocation"];
+                hotelCost = results[2]["HotelInfoList"]["HotelInfo"][9]["Price"]["TotalRate"]["Value"];
+                hotelURL = results[2]["HotelInfoList"]["HotelInfo"][9]["DetailsUrl"];
+                hotelName = results[2]["HotelInfoList"]["HotelInfo"][9]["Name"];
 
-            hotelLocation = results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["City"] + ", " + results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["Province"];
+                hotelLocation = results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["City"] + ", " + results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["Province"];
+            }
 
-            estimate['hotel']['hotel_coordinates']  = {
-                lat: hotelCord['Latitude'], 
-                lng: hotelCord['Longitude']
-            };
+            var estimate;
 
-            estimate['hotel']['cost_range']['low'] = hotelCost;
-            estimate['hotel']['cost_range']['high'] = hotelCost;
+            if(hotelCord){
+                estimate['hotel']['hotel_coordinates']  = {
+                    lat: hotelCord['Latitude'], 
+                    lng: hotelCord['Longitude']
+                };
+            }
 
-            estimate['hotel']['name'] = hotelName;
-            estimate['hotel']['url'] = hotelURL;
-            estimate['hotel']['location'] = hotelLocation;
+            if(hotelCost){
+                estimate['hotel']['cost_range']['low'] = hotelCost;
+                estimate['hotel']['cost_range']['high'] = hotelCost;
+            }
 
-            totalcost = parseInt(hotelCost) + parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare) + 300;
-            estimate['total_fee']['low'] = totalcost;
-            estimate['total_fee']['high'] = totalcost;
+            if(hotelName){
+                estimate['hotel']['name'] = hotelName;
+            }
 
-            console.log("IT only costs: "+totalcost);
+            if(hotelURL){
+                estimate['hotel']['url'] = hotelURL;
+            }
+
+            if(hotelLocation){
+                estimate['hotel']['location'] = hotelLocation;
+            }
+
+            var totalcost;
+
+            if(hotelCost){
+                totalcost = parseInt(hotelCost) + parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare) + 300;
+                estimate['total_fee']['low'] = totalcost;
+                estimate['total_fee']['high'] = totalcost;
+
+                console.log("IT only costs: "+totalcost);
 
 
-            console.log(results[2]["HotelInfoList"]["HotelInfo"][9]);
+                console.log(results[2]["HotelInfoList"]["HotelInfo"][9]);
+            }
 
 
             // console.log(arrvlFlight_totalFare);
             // console.log(arrvlFlight_detailsUrl);
             
             console.log("Return ERR on with Airport: "+err);
-            callback(null, hotel_id, arrvlCityCord);
+            if(hotel_id){
+                callback(null, hotel_id, arrvlCityCord);
+            }else{
+                callback(null, null, null);
+            }
         });
 
     }

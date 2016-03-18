@@ -56,7 +56,7 @@ function requestEstimate(){
     })
     .fail(function(err) {
         console.log( "error: ", err );
-        $('#estimate-range').html('Sorry we couldn\'t find a matching flight');
+        $('#estimate-heading').html('Sorry we couldn\'t find a matching flight, please request trip and we\'ll contact you with an estiamte.');
         $('#continue').html('Try Again');
         $('#continue').attr('onClick', 'modalHide()');
     });
