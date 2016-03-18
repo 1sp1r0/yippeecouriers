@@ -268,8 +268,10 @@ exports.createEstimate = function (req, res){
             var destFlight_totalFare = "";
             var destFlight_detailsUrl = "";
 
-            if(destFlightData){
+            if(destFlightData["legs"]){
                 destFlight_legId = destFlightData["legs"][0]["legId"];
+            }
+            if(destFlightData["offers"]){
                 destFlight_totalFare = destFlightData["offers"][0]["totalFare"];
                 destFlight_detailsUrl = destFlightData["offers"][0]["detailsUrl"];
             }
@@ -303,9 +305,11 @@ exports.createEstimate = function (req, res){
             var arrvlFlight_legId = '';
             var arrvlFlight_totalFare = '';
             
-            if(arrvlFlightData){
+            if(arrvlFlightData["offers"]){
                 arrvlFlight_detailsUrl = arrvlFlightData["offers"][0]["detailsUrl"];
                 arrvlFlight_totalFare = arrvlFlightData["offers"][0]["totalFare"];
+            }
+            if(arrvlFlightData["legs"]){
                 arrvlFlight_legId = arrvlFlightData["legs"][0]["legId"];
             }
             
