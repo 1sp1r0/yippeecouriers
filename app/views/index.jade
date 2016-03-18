@@ -118,6 +118,12 @@ block content
                                         br
                                         | Begin!
 
+                .row
+                    .col-lg-12.text-center
+                        
+                        h4 Have other questions? Visit our 
+                            a(href='#faq', data-toggle='modal') FAQ!
+
         // Scrapbook Section
         section#scrapbook.bg-light-gray
             .container
@@ -182,61 +188,42 @@ block content
                             p.text-muted Portland - Washington D.C.
 
         // Fees Section
-        section#fees.bg-light-gray
+        section#fees.bg-white
             .container
                 .row
                     .col-lg-12.text-center
-                        h2.section-heading Our Fees &amp; Service Area
-                        h3.section-subheading.text-muted Our pricing is simple: we charge for actual travel costs plus a flat service fee. Travel costs include roundtrip airfare, airline pet fees, an overnight hotel (if needed) and ground transport. 
+                        h2.section-heading Pricing
+                        h3.section-subheading.text-muted Our pricing is simple: we charge for actual travel costs plus a flat service fee. 
+                            p
+                            p.section-subheading.text-muted Travel costs include roundtrip airfare, airline pet fees, an overnight hotel (if needed) and ground transport. 
+             
 
-                        p TABLE GOES HERE
-                        p Actual travel costs plus...
-                        p Domestic:
-                        p $200
-                        p International:
-                        p $300
-                        p * There is an additional charge for travel within 72 hours. Contact us for details.
+
+                .row
+                    
+                    .col-lg-12.text-center
+                        h4.section-subheading.text-muted Travel Costs plus the following fee:
+                    
+
+                .row
+                    .col-md-3.text-center
+                    .col-md-3.text-center
+
+                        h3 Domestic:
+                    .col-md-3.text-center
+                        h3 International:
+                    .col-md-3.text-center
+                .row
+                    .col-md-3.text-center
+                    .col-md-3.text-center
+                        h3 $200
+                    .col-md-3.text-center
+                        h3 $300
+                    .col-md-3.text-center
                         
-                        p We have couriers based in most major US cities, and can travel to destinations worldwide. We offer pickup throughout the United States, but smaller cities typically incur an additional expense for the courier to travel from the nearest major city. 
+                        
 
-        // FAQ Section
-        section#faq.bg-light-gray
-            .container
-                .row
-                    .col-lg-12.text-center
-                        h2.section-heading FAQ
-                        h3.section-subheading.text-muted Have questions about our service? The answers are here! Of course, if you have any further questions, feel free to email us.
-
-                        p FAQ HEADER
-
-                        h4 How are you different from traditional pet couriers?
-                        p We offer a ‘white-glove’ hand-carry service for your pet. Most other courier services help facilitate the shipping of your pet -- but we'll be with them every step of the way. We'll provide frequent status updates, and you'll be able to directly contact your courier via phone or text to see how things are going.
-
-                        h4 Who are your couriers?
-                        p We have a hand-picked team of travel &amp; pet experts who act as our couriers. All are pet lovers and are experienced world travelers, familiar with the intricacies of the airlines and travel.
-
-                        h4 Will my pet travel in the cabin or in the cargo hold?
-                        p Whenever possible, we'll travel with your pet in the cabin, by placing him under the seat. If your pet is too large to travel in the cabin, we'll work with airline personnel to ensure he travels safely in the cargo hold, and check in on him at every layover.
-
-                        h4 Will I be able to contact my courier?
-                        p Yes. We provide all of our couriers an international cell phone with global roaming capabilities. You’ll be able to call or text your courier at any time to get a status update. Additionally, our couriers will provide status updates via text message at major inflection points in the trip (e.g. 'Boarding BA123 to London Heathrow’ or ‘Just landed at JFK.’).
-
-                        h4 How is ground transportation handled?
-                        p Your courier will take personal custody of your pet from the time of pickup to the time of delivery. We have a partnership with 
-                        a(href='http://www.lyft.com/') Lyft
-                        , and we Lyft cities where it is available. If Lyft is not available, we typically use available local transport; e.g. taxi cabs.
-
-                        h4 How much does your service cost?
-                        We have a unique pricing model — we charge you $200 ($300 international) plus the actual cost of economy class travel. The travel expenses include roundtrip airfare, ground transportation and airline pet transport fees. If an overnight is required, we'll also charge for hotel costs and a per-diem for meals. We’ll provide receipts upon request. We don’t charge for fuel surcharges, hourly or distance based fees, or any of the fees that many of our competitors have.
-
-                        h4 How do you determine airline and hotel charges?
-                        p We use the lowest cost commercially available economy carrier for your air transport. If a hotel is required, we’ll book a mid-grade ( three star ) hotel. You’ll be able to approve all costs in advance, when you sign the contract.
-
-                        h4 What is the fee to cancel or change a reservation?
-                        p We charge a $100 administrative fee if you need to change or cancel a trip after it has been booked. Additionally, you will be responsible for any incurred travel costs ( for example, an airline change or cancellation fee ). When you book your pet's travel, you’ll be asked whether you want to book refundable or non-refundable airline tickets. Typically, non-refundable tickets are less expensive, but you’ll be required to pay for them even if you cancel.
         
-                        h4 How do I get started?
-                        p First, contact us with the details of your shipment; including origin and destination. The easiest way is to fill out our online form, but we also welcome a phone call or text message to get the process started. We’ll provide a quote for the service. Once you’ve agreed to the quote and sent your deposit, your shipment is booked, and our courier will be there at the agreed upon time to pick it up.
 
         // Estimate Section
         section#estimate.bg-light-gray
@@ -287,20 +274,128 @@ block content
                     .col-md-4
                         ul.list-inline.social-buttons
                             li
-                                a(href='#')
+                                a(href='https://twitter.com/yippeeair')
                                     i.fa.fa-twitter
                             li
-                                a(href='#')
+                                a(href='https://www.facebook.com/yippeeair/?ref=br_rs')
                                     i.fa.fa-facebook
-                            li
-                                a(href='#')
-                                    i.fa.fa-linkedin
+                            
                     .col-md-4
                         ul.list-inline.quicklinks
                             li
-                                a(href='#') Privacy Policy
+                                a(href='#privacy-policy', data-toggle='modal') Privacy Policy
                             li
-                                a(href='#') Terms of Use
+                                a(href='#terms', data-toggle='modal') Terms of Use
+                            li
+        // FAQ Section
+        section#faq.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+            .modal-content
+                .close-modal(data-dismiss='modal')
+                    .lr
+                        .rl
+                .container
+                    .row
+                        .col-lg-8.col-lg-offset-2.text-left
+                            .modal-body
+                                h2.section-heading FAQ
+                                h3.section-subheading.text-muted Have questions about our service? The answers are here! Of course, if you have any further questions, feel free to email us.
+
+                                h4 How are you different from traditional pet couriers?
+                                p We offer a ‘white-glove’ hand-carry service for your pet. Most other courier services help facilitate the shipping of your pet -- but we'll be with them every step of the way. We'll provide frequent status updates, and you'll be able to directly contact your courier via phone or text to see how things are going.
+
+                                h4 Who are your couriers?
+                                p We have a hand-picked team of travel &amp; pet experts who act as our couriers. All are pet lovers and are experienced world travelers, familiar with the intricacies of the airlines and travel.
+
+                                h4 Will my pet travel in the cabin or in the cargo hold?
+                                p Whenever possible, we'll travel with your pet in the cabin, by placing him under the seat. If your pet is too large to travel in the cabin, we'll work with airline personnel to ensure he travels safely in the cargo hold, and check in on him at every layover.
+
+                                h4 Will I be able to contact my courier?
+                                p Yes. We provide all of our couriers an international cell phone with global roaming capabilities. You’ll be able to call or text your courier at any time to get a status update. Additionally, our couriers will provide status updates via text message at major inflection points in the trip (e.g. 'Boarding BA123 to London Heathrow’ or ‘Just landed at JFK.’).
+
+                                h4 How is ground transportation handled?
+                                p Your courier will take personal custody of your pet from the time of pickup to the time of delivery. We have a partnership with <a href='http://www.lyft.com/'> Lyft, </a> and we use Lyft in cities where it is available. If Lyft is not available, we typically use available local transport; e.g. taxi cabs.
+
+                                h4 How much does your service cost?
+                                p We have a unique pricing model — we charge you $200 ($300 international) plus the actual cost of economy class travel. The travel expenses include roundtrip airfare, ground transportation and airline pet transport fees. If an overnight is required, we'll also charge for hotel costs and a per-diem for meals. We’ll provide receipts upon request. We don’t charge for fuel surcharges, hourly or distance based fees, or any of the fees that many of our competitors have.
+
+                                h4 How do you determine airline and hotel charges?
+                                p We use the lowest cost commercially available economy carrier for your air transport. If a hotel is required, we’ll book a mid-grade ( three star ) hotel. You’ll be able to approve all costs in advance, when you sign the contract.
+
+                                h4 What is the fee to cancel or change a reservation?
+                                p We charge a $100 administrative fee if you need to change or cancel a trip after it has been booked. Additionally, you will be responsible for any incurred travel costs ( for example, an airline change or cancellation fee ). When you book your pet's travel, you’ll be asked whether you want to book refundable or non-refundable airline tickets. Typically, non-refundable tickets are less expensive, but you’ll be required to pay for them even if you cancel.
+                
+                                h4 How do I get started?
+                                p First, contact us with the details of your shipment; including origin and destination. The easiest way is to fill out our online form, but we also welcome a phone call or text message to get the process started. We’ll provide a quote for the service. Once you’ve agreed to the quote and sent your deposit, your shipment is booked, and our courier will be there at the agreed upon time to pick it up.
+
+                                h4 What is your coverage area?
+                                p We have couriers based in most major US cities, and can travel to destinations worldwide. We offer pickup throughout the United States, but smaller cities typically incur an additional expense for the courier to travel from the nearest major city. 
+
+        // Terms and Conditions Modal
+        #terms.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+            .modal-content
+                .close-modal(data-dismiss='modal')
+                    .lr
+                        .rl
+                .container
+                    .row
+                        .col-lg-8.col-lg-offset-2.text-left
+                            .modal-body
+
+                                    h2.large.text-muted Terms and Conditions
+                                    p.large.text-muted The material provided on this website is protected by law, including, but not limited to the US Copyright Act, and international treaties. This website is controlled and operated by Yippee Air from its offices within the USA.
+                                    
+                                    p.large.text-muted The company makes no representation that materials in the Site are appropriate or available for use in other locations, and access to them from territories where their contents are illegal is prohibited. Those who choose to access this website from other locations do so on their own initiative and are responsible for compliance with applicable local laws.
+                                    
+                                    p.large.text-muted Any claim relating to, and the use of, this website and the materials contained herein is governed by the laws of the state of California, USA.
+                                    
+                                    p.large.text-muted Notwithstanding the foregoing, all personal data provided to the company will be handled in accordance with the company’s online Privacy Policies. You are prohibited from posting or transmitting to or from this Site any unlawful, threatening, libellous, defamatory, obscene, scandalous, inflammatory, pornographic, or profane material, or any other material that could give rise to any civil or criminal liability under the law.
+                                    
+                                    p.large.text-muted The company may, at any time, revise these Terms of Use by updating this posting. By using this website, you agree to be bound by any such revisions and should therefore periodically visit this page to determine the current Terms of Use to which you are bound.
+                            
+        // Privacy Policy
+        #privacy-policy.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+            .modal-content
+                .close-modal(data-dismiss='modal')
+                    .lr
+                        .rl
+                .container
+                    .row
+                        .col-lg-8.col-lg-offset-2.text-left
+                            .modal-body
+                                h2.large.text-muted Privacy Policy
+                                p.large.text-muted This privacy notice discloses the privacy practices for www.yippeeair.com. This privacy notice applies solely to information collected by this web site. It will notify you of the following:
+                                    li.large.text-muted What personally identifiable information is collected from you through the web site and how it is used and with whom it may be shared.
+                                    li.large.text-muted What choices are available to you regarding the use of your data.
+                                    li.large.text-muted The security procedures in place to protect the misuse of your information.
+                                    li.large.text-muted How you can correct any inaccuracies in the information.
+                                    li.large.text-muted Information Collection, Use, and Sharing
+
+                                p.large.text-muted We are the sole owners of the information collected on this site. We only have access to collect information that you voluntarily give us such as; name, address, phone and billing information via email or other direct contact from you. We will not sell or rent this information to anyone.
+
+                                p.large.text-muted We will use your information to respond to you, regarding the reason you contacted us. We will not share your information with any third party outside of our organization, other than as necessary to fulfill your request, e.g. to ship an order.
+
+                                p.large.text-muted Unless you ask us not to, we may contact you via email in the future to tell you about specials, new products or services, or changes to this privacy policy.
+
+                                h2.large.text-muted Your Access to and Control Over Information
+
+                                p.large.text-muted You may opt out of any future contacts from us at any time. You can do the following at any time by contacting us via the email address or phone number given on our website:
+
+                                    li.large.text-muted See what data we have about you, if any.
+                                    li.large.text-muted Change/correct any data we have about you.
+                                    li.large.text-muted Have us delete any data we have about you.
+                                    li.large.text-muted Express any concern you have about our use of your data.
+
+                                h2.large.text-muted Security
+
+                                p.large.text-muted We take precautions to protect your information. We do not collect sensitive such as credit card information via the website and your information is protected both online and offline.
+
+                                p.large.text-muted Online payment options are limited to Paypal, which offers secure and encrypted data transmission and storage. Offline credit card payments can be completed by verbal, written, or fax confirmation. This data is stored securely offline.
+
+                                p.large.text-muted We also protect your information offline. Only employees who need the information to perform a specific job (for example, billing or customer service) are granted access to personally identifiable information. The computers/servers in which we store personally identifiable information are kept in a secure environment.
+
+                                p.large.text-muted If you feel that we are not abiding by this privacy policy, you should contact us immediately via fly@yippeeair.com
+
+
         // Portfolio Modals
         // Use the modals below to showcase details about your portfolio projects!
         // Portfolio Modal 1
@@ -592,6 +687,8 @@ block content
 
                                                 //- a.portfolio-link(href='#tripModal', data-toggle='modal')
                                                 button#continue.btn.btn-xl(onClick='modalSwap()') Continue
+        
+
         // jQuery
         script(src='/js/jquery.js')
         // Bootstrap Core JavaScript
