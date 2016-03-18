@@ -138,9 +138,12 @@ function pageBootstrap() {
     ga('create', 'UA-75289755-1', 'auto');
     ga('send', 'pageview');
 
-    // attach GA to the modals
+    // attach GA to the key modals
     $('#estimate-modal').on('show.bs.modal', function (e) {
-      ga('send', 'pageview', 'estimate-modal');
+      ga('send', 'pageview', '/modal/estimate-modal');
+    })
+    $('#trip-modal').on('show.bs.modal', function (e) {
+      ga('send', 'pageview', '/modal/trip-modal');
     })
 
     // create datepicker
