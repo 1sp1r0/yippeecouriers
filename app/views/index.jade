@@ -281,12 +281,12 @@ block content
                     .col-md-4
                         ul.list-inline.quicklinks
                             li
-                                a(href='#privacy-policy', data-toggle='modal') Privacy Policy
+                                a(href='#privacy-policy-modal', data-toggle='modal') Privacy Policy
                             li
-                                a(href='#terms', data-toggle='modal') Terms of Use
+                                a(href='#terms-modal', data-toggle='modal') Terms of Use
                             li
-        // FAQ Section
-        section#faq.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+        // FAQ Modal
+        #faq.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
             .modal-content
                 .close-modal(data-dismiss='modal')
                     .lr
@@ -329,7 +329,7 @@ block content
                                 p We have couriers based in most major US cities, and can travel to destinations worldwide. We offer pickup throughout the United States, but smaller cities typically incur an additional expense for the courier to travel from the nearest major city. 
 
         // Terms and Conditions Modal
-        #terms.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+        #terms-modal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
             .modal-content
                 .close-modal(data-dismiss='modal')
                     .lr
@@ -351,7 +351,7 @@ block content
                                     p.large.text-muted The company may, at any time, revise these Terms of Use by updating this posting. By using this website, you agree to be bound by any such revisions and should therefore periodically visit this page to determine the current Terms of Use to which you are bound.
                             
         // Privacy Policy
-        #privacy-policy.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+        #privacy-policy-modal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
             .modal-content
                 .close-modal(data-dismiss='modal')
                     .lr
