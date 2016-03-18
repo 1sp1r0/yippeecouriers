@@ -5,6 +5,10 @@ var Schema = mongoose.Schema;
 var estimateSchema = new Schema({
     trip_id: { type: Number, required: false },
     trip_date: { type: String, required: false },
+    ride: {
+        cost_to: { type: String, required: false },
+        cost_from: { type: String, required: false },
+    },
     flight: { 
         cost_range: {
             low: { type: Number, required: true },

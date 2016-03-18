@@ -15,9 +15,15 @@ var Estimate = require('../models/estimate');
 
 exports.createEstimate = function (req, res){
 
+   
+
     var estimate = new Estimate({
         trip_name: "Fly Fluffy! Fly!",
         trip_date: '2016-12-16',
+        ride:{
+            cost_to: '52.10',
+            cost_from: '52.10'
+        },
         flight: {
             cost_range: {
                 low: 209,

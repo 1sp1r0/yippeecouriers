@@ -53,6 +53,8 @@ function requestEstimate(){
         $('#hotel-cost').html(data.hotel_cost);
         $('#yipee-fee').html(data.yipee_fee);
         $('#other-fee').html(data.other_fee);
+        $('#lyft-fee').html(data.lyft_fee);
+        $('#lyft2-fee').html(data.lyft2_fee);
     })
     .fail(function(err) {
         console.log( "error: ", err );

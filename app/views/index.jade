@@ -190,12 +190,20 @@ block content
                     h3.section-subheading.text-muted Enter your pickup and delivery details and we'll send you an estimate of the costs.
             .row
                 form(role='form', id="estimate-form")
-                    .col-md-12
-                        h4.estimate-label Pickup Date
-                    .col-md-12
-                        .form-group
-                          #datetimepicker.input-append.date
-                            input.form-control#dp(type='text', name="estimate_trip_date", value="2016-03-16", placeholder='Pickup Date', date-format='yyyy-mm-dd')
+                    .row
+                      .col-md-6
+                          h4.estimate-label Pickup Date
+                      .col-md-6
+                          h4.estimate-label Pickup Time
+                    .row
+                      .col-md-6
+                          .form-group
+                            #datetimepicker.input-append.date
+                              input.form-control#dp(type='text', name="estimate_trip_date", value="2016-03-16", placeholder='Pickup Date', date-format='yyyy-mm-dd')
+                      .col-md-6
+                          .form-group
+                              input.form-control(type='text', name="estimate_pickup_time", placeholder='Morning, Afternoon Evening')
+                    
                           //- span.add-on    
                           //- #datetimepicker1.input-group.date
                           //-     input.form-control(type='text', name="estimate_pickup_date", placeholder='Drop Off Date')
@@ -554,13 +562,16 @@ block content
                 h2 Yippee Estimate
                 table.table
                     tr
+                        td.lead Lyft
                         td.lead Flight
                         td.lead Hotel
                         td.lead Fees
                     tr
+                        td
+                            span Transit
+                            span#lyft-fee 
                         td 
                             span Ticket 
-
                             span#flight-cost 
                         td 
                             span Hotel 
@@ -569,11 +580,14 @@ block content
                             span Yippee 
                             span#yipee-fee 
                     tr
+                        td
+                            span Delievery
+                            span#lyft2-fee 
                         td 
                             span Pet Charge 
                             span#pet-fee 
-                        td
                         td 
+                        td
                             span Other 
                             span#other-fee 
                 h4
