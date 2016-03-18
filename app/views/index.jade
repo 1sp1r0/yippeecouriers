@@ -5,6 +5,11 @@ block content
         header
             .container
                 .intro-text
+                    #confirmation-alert.alert.alert-warning.alert-dismissible(role='alert', style='display: none')
+                          button.close(type='button', data-dismiss='alert', aria-label='Close')
+                            span(aria-hidden='true') ×
+                          strong Thanks!
+                          |  Your submission was received.
                     .intro-heading We Make Pets Fly!
                     .intro-lead-in We'll hand-carry your furry friends to destinations worldwide.
                     a.portfolio-link(href='#trip-modal', data-toggle='modal')
@@ -199,6 +204,38 @@ block content
                 .row
                     
                     .col-lg-12.text-center
+<<<<<<< HEAD
+                        h2.section-heading FAQ
+                        h3.section-subheading.text-muted Have questions about our service? The answers are here! Of course, if you have any further questions, feel free to email us.
+
+                        p FAQ HEADER
+
+                        h4 How are you different from traditional pet couriers?
+                        p We offer a ‘white-glove’ hand-carry service for your pet. Most other courier services help facilitate the shipping of your pet -- but we'll be with them every step of the way. We'll provide frequent status updates, and you'll be able to directly contact your courier via phone or text to see how things are going.
+
+                        h4 Who are your couriers?
+                        p We have a hand-picked team of travel &amp; pet experts who act as our couriers. All are pet lovers and are experienced world travelers, familiar with the intricacies of the airlines and travel.
+
+                        h4 Will my pet travel in the cabin or in the cargo hold?
+                        p Whenever possible, we'll travel with your pet in the cabin, by placing him under the seat. If your pet is too large to travel in the cabin, we'll work with airline personnel to ensure he travels safely in the cargo hold, and check in on him at every layover.
+
+                        h4 Will I be able to contact my courier?
+                        p Yes. We provide all of our couriers an international cell phone with global roaming capabilities. You’ll be able to call or text your courier at any time to get a status update. Additionally, our couriers will provide status updates via text message at major inflection points in the trip (e.g. 'Boarding BA123 to London Heathrow’ or ‘Just landed at JFK.’).
+
+                        h4 How is ground transportation handled?
+                        p Your courier will take personal custody of your pet from the time of pickup to the time of delivery. We have a partnership with #[a(href="http://lyft.com", target="_blank") Lyft], and we Lyft cities where it is available. If Lyft is not available, we typically use available local transport; e.g. taxi cabs.
+
+                        h4 How much does your service cost?
+                        We have a unique pricing model — we charge you $200 ($300 international) plus the actual cost of economy class travel. The travel expenses include roundtrip airfare, ground transportation and airline pet transport fees. If an overnight is required, we'll also charge for hotel costs and a per-diem for meals. We’ll provide receipts upon request. We don’t charge for fuel surcharges, hourly or distance based fees, or any of the fees that many of our competitors have.
+
+                        h4 How do you determine airline and hotel charges?
+                        p We use the lowest cost commercially available economy carrier for your air transport. If a hotel is required, we’ll book a mid-grade ( three star ) hotel. You’ll be able to approve all costs in advance, when you sign the contract.
+
+                        h4 What is the fee to cancel or change a reservation?
+                        p We charge a $100 administrative fee if you need to change or cancel a trip after it has been booked. Additionally, you will be responsible for any incurred travel costs ( for example, an airline change or cancellation fee ). When you book your pet's travel, you’ll be asked whether you want to book refundable or non-refundable airline tickets. Typically, non-refundable tickets are less expensive, but you’ll be required to pay for them even if you cancel.
+        
+                        h4 How do I get started?
+                        p First, contact us with the details of your shipment; including origin and destination. The easiest way is to fill out our online form, but we also welcome a phone call or text message to get the process started. We’ll provide a quote for the service. Once you’ve agreed to the quote and sent your deposit, your shipment is booked, and our courier will be there at the agreed upon time to pick it up.
                         h4.section-subheading.text-muted Travel Costs plus the following fee:
                 .row
                     .col-md-3.text-center
@@ -546,95 +583,209 @@ block content
                                 h2 Request Quote
                                 p Please provide details of your pet's trip, and a courier will contact you to discuss your travel needs and provide a firm quote. There's no obligation until you agree to a specific itinerary and we book travel.
                                 form(role='form')
-                                        
-                                        .row
-                                                .col-md-12
+                                    .row
+                                        .col-md-12
+                                            h4 Departure Date
+                                            .form-group
+                                                #datetimepicker.input-append.date
+                                                    input.form-control#dp(type='text', name="trip_date", value="2016-03-16", placeholder='Departure Date', date-format='yyyy-mm-dd')
+                                    .row
+                                        .col-md-6
+                                            h4 Sender Contact
+                                            .form-group
+                                                input.form-control(type='text', name="sender_name", placeholder='Enter Sender\'s Full Name')
+                                            .form-group
+                                                input.form-control(type='text', name="sender_email", placeholder='Enter Sender\'s Email')
+                                            .form-group
+                                                input.form-control(type='text', name="sender_phone", placeholder='Enter Sender\'s Phone Number')
+                                        .col-md-6
+                                            h4 Receiver Contact
+                                            .form-group
+                                                input.form-control(type='text', name="receiver_name", placeholder='Enter Receiver\'s Full Name')
+                                            .form-group
+                                                input.form-control(type='text', name="receiver_email", placeholder='Enter Receiver\'s Email')
+                                            .form-group
+                                                input.form-control(type='text', name="receiver_phone", placeholder='Enter Receiver\'s Phone Number')
+                                    .row
+                                        .col-md-12
+                                            p
+                                                span#primary-contact-label Are you the sender or receiver? 
+                                                input#sender-input(type='radio', name='main_contact', value='sender')
+                                                label#sender-label(for='sender-input') Sender
+                                                input#receiver-input(type='radio', name='main_contact', value='receiver')
+                                                label#receiver-label(for='receiver-input') Receiver
+                                    .row
+                                        .col-md-6
+                                                h4 Departure Address
+                                                p Provide the departure address for your pet. If you prefer, we can meet you at the airport.
+                                                .form-group
+                                                    input.form-control(type='text', name="pickup_address1", placeholder='Address 1')
+                                                .form-group
+                                                    input.form-control(type='text', name="pickup_address2", placeholder='Address 2')
+                                                .form-group
+                                                    input.form-control(type='text', name="pickup_city", placeholder='City')
+                                                .row
+                                                    .col-md-6
                                                         .form-group
-                                                                input.form-control(type='text', name="trip_date", placeholder='Pick Up Date')
-                                         .row
-                                                .col-md-6
-                                                        h4 Sender Contact
+                                                            select.form-control(name='pickup_state', size='1')
+                                                                option(value='AK') AK
+                                                                option(value='AL') AL
+                                                                option(value='AR') AR
+                                                                option(value='AZ') AZ
+                                                                option(value='CA') CA
+                                                                option(value='CO') CO
+                                                                option(value='CT') CT
+                                                                option(value='DC') DC
+                                                                option(value='DE') DE
+                                                                option(value='FL') FL
+                                                                option(value='GA') GA
+                                                                option(value='HI') HI
+                                                                option(value='IA') IA
+                                                                option(value='ID') ID
+                                                                option(value='IL') IL
+                                                                option(value='IN') IN
+                                                                option(value='KS') KS
+                                                                option(value='KY') KY
+                                                                option(value='LA') LA
+                                                                option(value='MA') MA
+                                                                option(value='MD') MD
+                                                                option(value='ME') ME
+                                                                option(value='MI') MI
+                                                                option(value='MN') MN
+                                                                option(value='MO') MO
+                                                                option(value='MS') MS
+                                                                option(value='MT') MT
+                                                                option(value='NC') NC
+                                                                option(value='ND') ND
+                                                                option(value='NE') NE
+                                                                option(value='NH') NH
+                                                                option(value='NJ') NJ
+                                                                option(value='NM') NM
+                                                                option(value='NV') NV
+                                                                option(value='NY') NY
+                                                                option(value='OH') OH
+                                                                option(value='OK') OK
+                                                                option(value='OR') OR
+                                                                option(value='PA') PA
+                                                                option(value='RI') RI
+                                                                option(value='SC') SC
+                                                                option(value='SD') SD
+                                                                option(value='TN') TN
+                                                                option(value='TX') TX
+                                                                option(value='UT') UT
+                                                                option(value='VA') VA
+                                                                option(value='VT') VT
+                                                                option(value='WA') WA
+                                                                option(value='WI') WI
+                                                                option(value='WV') WV
+                                                                option(value='WY') WY
+                                                    .col-md-6
                                                         .form-group
-                                                                input.form-control(type='text', name="sender_name", placeholder='Enter Sender\'s Full Name')
+                                                            input.form-control(type='text', name="pickup_postcode", placeholder='Postal Code')
+                                        .col-md-6
+                                                h4 Arrival Address
+                                                p Provide the arrival address for your pet. If you prefer, we can meet you at the airport.
+                                                .form-group
+                                                    input.form-control(type='text', name="dropoff_address1", placeholder='Address 1')
+                                                .form-group
+                                                    input.form-control(type='text', name="dropoff_address2", placeholder='Address 2')
+                                                .form-group
+                                                    input.form-control(type='text', name="dropoff_city", placeholder='City')
+                                                .row
+                                                    .col-md-6
+                                                            .form-group
+                                                                select.form-control(name='dropoff_state', size='1')
+                                                                    option(value='AK') AK
+                                                                    option(value='AL') AL
+                                                                    option(value='AR') AR
+                                                                    option(value='AZ') AZ
+                                                                    option(value='CA') CA
+                                                                    option(value='CO') CO
+                                                                    option(value='CT') CT
+                                                                    option(value='DC') DC
+                                                                    option(value='DE') DE
+                                                                    option(value='FL') FL
+                                                                    option(value='GA') GA
+                                                                    option(value='HI') HI
+                                                                    option(value='IA') IA
+                                                                    option(value='ID') ID
+                                                                    option(value='IL') IL
+                                                                    option(value='IN') IN
+                                                                    option(value='KS') KS
+                                                                    option(value='KY') KY
+                                                                    option(value='LA') LA
+                                                                    option(value='MA') MA
+                                                                    option(value='MD') MD
+                                                                    option(value='ME') ME
+                                                                    option(value='MI') MI
+                                                                    option(value='MN') MN
+                                                                    option(value='MO') MO
+                                                                    option(value='MS') MS
+                                                                    option(value='MT') MT
+                                                                    option(value='NC') NC
+                                                                    option(value='ND') ND
+                                                                    option(value='NE') NE
+                                                                    option(value='NH') NH
+                                                                    option(value='NJ') NJ
+                                                                    option(value='NM') NM
+                                                                    option(value='NV') NV
+                                                                    option(value='NY') NY
+                                                                    option(value='OH') OH
+                                                                    option(value='OK') OK
+                                                                    option(value='OR') OR
+                                                                    option(value='PA') PA
+                                                                    option(value='RI') RI
+                                                                    option(value='SC') SC
+                                                                    option(value='SD') SD
+                                                                    option(value='TN') TN
+                                                                    option(value='TX') TX
+                                                                    option(value='UT') UT
+                                                                    option(value='VA') VA
+                                                                    option(value='VT') VT
+                                                                    option(value='WA') WA
+                                                                    option(value='WI') WI
+                                                                    option(value='WV') WV
+                                                                    option(value='WY') WY
+                                                    .col-md-6
                                                         .form-group
-                                                                input.form-control(type='text', name="sender_email", placeholder='Enter Sender\'s Email')
-                                                        .form-group
-                                                                input.form-control(type='text', name="sender_phone", placeholder='Enter Sender\'s Phone Number')
-                                                .col-md-6
-                                                        h4 Receiver Contact
-                                                        .form-group
-                                                                input.form-control(type='text', name="receiver_name", placeholder='Enter Receiver\'s Full Name')
-                                                        .form-group
-                                                                input.form-control(type='text', name="receiver_email", placeholder='Enter Receiver\'s Email')
-                                                        .form-group
-                                                                input.form-control(type='text', name="receiver_phone", placeholder='Enter Receiver\'s Phone Number')
-                                        .row
-                                                .col-md-12
-                                                        p
-                                                                span#primary-contact-label Are you the sender or receiver? 
-                                                                input(type='radio', name='main_contact', value='sender')
-                                                                span#sender-label Sender 
-                                                                input(type='radio', name='main_contact', value='receiver')
-                                                                span#receiver-label Receiver
-                                        .row
-                                                .col-md-6
-                                                        h4 Pickup Address
-                                                        p Provide the pickup and dropoff address for your pet. If you prefer, we can meet you at the airport.
-                                                        .form-group
-                                                                input.form-control(type='text', name="pickup_address1", placeholder='Address 1')
-                                                        .form-group
-                                                                input.form-control(type='text', name="pickup_address2", placeholder='Address 2')
-                                                        .form-group
-                                                                input.form-control(type='text', name="pickup_city", placeholder='City')
-                                                        .row
-                                                                .col-md-6
-                                                                        .form-group
-                                                                                input.form-control(type='text', name="pickup_state", placeholder='State (Dropdown?)')
-                                                                .col-md-6
-                                                                        .form-group
-                                                                                input.form-control(type='text', name="pickup_postcode", placeholder='Postal Code')
-                                                .col-md-6
-                                                        h4 Dropoff Address
-                                                        .form-group
-                                                                input.form-control(type='text', name="dropoff_address1", placeholder='Address 1')
-                                                        .form-group
-                                                                input.form-control(type='text', name="dropoff_address2", placeholder='Address 2')
-                                                        .form-group
-                                                                input.form-control(type='text', name="dropoff_city", placeholder='City')
-                                                        .row
-                                                                .col-md-6
-                                                                        .form-group
-                                                                                input.form-control(type='text', name="dropoff_state", placeholder='State (Dropdown?)')
-                                                                .col-md-6
-                                                                        .form-group
-                                                                                input.form-control(type='text', name="dropoff_postcode", placeholder='Postal Code')
-                                        .row
-                                                h4 Pet Info
-                                                p Is more than one pet traveling? Contact us for details.
-                                                .col-md-4
-                                                        .form-group
-                                                                input.form-control(type='text', name="pet_name", placeholder='Pet Name')
-                                                .col-md-4
-                                                        .form-group
-                                                                input.form-control(type='text', name="pet_weight", placeholder='Weight')
-                                                .col-md-4
-                                                        .form-group
-                                                                input.form-control(type='text', name="pet_age", placeholder='Age (Dropdown?)')
-                                        .row
-                                                .col-md-12
-                                                        .form-group
-                                                                input.form-control(type='text', name="pet_type", placeholder='Pet Type: Dog/Cat/Bird (Dropdown?)')
-                                        .row
-                                                h4 Notes
-                                                p Please let us know about any preferences your pet has, and/or any medical issues that we should be aware of.
-                                        .row
-                                                .col-md-12
-                                                        .form-group
-                                                                input.form-control(type='text', name="pet_notes", placeholder='Trip Notes')
-                                       
-                                        input#estimate-id(type='hidden', name='estimate_id', value='test-estimate-id')
-                                        .col-lg-12.text-center
-                                                button.btn.btn-xl(onClick='requestTrip()') Request Firm Quote
+                                                            input.form-control(type='text', name="dropoff_postcode", placeholder='Postal Code')
+                                    .row
+                                        h4 Pet Info
+                                        p Is more than one pet traveling? Contact us for details.
+                                        .col-md-4
+                                            .form-group
+                                                input.form-control(type='text', name="pet_name", placeholder='Pet Name')
+                                        .col-md-4
+                                            .form-group
+                                                input.form-control(type='text', name="pet_weight", placeholder='Weight')
+                                        .col-md-4
+                                            .form-group
+                                                input.form-control(type='text', name="pet_age", placeholder='Age')
+                                    .row
+                                        .col-md-6
+                                            .form-group
+                                                select.form-control(type='text', name="pet_type")
+                                                    option(selected disabled) Pet Type
+                                                    option(value='dog') Dog
+                                                    option(value='cat') Cat
+                                                    option(value='bird') Bird
+                                                    option(value='other') Other
+                                        .col-md-6
+                                            .form-group
+                                                select.form-control(type='text', name="has_carrier")
+                                                    option(selected disabled) Pet Carrier
+                                                    option(value=true) Pet will come with carrier.
+                                                    option(value=false) Pet needs carrier.
+                                    .row
+                                        h4 Notes
+                                        p Please let us know about any preferences your pet has, and/or any medical issues that we should be aware of.
+                                    .row
+                                        .col-md-12
+                                            .form-group
+                                                input.form-control(type='text', name="pet_notes", placeholder='Trip Notes')
+                                    input#estimate-id(type='hidden', name='estimate_id', value='test-estimate-id')
+                                    .col-lg-12.text-center
+                                            button.btn.btn-xl(onClick='requestTrip()') Request Quote
         // Estimate Modal
         #estimate-modal.portfolio-modal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
             .modal-content

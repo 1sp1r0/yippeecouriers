@@ -63,7 +63,7 @@ function requestEstimate(){
 }
 
 function requestTrip(){
-    console.log('requestTrip');
+    $('#confirmation-alert').show();
     // get the form data
     // there are many ways to get this data using jQuery (you can use the class or id also)
     var formData = {
@@ -85,7 +85,7 @@ function requestTrip(){
         'pickup_address1' : $('input[name=pickup_address1]').val(),
         'pickup_address2' : $('input[name=pickup_address2]').val(),
         'pickup_city' : $('input[name=pickup_city]').val(),
-        'pickup_state' : $('input[name=pickup_state]').val(),
+        'pickup_state' : $('select[name=pickup_state] option:selected').text(),
         'pickup_postcode' : $('input[name=pickup_postcode]').val(),
 
         'origin_airport_code' : $('input[name=origin_airport_code]').val(),
@@ -94,7 +94,7 @@ function requestTrip(){
         'dropoff_address1' : $('input[name=dropoff_address1]').val(),
         'dropoff_address2' : $('input[name=dropoff_address2]').val(),
         'dropoff_city' : $('input[name=dropoff_city]').val(),
-        'dropoff_state' : $('input[name=dropoff_state]').val(),
+        'dropoff_state' : $('select[name=dropoff_state] option:selected').text(),
         'dropoff_postcode' : $('input[name=dropoff_postcode]').val(),
 
         'trip_notes' : $('input[name=trip_notes]').val(),
