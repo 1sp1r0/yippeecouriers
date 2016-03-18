@@ -98,12 +98,6 @@ exports.scrapbook = function (req, res){
     });
 }
 
-exports.scrapbooktemp = function (req,res){
-    res.render('scrapbook-temp', {
-        title: 'Sample Scrapbook'
-    });
-}
-
 // post | fake create estimate
 // exports.createEstimate = function(req, res){
 //     console.log('fake createEstimate');

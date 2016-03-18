@@ -30,14 +30,11 @@ var EstimatorController = require('./app/controllers/estimator');
 // Routes - Home
 app.get('/', HomesController.index);
 app.get('/scrapbook/:trip_id', HomesController.scrapbook);
-app.get('/scrapbooktemp', HomesController.scrapbooktemp);
 app.post('/create-estimate', HomesController.createEstimate);
 app.post('/create-trip', HomesController.createTrip);
 
 // Routes - Estimators
 app.get('/test', EstimatorController.createEstimate);
-
-// app.get('/trip-plan/:trip_id', PlannerController.viewRoute);
 
 // Routes - Admin
 app.get('/trips', AdminController.trips);
