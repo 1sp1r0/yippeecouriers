@@ -467,16 +467,15 @@ exports.createEstimate = function (req, res){
         
     ], function (err, result) {
         // result now equals 'done'
-
         res.json({
-        'estimate_range': " $"+estimate['total_fee']['high'],
-        'flight_cost': " $"+estimate['flight']['cost_range']['high'],
-        'pet_fee': '$100',
-        'hotel_cost': " $"+Math.round(estimate['hotel']['cost_range']['high']),
+            'estimate_range': " $"+estimate['total_fee']['high'],
+            'flight_cost': " $"+estimate['flight']['cost_range']['high'],
+            'pet_fee': '$100',
+            'hotel_cost': " $"+Math.round(estimate['hotel']['cost_range']['high']),
 
-        'yipee_fee': '$200',
-        'other_fee': '$25'
-    });
+            'yipee_fee': '$200',
+            'other_fee': '$25'
+        });
         console.log(estimate);
         estimate.save(function(error, savedEstimate) {
             if(savedEstimate){
@@ -484,11 +483,8 @@ exports.createEstimate = function (req, res){
             }else if(error){
                 console.log("error: " + error);
             }
-
-        
         });
     });
-
 }
 
 
