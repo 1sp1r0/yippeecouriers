@@ -13,14 +13,14 @@ function transferFormEntries(){
 }
 
 function modalSwap(){
-    $('#estimateModal').modal('hide');
+    $('#estimate-modal').modal('hide');
     setTimeout(function(){
         $('#tripModal').modal('show');
     }, 450);
 }
 
 function modalHide(){
-    $('#estimateModal').modal('hide');
+    $('#estimate-modal').modal('hide');
     $('#estimate-range').html('Please wait while your estimate is calculated.');
     $('#continue').html('Continue');
     $('#continue').attr('onClick', 'modalSwap()');
@@ -138,8 +138,15 @@ function pageBootstrap() {
     ga('create', 'UA-75289755-1', 'auto');
     ga('send', 'pageview');
 
+    // attach GA to the modals
+    $('#estimate-modal').on('show.bs.modal', function (e) {
+      ga('send', 'estimate-modal');
+    })
+
     // create datepicker
     $('#dp').datepicker({format: 'yyyy-mm-dd'});
+
+
 }
 
 
