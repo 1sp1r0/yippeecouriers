@@ -98,12 +98,6 @@ exports.scrapbook = function (req, res){
     });
 }
 
-exports.scrapbooktemp = function (req,res){
-    res.render('scrapbook-temp', {
-        title: 'Sample Scrapbook'
-    });
-}
-
 // post | fake create estimate
 // exports.createEstimate = function(req, res){
 //     console.log('fake createEstimate');
@@ -284,8 +278,10 @@ exports.createEstimate = function (req, res){
             var destFlight_totalFare = "";
             var destFlight_detailsUrl = "";
 
-            if(destFlightData){
+            if(destFlightData["legs"]){
                 destFlight_legId = destFlightData["legs"][0]["legId"];
+            }
+            if(destFlightData["offers"]){
                 destFlight_totalFare = destFlightData["offers"][0]["totalFare"];
                 destFlight_detailsUrl = destFlightData["offers"][0]["detailsUrl"];
             }
@@ -299,9 +295,11 @@ exports.createEstimate = function (req, res){
             // }
 
              //Insert Model
-            estimate['flight']['orig_name'] = destCity;
-            estimate['flight']['orig_url'] = destFlight_detailsUrl;
-            estimate['flight']['orig_id'] = destFlight_legId;
+             if(estimate){
+                estimate['flight']['orig_name'] = destCity;
+                estimate['flight']['orig_url'] = destFlight_detailsUrl;
+                estimate['flight']['orig_id'] = destFlight_legId;
+             }
 
            
             // estimate['flight']['orig_name'] = destFlight_carrier;
@@ -317,9 +315,11 @@ exports.createEstimate = function (req, res){
             var arrvlFlight_legId = '';
             var arrvlFlight_totalFare = '';
             
-            if(arrvlFlightData){
+            if(arrvlFlightData["offers"]){
                 arrvlFlight_detailsUrl = arrvlFlightData["offers"][0]["detailsUrl"];
                 arrvlFlight_totalFare = arrvlFlightData["offers"][0]["totalFare"];
+            }
+            if(arrvlFlightData["legs"]){
                 arrvlFlight_legId = arrvlFlightData["legs"][0]["legId"];
             }
             
@@ -334,57 +334,96 @@ exports.createEstimate = function (req, res){
             // }
 
             //Insert Model
-            estimate['flight']['dest_name'] = arrvlCity;
-            estimate['flight']['dest_url'] = arrvlFlight_detailsUrl;
-            estimate['flight']['dest_id'] = arrvlFlight_legId;
+            if(estimate){
+                estimate['flight']['dest_name'] = arrvlCity;
+                estimate['flight']['dest_url'] = arrvlFlight_detailsUrl;
+                estimate['flight']['dest_id'] = arrvlFlight_legId;
+            }
 
             // estimate['flight']['dest_name'] = arrvlFlight_carrier;
 
+            if(estimate){
+                estimate['flight']['cost_range']['low'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
+                estimate['flight']['cost_range']['high'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
+                // estimate['flight']['miles'] = parseInt(destFlight_miles) + parseInt(arrvlFlight_miles);
+            }
 
-            estimate['flight']['cost_range']['low'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
-            estimate['flight']['cost_range']['high'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
-            // estimate['flight']['miles'] = parseInt(destFlight_miles) + parseInt(arrvlFlight_miles);
+            var hotel_id;
 
-            console.log(results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"]);
-            hotel_id = results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"];
+            if(results[2]["HotelInfoList"]){
+                console.log(results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"]);
+                hotel_id = results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"];
+            }
             
-            estimate['hotel']['id'] = hotel_id;
+            if(hotel_id){
+                estimate['hotel']['id'] = hotel_id;
+            }
+
+            var hotelCord;
+            var hotelCost;
+            var hotelURL;
+            var hotelName;
+            var hotelLocation;
 
             // results is now an array of stats for each file 
-            hotelCord = results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["GeoLocation"];
-            hotelCost = results[2]["HotelInfoList"]["HotelInfo"][9]["Price"]["TotalRate"]["Value"];
-            hotelURL = results[2]["HotelInfoList"]["HotelInfo"][9]["DetailsUrl"];
-            hotelName = results[2]["HotelInfoList"]["HotelInfo"][9]["Name"];
+            if(results[2]["HotelInfoList"]){
+                hotelCord = results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["GeoLocation"];
+                hotelCost = results[2]["HotelInfoList"]["HotelInfo"][9]["Price"]["TotalRate"]["Value"];
+                hotelURL = results[2]["HotelInfoList"]["HotelInfo"][9]["DetailsUrl"];
+                hotelName = results[2]["HotelInfoList"]["HotelInfo"][9]["Name"];
 
-            hotelLocation = results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["City"] + ", " + results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["Province"];
+                hotelLocation = results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["City"] + ", " + results[2]["HotelInfoList"]["HotelInfo"][9]["Location"]["Province"];
+            }
 
-            estimate['hotel']['hotel_coordinates']  = {
-                lat: hotelCord['Latitude'], 
-                lng: hotelCord['Longitude']
-            };
+            var estimate;
 
-            estimate['hotel']['cost_range']['low'] = hotelCost;
-            estimate['hotel']['cost_range']['high'] = hotelCost;
+            if(hotelCord){
+                estimate['hotel']['hotel_coordinates']  = {
+                    lat: hotelCord['Latitude'], 
+                    lng: hotelCord['Longitude']
+                };
+            }
 
-            estimate['hotel']['name'] = hotelName;
-            estimate['hotel']['url'] = hotelURL;
-            estimate['hotel']['location'] = hotelLocation;
+            if(hotelCost){
+                estimate['hotel']['cost_range']['low'] = hotelCost;
+                estimate['hotel']['cost_range']['high'] = hotelCost;
+            }
 
-            totalcost = parseInt(hotelCost) + parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare) + 300;
-            estimate['total_fee']['low'] = totalcost;
-            estimate['total_fee']['high'] = totalcost;
+            if(hotelName){
+                estimate['hotel']['name'] = hotelName;
+            }
 
-            console.log("IT only costs: "+totalcost);
+            if(hotelURL){
+                estimate['hotel']['url'] = hotelURL;
+            }
+
+            if(hotelLocation){
+                estimate['hotel']['location'] = hotelLocation;
+            }
+
+            var totalcost;
+
+            if(hotelCost){
+                totalcost = parseInt(hotelCost) + parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare) + 300;
+                estimate['total_fee']['low'] = totalcost;
+                estimate['total_fee']['high'] = totalcost;
+
+                console.log("IT only costs: "+totalcost);
 
 
-            console.log(results[2]["HotelInfoList"]["HotelInfo"][9]);
+                console.log(results[2]["HotelInfoList"]["HotelInfo"][9]);
+            }
 
 
             // console.log(arrvlFlight_totalFare);
             // console.log(arrvlFlight_detailsUrl);
             
             console.log("Return ERR on with Airport: "+err);
-            callback(null, hotel_id, arrvlCityCord);
+            if(hotel_id){
+                callback(null, hotel_id, arrvlCityCord);
+            }else{
+                callback(null, null, null);
+            }
         });
 
     }
@@ -438,16 +477,15 @@ exports.createEstimate = function (req, res){
         
     ], function (err, result) {
         // result now equals 'done'
-
         res.json({
-        'estimate_range': " $"+estimate['total_fee']['high'],
-        'flight_cost': " $"+estimate['flight']['cost_range']['high'],
-        'pet_fee': '$100',
-        'hotel_cost': " $"+Math.round(estimate['hotel']['cost_range']['high']),
+            'estimate_range': " $"+estimate['total_fee']['high'],
+            'flight_cost': " $"+estimate['flight']['cost_range']['high'],
+            'pet_fee': '$100',
+            'hotel_cost': " $"+Math.round(estimate['hotel']['cost_range']['high']),
 
-        'yipee_fee': '$200',
-        'other_fee': '$25'
-    });
+            'yipee_fee': '$200',
+            'other_fee': '$25'
+        });
         console.log(estimate);
         estimate.save(function(error, savedEstimate) {
             if(savedEstimate){
@@ -455,111 +493,107 @@ exports.createEstimate = function (req, res){
             }else if(error){
                 console.log("error: " + error);
             }
-
-        
         });
     });
-
 }
 
 
 
 // post | create a trip
 exports.createTrip = function (req, res){
+    // now we save the trip
+    var trip = new Trip({
+        trip_name: req.body.sender_name + ' to ' + req.body.receiver_name + ' (' + req.body.pet_name + ')',
+        status: yippeeConstants.TRIP_STATUS_REQUESTED,
+        main_contact: req.body.main_contact,
+        sender_name: req.body.sender_name,
+        sender_email: req.body.sender_email,
+        sender_phone: req.body.sender_phone,
+        receiver_name: req.body.receiver_name,
+        receiver_email: req.body.receiver_email,
+        receiver_phone: req.body.receiver_phone,
+        trip_date: req.body.trip_date,
+        origin_airport_code: req.body.origin_airport_code,
+        destination_airport_code: req.body.destination_airport_code,
+        pickup_address: {
+            address1: req.body.pickup_address1,
+            address2: req.body.pickup_address2,
+            city: req.body.pickup_city,
+            state: req.body.pickup_state,
+            postcode: req.body.pickup_postcode
+        },
+        dropoff_address: {
+            address1: req.body.dropoff_address1,
+            address2: req.body.dropoff_address2,
+            city: req.body.dropoff_city,
+            state: req.body.dropoff_state,
+            postcode: req.body.dropoff_postcode
+        },
+        trip_notes: req.body.trip_notes,
+        _pets: null,                                // assign the pet ids later, after saving the pets
+        _estimate_id: req.body.estimateId          // assign the estimate ID that was passed
+    });
 
-        // now we save the trip
-        var trip = new Trip({
-            trip_name: req.body.sender_name + ' to ' + req.body.receiver_name + ' (' + req.body.pet_name + ')',
-            status: yippeeConstants.TRIP_STATUS_REQUESTED,
-            main_contact: req.body.main_contact,
-            sender_name: req.body.sender_name,
-            sender_email: req.body.sender_email,
-            sender_phone: req.body.sender_phone,
-            receiver_name: req.body.receiver_name,
-            receiver_email: req.body.receiver_email,
-            receiver_phone: req.body.receiver_phone,
-            trip_date: req.body.trip_date,
-            origin_airport_code: req.body.origin_airport_code,
-            destination_airport_code: req.body.destination_airport_code,
-            pickup_address: {
-                address1: req.body.pickup_address1,
-                address2: req.body.pickup_address2,
-                city: req.body.pickup_city,
-                state: req.body.pickup_state,
-                postcode: req.body.pickup_postcode
-            },
-            dropoff_address: {
-                address1: req.body.dropoff_address1,
-                address2: req.body.dropoff_address2,
-                city: req.body.dropoff_city,
-                state: req.body.dropoff_state,
-                postcode: req.body.dropoff_postcode
-            },
-            trip_notes: req.body.trip_notes,
-            _pets: null,                                // assign the pet ids later, after saving the pets
-            _estimate_id: req.body.estimateId          // assign the estimate ID that was passed
-        });
+    trip.save(function (error, savedTrip){
+        if (error) {
+            console.log("Error Saving Trip: " + error);
+            res.json(yippeeUtils.createJsonResponse(error));
+            return;            
+        } else {
 
-        trip.save(function (error, savedTrip){
-            if (error) {
-                console.log("Error Saving Trip: " + error);
-                res.json(yippeeUtils.createJsonResponse(error));
-                return;            
-            } else {
+            // now, save the pet
+            var pet = new Pet({
+                name: req.body.pet_name,
+                species: req.body.pet_species,
+                age: req.body.pet_age,
+                weight: req.body.pet_weight,
+                has_carrier: req.body.pet_has_carrier,
+                medical_notes: req.body.pet_medical_notes,
+                pet_notes: req.body.pet_notes,
+            });
 
-                // now, save the pet
-                var pet = new Pet({
-                    name: req.body.pet_name,
-                    species: req.body.pet_species,
-                    age: req.body.pet_age,
-                    weight: req.body.pet_weight,
-                    has_carrier: req.body.pet_has_carrier,
-                    medical_notes: req.body.pet_medical_notes,
-                    pet_notes: req.body.pet_notes,
-                });
+            pet.save(function (error, savedPet){
+                if (error) {
+                    console.log("Error Saving Pet: " + error);
+                    res.json(yippeeUtils.createJsonResponse(error));
+                    return;
+                } else {
 
-                pet.save(function (error, savedPet){
-                    if (error) {
-                        console.log("Error Saving Pet: " + error);
-                        res.json(yippeeUtils.createJsonResponse(error));
-                        return;
-                    } else {
+                    // attach the petId to the trip. At some point we'll need to be able to
+                    // save multiple pets, but we'll forgo that for now.
+                    savedTrip._pets = [savedPet._id];
 
-                        // attach the petId to the trip. At some point we'll need to be able to
-                        // save multiple pets, but we'll forgo that for now.
-                        savedTrip._pets = [savedPet._id];
+                    savedTrip.save(function (error, savedTrip){
+                        if (error) {
+                            console.log("Error Saving Trip: " + error);
+                            res.json(yippeeUtils.createJsonResponse(error));
+                            return;            
+                        }
+                    });
 
-                        savedTrip.save(function (error, savedTrip){
-                            if (error) {
-                                console.log("Error Saving Trip: " + error);
-                                res.json(yippeeUtils.createJsonResponse(error));
-                                return;            
-                            }
-                        });
+                    // All systems go! Now talk to slack, and then send an API response
+                    var slackMessage = `*${savedTrip.trip_name}*`;
 
-                        // All systems go! Now talk to slack, and then send an API response
-                        var slackMessage = `*${savedTrip.trip_name}*`;
+                    var pickupAddress = `${savedTrip.pickup_address.address1} ${savedTrip.pickup_address.address2}, ${savedTrip.pickup_address.city}, ${savedTrip.pickup_address.state} ${savedTrip.pickup_address.postcode} `;
+                    var dropoffAddress = `${savedTrip.dropoff_address.address1} ${savedTrip.dropoff_address.address2}, ${savedTrip.dropoff_address.city}, ${savedTrip.dropoff_address.state} ${savedTrip.dropoff_address.postcode} `;
 
-                        var pickupAddress = `${savedTrip.pickup_address.address1} ${savedTrip.pickup_address.address2}, ${savedTrip.pickup_address.city}, ${savedTrip.pickup_address.state} ${savedTrip.pickup_address.postcode} `;
-                        var dropoffAddress = `${savedTrip.dropoff_address.address1} ${savedTrip.dropoff_address.address2}, ${savedTrip.dropoff_address.city}, ${savedTrip.dropoff_address.state} ${savedTrip.dropoff_address.postcode} `;
+                    var slackAttachments = [{'title': 'Sender', 
+                                             'text': `${savedTrip.sender_name}\n${savedTrip.sender_phone}\n${savedTrip.sender_email}`},
+                                            {'title': 'Receiver', 
+                                             'text': `${savedTrip.receiver_name}\n${savedTrip.receiver_phone}\n${savedTrip.receiver_email}`},
+                                            {'title': 'Pet Details', 
+                                             'text': `Name: ${savedPet.name}\nSpecies: ${savedPet.species}\nAge: ${savedPet.age}\nWeight: ${savedPet.weight}\nHas Carrier: ${savedPet.has_carrier}\nMedical Notes: ${savedPet.medical_notes}\nPet Notes: ${savedPet.pet_notes}`},
+                                             {'title': 'Trip Details', 
+                                             'text': `Requested Trip Date: ${savedTrip.trip_date}\nOrigin Airport: ${savedTrip.origin_airport_code}\nDestination Airport: ${savedTrip.destination_airport_code}\nPickup Address: ${pickupAddress}\nDropoff Address: ${dropoffAddress}`},
+                                            ];
 
-                        var slackAttachments = [{'title': 'Sender', 
-                                                 'text': `${savedTrip.sender_name}\n${savedTrip.sender_phone}\n${savedTrip.sender_email}`},
-                                                {'title': 'Receiver', 
-                                                 'text': `${savedTrip.receiver_name}\n${savedTrip.receiver_phone}\n${savedTrip.receiver_email}`},
-                                                {'title': 'Pet Details', 
-                                                 'text': `Name: ${savedPet.name}\nSpecies: ${savedPet.species}\nAge: ${savedPet.age}\nWeight: ${savedPet.weight}\nHas Carrier: ${savedPet.has_carrier}\nMedical Notes: ${savedPet.medical_notes}\nPet Notes: ${savedPet.pet_notes}`},
-                                                 {'title': 'Trip Details', 
-                                                 'text': `Requested Trip Date: ${savedTrip.trip_date}\nOrigin Airport: ${savedTrip.origin_airport_code}\nDestination Airport: ${savedTrip.destination_airport_code}\nPickup Address: ${pickupAddress}\nDropoff Address: ${dropoffAddress}`},
-                                                ];
+                    var slackJson = {json:{"text":slackMessage, "attachments": slackAttachments}};
 
-                        var slackJson = {json:{"text":slackMessage, "attachments": slackAttachments}};
+                    request.post('https://hooks.slack.com/services/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', slackJson );
 
-                        request.post('https://hooks.slack.com/services/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', slackJson );
-
-                        res.json(yippeeUtils.createJsonResponse(error, savedTrip));
-                    }
-                });
-            }
-        });
+                    res.json(yippeeUtils.createJsonResponse(error, savedTrip));
+                }
+            });
+        }
+    });
 }

@@ -13,14 +13,14 @@ function transferFormEntries(){
 }
 
 function modalSwap(){
-    $('#estimateModal').modal('hide');
+    $('#estimate-modal').modal('hide');
     setTimeout(function(){
-        $('#tripModal').modal('show');
+        $('#trip-modal').modal('show');
     }, 450);
 }
 
 function modalHide(){
-    $('#estimateModal').modal('hide');
+    $('#estimate-modal').modal('hide');
     $('#estimate-range').html('Please wait while your estimate is calculated.');
     $('#continue').html('Continue');
     $('#continue').attr('onClick', 'modalSwap()');
@@ -56,14 +56,14 @@ function requestEstimate(){
     })
     .fail(function(err) {
         console.log( "error: ", err );
-        $('#estimate-range').html('Sorry we couldn\'t find a matching flight');
+        $('#estimate-heading').html('Sorry we couldn\'t find a matching flight, please request trip and we\'ll contact you with an estiamte.');
         $('#continue').html('Try Again');
         $('#continue').attr('onClick', 'modalHide()');
     });
 }
 
 function requestTrip(){
-    console.log('requestTrip');
+    $('#confirmation-alert').show();
     // get the form data
     // there are many ways to get this data using jQuery (you can use the class or id also)
     var formData = {
@@ -85,7 +85,7 @@ function requestTrip(){
         'pickup_address1' : $('input[name=pickup_address1]').val(),
         'pickup_address2' : $('input[name=pickup_address2]').val(),
         'pickup_city' : $('input[name=pickup_city]').val(),
-        'pickup_state' : $('input[name=pickup_state]').val(),
+        'pickup_state' : $('select[name=pickup_state] option:selected').text(),
         'pickup_postcode' : $('input[name=pickup_postcode]').val(),
 
         'origin_airport_code' : $('input[name=origin_airport_code]').val(),
@@ -94,7 +94,7 @@ function requestTrip(){
         'dropoff_address1' : $('input[name=dropoff_address1]').val(),
         'dropoff_address2' : $('input[name=dropoff_address2]').val(),
         'dropoff_city' : $('input[name=dropoff_city]').val(),
-        'dropoff_state' : $('input[name=dropoff_state]').val(),
+        'dropoff_state' : $('select[name=dropoff_state] option:selected').text(),
         'dropoff_postcode' : $('input[name=dropoff_postcode]').val(),
 
         'trip_notes' : $('input[name=trip_notes]').val(),
@@ -126,3 +126,30 @@ function requestTrip(){
         console.log('done ran');
     });
 }
+
+function pageBootstrap() {
+
+    // load Google Analytics
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75289755-1', 'auto');
+    ga('send', 'pageview');
+
+    // attach GA to the key modals
+    $('#estimate-modal').on('show.bs.modal', function (e) {
+      ga('send', 'pageview', '/modal/estimate-modal');
+    })
+    $('#trip-modal').on('show.bs.modal', function (e) {
+      ga('send', 'pageview', '/modal/trip-modal');
+    })
+
+    // create datepicker
+    $('#dp').datepicker({format: 'yyyy-mm-dd'});
+
+
+}
+
+
