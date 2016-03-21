@@ -1,3 +1,5 @@
+var retryLimit = 3;
+
 // HTTP
 var http = require('http');
 
@@ -7,20 +9,52 @@ var async = require('async');
 // REQUESTS
 var request = require('request');
 
-// mongoose
+// MONGOOSE
 var mongoose = require('mongoose');
 
+// Estimate Mongoose Model
 var Estimate = require('../models/estimate');
 
+// CONFIG
+var config = require('../config')['production'];
+
+
+var acceptedAirports = ["ABR","ABI","CAK","ALS","ABY","ALB","ABQ","AEX","ABE", "AIA","APN","AOO","AMA","ANC","ATW","AVL","ASE","AHN", "ATL","ACY","AGS","AUG","AUS","BFL","BWI","BGR","BHB", "BRW","BTR","BPT","BKW","BED","BLI","BJI","BET","BTT", "BIL","BGM","BHM","BIS","BMI","BMG","BLF","BOI","BOS", "BZN","BKX","BRO","BQK","BUF","BUR","BRL","BBF","BTV", "BTM","CGI","CLD","CNM","CPR","CID","CMI","CHS","CRW", "CLT","CHO","CHA","CYS","CHI","MDW","CHI","ORD","CIC", "CVG","CKB","CLE","CVN","COD","CLL","COS","COU","CAE", "CSG","CLU","GTR","OLU","CMH","CDV","CRP","DAL","DFW", "DAY","DAB","DEC","DEN","DSM","DTW","DTT","DVL","DIK", "DLG","DDC","DHN","DUJ","DBQ","DLH","DRO","DUT","EAU", "EEK","IPL","ELD","ELP","EKO","ELM","WDG","ERI","ESC", "EUG","ACV","EVV","FAI","FAR","FMN","XNA","FAY","FLG", "FNT","FLO","FOD","FLL","TBN","RSW","FSM","VPS","FWA", "FYU","FAT","GNV","GCK","GCC","GDV","GFK","GRI","GJT", "GRR","GBD","GTF","GRB","LWB","GSO","GLH","PGV","GSP", "GPT","GUC","HGR","HNM","CMX","HRL","MDT","HRO","BDL", "HVR","HYS","HLN","HIB","Big","HHH","HOB","HOM","HNL", "MKK","EFD","HOU","IAH","EFD","HTS","HSV","HON","HYA", "IDA","IND","INL","IYK","IMT","IWD","ISP","ITH","JAC", "JAN","MKL","JAX","OAJ","JMS","JHW","JST","JPR","JLN", "JNU","OGG","AZO","LUP","FCA","MCI","JHM","EAR","ENA", "KTM","EYW","GRK","AKN","IGM","IRK","LMT","TYS","ADQ", "LSE","LFT","LCH","Hll","LNY","LNS","LAN","LAR","LRD", "LRU","LAS","LBE","PIB","LAW","LAB","LWS","LEW","LWT", "LEX","LBL","LIH","LNK","LIT","LGB","GGG","QLA","SDF", "LBB","LYH","MCN","MSN","MHT","MHK","MBL","MWA","MQT", "MVY","MCW","MSS","MFE","MCK","MFR","MLB","MEM","MEI", "MIA","MAF","MLS","MKE","MSP","MOT","MSO","MOB","MOD", "MLI","MLU","MRY","MGM","MTJ","MGW","MWH","MSL","MKG", "MRY","ACK","ABF","BNA","EWN","HVN","MSY","LGA","JFK", "NYC","EWR","SWF","PHF","OME","ORF","OTH","LBF","OAK", "OGS","OKC","OMA","ONT","SNA","MCO","OSH","OWB","OXR", "PAH","PGA","PSP","PFN","PKB","PSC","PLN","PDT","PNS", "PIA","PHL","PHX","PIR","SOP","PIT","PIH","PNC","PWM", "PDX","PSM","PRC","PQI","PVD","PVC","PUB","PUW","UIN", "RDU","RAP","RDD","RDM","RNO","RHI","RIC","RIW","ROA", "RST","ROC","RKS","RFD","RKD","ROW","RUT","SMF","MBS", "SLN","SPY","SLC","SJT","SAT","SAN","QSF","SFO","SJC", "SBP","SDP","SBA","SAF","SMX","STS","SLK","SRQ","CIU", "SAV","BFF","SEA","SHD","SHR","SHV","SDY","SVC","SUX", "FSD","SIT","SGY","SBN","GEG","SPI","CEF","SGF","VSF", "STC","SGU","STL","PIE","SCE","SBS","SUN","SRY","TLH", "TPA","TAX","TXK","TVF","OOK","TOL","TOP","TVC","TTN", "TUS","TUL","TUP","TWF","TYR","UNK","EGE","VDZ","VLD", "VCT","VIS","ACT","ALW","DCA","WAS","IAD","ALO","ART", "ATY","CWA","EAT","PBI","WYS","HPN","SPS","ICT","AVP", "IPT","ISN","ILG","ILM","OLF","WRL","WRG","YKM","YAK", "YUM","YXX","YAA","YEK","YBG","YYC","YBL","YGR","YCG", "YYG","YMT","YYQ","YXC","YDF","YHD","YEG","YEO","YMM", "YYE","YXJ","YSM","YFC","YQX","YGP","YQU","YHZ","YHM", "YFB","YKA","YLW","YQK","YGK","YQL","YXU","YXH","YQM", "YYY","YMQ","YUL","YCD","YYB","YOW","YYF","YZT","YPW", "YPR","YQB","YQZ","YRT","YRL","YQR","YRJ","YUY","YSJ", "YZP","YZR","YXE","YAM","YZV","YXL","YYD","YYT","YSB", "YQY","YXT","YTH","YQT","YTS","YYZ","YTO","YTZ","YVO", "YVR","YYJ","YWK","YXY","YWL","YQG","YWG","YZF","LAX"];
+
+
+Array.prototype.contains = function(k, callback) {
+    var self = this;
+    return (function check(i) {
+        if (i >= self.length) {
+            return callback(false);
+        }
+
+        if (self[i] === k) {
+            return callback(true);
+        }
+
+        return process.nextTick(check.bind(null, i+1));
+    }(0));
+}
 
 exports.createEstimate = function (req, res){
+
+//TWO TERMS: DEPARTURE & DESTINIATION 
+    var deptCity = [];
+    var destCity = [];
+    var deptAirport = [];
+    var destAirport = [];
 
      var controllerTry = 0;
 
     var estimate = new Estimate({
-        id:'0',
+        trip_id:'0',
         trip_name: "Fly",
         trip_date: "2016",
+        ride: {
+            cost_to: 0,
+            cost_from: 0
+        },
         flight: {
             cost_range: {
                 low: 0,
@@ -33,7 +67,7 @@ exports.createEstimate = function (req, res){
                 lat:  0,
                 lng: 0
             },
-            orig_air_code: '',
+            orig_air_code: 'SFO',
             orig_carrier: '',
             orig_air_coordinates:{
                 lat: 0,
@@ -67,7 +101,7 @@ exports.createEstimate = function (req, res){
         },
         airline_pet_fee: 100,
         yippee_fee: 200,
-        misc_fee: 0,
+        misc_fee: 25,
         total_fee: {
             low: 587,
             high: 1043
@@ -75,11 +109,12 @@ exports.createEstimate = function (req, res){
     });
 
 
-    var beartoken = "gAAAAABW040J2vjw2_YTRuFwkyhVWH1YYbxyMWFPqYIsRtFKromh3ZZvYrlzpWAgGbe_zf8nJ_gfcnmMdQIOSGMSoeVebT63yEbuRxLscUXhmBB7U0G2ZK7jGkmBQeQhGJ7KnEqV6R9eBNQ3408o2MY569MC8ocrIgXSBi7PRLhSZfoO__NZlzUd1r0siuVpsTycOes4ob4AuT9e08_gW7zoXpk0UH7yKg==";
-    var apiKey = "lcUYhjUA083IM9r8Ep7RA8QybLu2MMBS";
+    var beartoken = "";
+    var apiKey = config.expediaAuth;
 
     function send_data_get(url, callback){
        options = {url, json: true};
+       console.log(url);
        
         request.get(options, function (error, response, body) {
           // console.log(body);
@@ -94,7 +129,8 @@ exports.createEstimate = function (req, res){
         });
     }
 
-    function send_data_get_token(url, callback){
+    function send_data_token(url, callback){
+        console.log(url);
 
         var options = {
             url, 
@@ -117,36 +153,75 @@ exports.createEstimate = function (req, res){
         });
     }
 
+    function send_data_get_token(callback){
+
+        var url = 'https://api.lyft.com/oauth/token';
+        console.log(url);
+
+        var options = {
+            url, 
+            method: "POST",
+            body: JSON.stringify({"grant_type": "client_credentials", "scope": "public"}),
+            headers: {
+                'Authorization': 'Basic '+config.lyftAuth,
+                "content-type": "application/json"
+                }
+        };
+      
+        request(options, function (error, response, body) {
+          // console.log(body);
+
+          if (!error && response.statusCode == 200) {
+                console.log("Got Token!!!");
+                beartoken = JSON.parse(body)["access_token"];
+                // callback(null, body);
+            }else{
+                console.log("Error Getting Token");
+                console.log(response.statusCode);
+                // callback(new Error('Error: With getting token'));
+                // return;
+            }
+        });
+    }
+
     function process_data_city(url_data, callback){
         async.map(url_data, send_data_get, function(err, results){
             // results is now an array of stats for each file 
+            var deptCityData = results[0];
 
-            destCityData = results[0];
+            if(deptCityData){
+                deptCity["name"] = deptCityData["results"][0]["formatted_address"];
+                deptCity["lat"] = deptCityData["results"][0]["geometry"]["location"]["lat"];
+                deptCity["lng"] = deptCityData["results"][0]["geometry"]["location"]["lng"];
 
-            var destCityCord = '';
-            var arrvlCityCord = '';
-
-            if(destCityData){
-                destCityCord = destCityData["results"][0]["geometry"]["location"];
-                destCity = destCityData["results"][0]["formatted_address"];
-            
-
-            //Insert Model
-            estimate['flight']['orig_name'] = destCity;
-            estimate['flight']['orig_coordinates'] = destCityCord;
-           
-            arrvlCityData = results[1];
-            arrvlCityCord = arrvlCityData["results"][0]["geometry"]["location"];
-            arrvlCity = arrvlCityData["results"][0]["formatted_address"];
-
-            //Insert Model
-            estimate['flight']['dest_name'] = arrvlCity;
-            estimate['flight']['dest_coordinates'] = arrvlCityCord;
-
+                //Insert Model
+                estimate['flight']['orig_name'] = deptCity["name"];
+                estimate['flight']['orig_coordinates']['lat'] = deptCity["lat"];
+                estimate['flight']['orig_coordinates']['lng']= deptCity["lng"];
             }
 
-            console.log("Return ERR on with City: "+err);
-            callback(null, destCityCord, arrvlCityCord);
+             var destCityData = results[1];
+
+            if(destCityData){
+                destCity["name"] = destCityData["results"][0]["formatted_address"];
+                destCity["lat"] = destCityData["results"][0]["geometry"]["location"]["lat"];
+                destCity["lng"] = destCityData["results"][0]["geometry"]["location"]["lng"];
+                
+                //Insert Model
+                estimate['flight']['dest_name'] = destCity["name"];
+                estimate['flight']['dest_coordinates']['lat'] = destCity["lat"];
+                estimate['flight']['dest_coordinates']['lng'] = destCity["lng"];
+            }
+
+            
+            if (deptCityData && destCityData) {
+                callback(null);
+            }else{
+                console.log("Error: "+url);
+                callback(new Error('Unable to locate City! (g.maps:name,cords)'));
+                return;
+            }
+            // callback(null);
             //callback(null, results[0]["results"][0]["formatted_address"], results[1]["results"][0]["formatted_address"]);
         });
    
@@ -154,94 +229,161 @@ exports.createEstimate = function (req, res){
     }
 
     function process_lyft(url_data, callback){
-         async.map(url_data, send_data_get_token, function(err, results){
-            var destCityCord = '';
-            var arrvlCityCord = '';
-         callback(null, destCityCord, arrvlCityCord);
+         async.map(url_data, send_data_token, function(err, results){
+
+            var lyftDeptArr = '';
+            var lyftDestArr = '';
+
+            // console.log(results[0]);
+            lyftDeptArr = results[0];
+
+            if(lyftDeptArr){
+                estimate['ride']['cost_to'] = Math.round(parseInt(lyftDeptArr['cost_estimates'][0]['estimated_cost_cents_max'])/100);
+            }
+
+            lyftDestArr = results[1];
+            if(lyftDestArr){
+                estimate['ride']['cost_from'] = Math.round(parseInt(lyftDestArr['cost_estimates'][0]['estimated_cost_cents_max'])/100)
+            }
+
+            // estimate['ride']['cost_to']
+            // estimate['ride']['cost_from']
+
+           estimate['total_fee']['high'] = parseInt(estimate['total_fee']['high']) + parseInt(estimate['ride']['cost_to']) + parseInt(estimate['ride']['cost_from']);
+            estimate['total_fee']['low'] = parseInt(estimate['total_fee']['low']) + parseInt(estimate['ride']['cost_to']) + parseInt(estimate['ride']['cost_from']);
+         callback(null);
 });
          
     }
 
     function process_data_airport(url_data, callback){
+        /*
+            name:
+            lat:
+            lng
+        */
         // console.log("Return on: "+url_data);
+
         async.map(url_data, send_data_get, function(err, results){
-            // results is now an array of stats for each file 
 
-            // var keys = Object.keys( obj );
+            var deptAirportData = '';
+            var destAirportData = '';
 
-            // for( var i = 0,length = keys.length; i < length; i++ ) {
-            //     if(typeof results[0][0]["tags"]["common"]hasOwnProperty("majorAirport");
-            // }
-            var lyft = '';
-            var destAirport = '';
-            var arrvlAirport = '';
-            var arrvlCityCord = '';
+            deptAirportData = results[0];
 
-            if(typeof results[0] !== 'undefined'){
-        
+            if(deptAirportData){
+            // console.log(results[0].length);
 
-            destAirportData = results[0][0];
-            // console.log(destAirportData);
-            // destAirportData["tags"]["common"] ["majorAirport"]
+                //Collect close Dept Airports
+                for(var i = 0; i < results[0].length; i++){
+                    deptAirportData = results[0][i];
 
+                    var deptIATA = deptAirportData["tags"]["iata"]["airportCode"]["value"];
 
-            
-            destAirport = destAirportData["tags"]["iata"]["airportCode"]["value"];
-            destAirportCord = destAirportData["position"]["coordinates"];
+                    if(acceptedAirports.indexOf(deptIATA) >= 0) {
+
+                        var data_insert = {
+                        name: deptAirportData["tags"]["iata"]["airportCode"]["value"],
+                         lat: deptAirportData["position"]["coordinates"][1],
+                         lng: deptAirportData["position"]["coordinates"][0] };
+
+                        deptAirport.push(data_insert);
+
+                        console.log("Dept: "+deptIATA);
+                        // console.log(deptAirport);
+
+                    } else {
+                        console.log("Not found: "+deptIATA);
+                    }
+
+                }
+            }
 
             //Insert Model
-            estimate['flight']['orig_air_code'] = destAirport;
-            estimate['flight']['orig_air_coordinates'] = {
-                lat: destAirportCord[0], 
-                lng: destAirportCord[1]
-            };
+            // estimate['flight']['orig_air_code'] = destAirport;
+            // estimate['flight']['orig_air_coordinates'] = {
+            //     lat: destAirportCord[0], 
+            //     lng: destAirportCord[1]
+            // };
 
-            arrvlAirportData = results[1][0];
+            destAirportData = results[1];
 
-            arrvlAirport = arrvlAirportData["tags"]["iata"]["airportCode"]["value"];
-            arrvlAirportCord = arrvlAirportData["position"]["coordinates"];
-            // arrvlAirportCode = arrvlAirportData[''];
-            // console.log("test "+arrvlAirportCord);
+            if(destAirportData){
+            // console.log(results[1].length);
+
+                //Collect Destination Aiports
+                for(var i = 0; i < results[1].length; i++){
+                    destAirportData = results[1][i];
+
+                    var destIATA = destAirportData["tags"]["iata"]["airportCode"]["value"];   
+                    if(acceptedAirports.indexOf(destIATA) >= 0) {
+
+                        var data_insert = {
+                        name: destAirportData["tags"]["iata"]["airportCode"]["value"],
+                         lat: destAirportData["position"]["coordinates"][1],
+                         lng: destAirportData["position"]["coordinates"][0] };
+
+                        destAirport.push(data_insert);
+
+                        console.log("Dest: "+destIATA);
+                        // console.log(destAirport);
+
+                    } else {
+                        console.log("Not found: "+destIATA);
+                    }
+
+                }
+            }
+            // estimate['flight']['dest_air_code'] = arrvlAirport;
+            // estimate['flight']['dest_air_coordinates'] = {
+            //     lat: arrvlAirportCord[0], 
+            //     lng: arrvlAirportCord[1]
+            // };
+            
+            
 
 
-
-            estimate['flight']['dest_air_code'] = arrvlAirport;
-            estimate['flight']['dest_air_coordinates'] = {
-                lat: arrvlAirportCord[0], 
-                lng: arrvlAirportCord[1]
-            };
-
-            lyft = destAirportCord;
+            if (destAirport[1] && destAirport[1]) {
+                callback(null);
+            }else{
+                console.log("Error: ");
+                callback(new Error('Unable to locate Airports! (ex.pedia:name,cords)'));
+                return;
             }
             
-            console.log("Return ERR on with Airport: "+err);
-            callback(null, destAirport, arrvlAirport, arrvlCityCord, lyft);
         });
 
     }
 
     function process_data_flights(url_data, callback){
+
         // console.log("Return on: "+url_data);
         async.map(url_data, send_data_get, function(err, results){
+
             // results is now an array of stats for each file 
-            var destFlightData = results[0];
-            // var destLength = Object.keys(destFlightData["offers"]).length;
-            // console.log(destFlightData["legs"][0]["segments"]);
+            var deptFlightData = results[0];
+            
+            var deptFlight_legId = "";
+            var deptFlight_totalFare = "";
+            var deptFlight_detailsUrl = "";
 
-            var destFlight_legId = "";
-            var destFlight_totalFare = "";
-            var destFlight_detailsUrl = "";
+           
 
-            var hotel_id = "";
-            var arrvlCityCord = "";
-            var destCity = "";
-            var arrvlCity = "";
-            var arrvlCityCord = "";
+                if(deptFlightData && deptFlightData["legs"]){
 
-                if(destFlightData){
-                destFlight_legId = destFlightData["legs"][0]["legId"];
-                destFlight_totalFare = destFlightData["offers"][0]["totalFare"];
-                destFlight_detailsUrl = destFlightData["offers"][0]["detailsUrl"];
+                    deptFlight_totalFare = deptFlightData["offers"][0]["totalFare"];
+                    deptFlight_detailsUrl = deptFlightData["offers"][0]["detailsUrl"];
+                    deptFlight_legId = deptFlightData["legs"][0]["legId"];
+
+                    //Insert Model
+                    estimate['flight']['orig_name'] = deptCity['name'];
+                    estimate['flight']['orig_url'] = deptFlight_detailsUrl;
+                    estimate['flight']['orig_id'] = deptFlight_legId;
+
+                }else{
+                    console.log("ERROR_FLIGHT");
+                    callback(new Error('2'));
+                    return;
                 }
 
             //  if(destFlightData["offers"][0]["segments"][0].hasOwnProperty("distance")){
@@ -252,30 +394,32 @@ exports.createEstimate = function (req, res){
             //     destFlight_miles = destFlightData["legs"][0]["segments"][0]["distance"]; 
             // }
 
-             //Insert Model
-            estimate['flight']['orig_name'] = destCity;
-            estimate['flight']['orig_url'] = destFlight_detailsUrl;
-            estimate['flight']['orig_id'] = destFlight_legId;
+             
         
 
-           
-            // estimate['flight']['orig_name'] = destFlight_carrier;
-        
+            var destFlightData = results[0];
 
-        
-
-            var arrvlFlightData = {};
-            arrvlFlightData = results[1];
-            // var arrvlLength = Object.keys(arrvlFlightData["offers"]).length;
-
-            var arrvlFlight_detailsUrl = '';
-            var arrvlFlight_legId = '';
-            var arrvlFlight_totalFare = '';
+            var destFlight_legId = "";
+            var destFlight_totalFare = "";
+            var destFlight_detailsUrl = "";
             
-            if(arrvlFlightData){
-                arrvlFlight_detailsUrl = arrvlFlightData["offers"][0]["detailsUrl"];
-                arrvlFlight_totalFare = arrvlFlightData["offers"][0]["totalFare"];
-                arrvlFlight_legId = arrvlFlightData["legs"][0]["legId"];
+           if(destFlightData && destFlightData["legs"]){
+
+                // console.log("GOODFLIGHT");
+                    
+                    destFlight_totalFare = destFlightData["offers"][0]["totalFare"];
+                    destFlight_detailsUrl = destFlightData["offers"][0]["detailsUrl"];
+                    destFlight_legId = destFlightData["legs"][0]["legId"];
+
+                    //Insert Model
+                    estimate['flight']['dest_name'] = destCity["name"];
+                    estimate['flight']['dest_url'] = destFlight_detailsUrl;
+                    estimate['flight']['dest_id'] = destFlight_legId;
+
+                }else{
+                    console.log("ERROR_FLIGHT");
+                    callback(new Error('3'));
+                    return;
             }
             
            
@@ -288,19 +432,24 @@ exports.createEstimate = function (req, res){
             //     arrvlFlight_carrier = arrvlFlightData["offers"][0]["segments"][0]["airlineName"];
             // }
 
-            //Insert Model
-            estimate['flight']['dest_name'] = arrvlCity;
-            estimate['flight']['dest_url'] = arrvlFlight_detailsUrl;
-            estimate['flight']['dest_id'] = arrvlFlight_legId;
+            
         
             // estimate['flight']['dest_name'] = arrvlFlight_carrier;
 
 
-            estimate['flight']['cost_range']['low'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
-            estimate['flight']['cost_range']['high'] = parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare);
+            estimate['flight']['cost_range']['low'] = parseInt(destFlight_totalFare) + parseInt(deptFlight_totalFare);
+            estimate['flight']['cost_range']['high'] = parseInt(destFlight_totalFare) + parseInt(deptFlight_totalFare);
             // estimate['flight']['miles'] = parseInt(destFlight_miles) + parseInt(arrvlFlight_miles);
-             if((destFlightData) && (arrvlFlightData)) {
-            console.log(results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"]);
+             
+            var hotel_id = "";
+            var arrvlCityCord = "";
+           
+            var arrvlCity = "";
+            var arrvlCityCord = "";
+            var hotelCost = 0;
+
+            if((destFlightData) && (deptFlightData) && (results[2]["HotelInfoList"]["HotelInfo"])) {
+            // console.log(results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"]);
             hotel_id = results[2]["HotelInfoList"]["HotelInfo"][9]["HotelID"];
             
             estimate['hotel']['id'] = hotel_id;
@@ -325,22 +474,24 @@ exports.createEstimate = function (req, res){
             estimate['hotel']['url'] = hotelURL;
             estimate['hotel']['location'] = hotelLocation;
 
-            totalcost = parseInt(hotelCost) + parseInt(destFlight_totalFare) + parseInt(arrvlFlight_totalFare) + parseInt(estimate['ride']['cost_to']) + parseInt(estimate['ride']['cost_from']) + 300;
-            estimate['total_fee']['low'] = totalcost;
-            estimate['total_fee']['high'] = totalcost;
+            
 
-            console.log("IT only costs: "+totalcost);
-
-
-            console.log(results[2]["HotelInfoList"]["HotelInfo"][9]);
+            // console.log(results[2]["HotelInfoList"]["HotelInfo"][9]);
 
 
             // console.log(arrvlFlight_totalFare);
             // console.log(arrvlFlight_detailsUrl);
         }
+
+        totalcost = parseInt(hotelCost) + parseInt(destFlight_totalFare) + parseInt(deptFlight_totalFare) + 325;
+            estimate['total_fee']['low'] = totalcost;
+            estimate['total_fee']['high'] = totalcost;
+
+            // console.log("IT only costs: "+totalcost);
+
             
             console.log("Return ERR on with Airport: "+err);
-            // callback(null, hotel_id, hotel_id);
+            callback(null);
         });
 
     }
@@ -348,42 +499,48 @@ exports.createEstimate = function (req, res){
     var startDate = req.body.trip_date;
     var dropoff_postcode = req.body.dropoff_postcode;
     var pickup_postcode = req.body.pickup_postcode;
-    var arrCord = [];
-    var desCord = [];
 
     var lyftTo = 0;
-   
+
+    send_data_get_token();
     async.waterfall([
         function(callback) {
-            //Zipcode to City / State / Zip
+        //CityArr
+            /*
+            name: "x"
+            lat: "x"
+            lng: "x"
+            */
             var url_data = ['http://maps.googleapis.com/maps/api/geocode/json?address='+pickup_postcode+'&sensor=true', 'http://maps.googleapis.com/maps/api/geocode/json?address='+dropoff_postcode+'&sensor=true'];
 
             process_data_city(url_data, callback);
            
         },
-        function(destCityCord, arrvlCityCord, callback) {
-          // Find closest Airport
-            arrCord = arrvlCityCord;
-            desCord = destCityCord;
-            var url_data1 = "http://terminal2.expedia.com/x/geo/features?lat="+destCityCord["lat"]+"&lng="+destCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
-            var url_data2 = "http://terminal2.expedia.com/x/geo/features?lat="+arrvlCityCord["lat"]+"&lng="+arrvlCityCord["lng"]+"&type=airport&verbose=3&limit=10&apikey="+apiKey;
+        function(callback) {
+        //AirportArr
+            /*
+            name: "x"
+            lat: "x"
+            lng: "x"
+            */
+
+            // Find closest Airport
+            var url_data1 = "http://terminal2.expedia.com/x/geo/features?lat="+deptCity["lat"]+"&lng="+deptCity["lng"]+"&type=airport&verbose=3&limit=20&apikey="+apiKey;
+            var url_data2 = "http://terminal2.expedia.com/x/geo/features?lat="+destCity["lat"]+"&lng="+destCity["lng"]+"&type=airport&verbose=3&limit=20&apikey="+apiKey;
             var url_data = [url_data1, url_data2];
             process_data_airport(url_data, callback);
 
         },
-        function(arrvlAirport, destAirport, arrvlCityCord, lyft, callback){
-
-            var url_data1 = "https://api.lyft.com/v1/cost?start_lng="+arrCord["lng"]+"&start_lat="+arrCord["lat"]+"&end_lng="+arrvlCityCord["lng"]+"&end_lat="+arrvlCityCord["lat"];
-            var url_data2 = "https://api.lyft.com/v1/cost?start_lng="+desCord["lng"]+"&start_lat="+desCord["lat"]+"&end_lng="+lyft[0]+"&end_lat="+lyft[1];
-            var url_data = [url_data1, url_data2];
-            process_lyft(url_data, callback);
-            callback(null, arrvlAirport, destAirport, arrvlCityCord);
-
-        },
-        function(arrvlAirport, destAirport, arrvlCityCord, callback) {
-            console.log(startDate);
+        function(callback) {
+        //AirportArr
+            /*
+            name: "x"
+            lat: "x"
+            lng: "x"
+            */
+            // console.log(startDate);
             var d = new Date(startDate);
-            console.log(d);
+            // console.log(d);
 
             var day = (d.getDate()+2).toString();
             day = day.length > 1 ? day : '0' + day;
@@ -397,12 +554,26 @@ exports.createEstimate = function (req, res){
             var dateFly = startDate;
             console.log("Fly Date "+dateFly);
 
-            var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+arrvlAirport+"&arrivalAirport="+destAirport+"&maxOfferCount=10&apikey="+apiKey;
-            var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport+"&arrivalAirport="+arrvlAirport+"&maxOfferCount=10&apikey="+apiKey;
-            var url_data3 = "http://terminal2.expedia.com:80/x/hotels?maxhotels=10&radius=10km&location="+arrvlCityCord["lat"]+"%2C"+arrvlCityCord["lng"]+"&sort=price&checkInDate="+dateFly+"&checkOutDate="+dateReturn+"&apikey="+apiKey;
+            var url_data1 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateFly+"&departureAirport="+deptAirport[0]["name"]+"&arrivalAirport="+destAirport[0]["name"]+"&maxOfferCount=10&apikey="+apiKey;
+            var url_data2 = "http://terminal2.expedia.com:80/x/mflights/search?departureDate="+dateReturn+"&departureAirport="+destAirport[0]["name"]+"&arrivalAirport="+deptAirport[0]["name"]+"&maxOfferCount=10&apikey="+apiKey;
+            var url_data3 = "http://terminal2.expedia.com:80/x/hotels?maxhotels=10&radius=10km&location="+destAirport[0]['lat']+"%2C"+destAirport[0]['lng']+"&sort=price&checkInDate="+dateFly+"&checkOutDate="+dateReturn+"&apikey="+apiKey;
             var url_data = [url_data1, url_data2, url_data3];
             process_data_flights(url_data, callback);
 
+        },
+        function(callback){
+        //CityArr
+            /*
+            name: "x"
+            lat: "x"
+            lng: "x"
+            */
+
+            var url_data1 = "https://api.lyft.com/v1/cost?start_lat="+deptCity["lat"]+"&start_lng="+deptCity["lng"]+"&end_lat="+deptAirport[0]["lat"]+"&end_lng="+deptAirport[0]["lng"];
+            var url_data2 = "https://api.lyft.com/v1/cost?start_lat="+destAirport[0]["lat"]+"&start_lng="+destAirport[0]["lng"]+"&end_lat="+destCity["lat"]+"&end_lng="+destCity["lng"];
+            var url_data = [url_data1, url_data2];
+            process_lyft(url_data, callback);
+            // callback(null);
 
         }
         
@@ -419,7 +590,7 @@ exports.createEstimate = function (req, res){
         'yipee_fee': '$200',
         'other_fee': '$25'
     });
-        console.log(estimate);
+        // console.log(estimate);
         estimate.save(function(error, savedEstimate) {
             if(savedEstimate){
                 console.log(savedEstimate);
